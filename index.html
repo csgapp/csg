@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Savers Group - WORKING VERSION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #e3f2fd;
+            min-height: 100vh;
+        }
+        #app {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(90deg, #1e88e5, #64b5f6);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .content {
+            padding: 30px;
+        }
+        .btn {
+            background: #1e88e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #1565c0;
+        }
+        .login-box {
+            background: #f8fdff;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #bbdefb;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #90caf9;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .member-card {
+            background: #f8fdff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #bbdefb;
+        }
+        .member-card input,
+        .member-card select {
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            display: block;
+            margin: 8px auto;
+        }
+        /* ===== GLOBAL INPUT FIX ===== */
+        #loginForm input[type="text"],
+        #loginForm input[type="password"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 14px !important;
+            margin: 10px 0 !important;
+            border: 2px solid #90caf9 !important;
+            border-radius: 8px !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        #loginForm input[type="text"]:focus,
+        #loginForm input[type="password"]:focus {
+            border-color: #1e88e5 !important;
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2) !important;
+            outline: none !important;
+        }
+        
+        #loginForm button.btn {
+            width: 100% !important;
+            margin-top: 15px !important;
+            padding: 15px !important;
+        }
+        /* ===== END GLOBAL FIX ===== */
+        /* ==================== */
+        /* MOBILE RESPONSIVENESS - STRONG FIX */
+        /* ==================== */
+        
+        @media screen and (max-width: 1024px) {
+            body {
+                padding: 10px !important;
+                min-width: 0 !important;
+                overflow-x: hidden !important;
+            }
+            
+            #app {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 10px !important;
+                min-width: 0 !important;
+            }
+            
+            .header {
+                padding: 15px !important;
+            }
+            
+            .header h1 {
+                font-size: 1.4em !important;
+                text-align: center !important;
+            }
+            
+            .content {
+                padding: 15px !important;
+                min-width: 0 !important;
+            }
+            
+            div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+                display: block !important;
+            }
+            
+            div[style*="grid-template-columns:repeat(4"] {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            
+            div[style*="grid-template-columns:repeat(2"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+            
+            .btn {
+                display: block !important;
+                width: 100% !important;
+                padding: 14px !important;
+                margin: 8px 0 !important;
+                font-size: 16px !important;
+                box-sizing: border-box !important;
+            }
+            
+            .login-box > div > .btn {
+                display: inline-block !important;
+                width: auto !important;
+                margin: 5px !important;
+            }
+            
+            .member-card {
+                width: 100% !important;
+                margin: 10px 0 !important;
+                padding: 15px !important;
+                box-sizing: border-box !important;
+            }
+            
+            input, select {
+                width: 100% !important;
+                box-sizing: border-box !important;
+                font-size: 16px !important;
+                padding: 12px !important;
+                margin: 8px 0 !important;
+            }
+            
+            html {
+                -webkit-text-size-adjust: 100% !important;
+                -ms-text-size-adjust: 100% !important;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2em !important;
+            }
+            
+            div[style*="grid-template-columns:repeat(4"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .btn {
+                padding: 12px !important;
+                font-size: 15px !important;
+            }
+        }
+        
+        /* ========== MOBILE FIX - PASTE THIS ========== */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px !important;
+                zoom: 0.9;
+            }
+            /* ===== ADMIN LOGIN INPUT FIX ===== */
+            #loginForm input[type="text"],
+            #loginForm input[type="password"] {
+                width: 100% !important;
+                margin: 12px 0 !important;
+                padding: 16px !important;
+                border-radius: 10px !important;
+                border: 2px solid #1e88e5 !important;
+                font-size: 16px !important;
+                box-sizing: border-box !important;
+                display: block !important;
+            }
+            
+            #loginForm button.btn {
+                margin-top: 20px !important;
+                padding: 18px !important;
+                font-size: 17px !important;
+                font-weight: bold !important;
+            }
+            
+            #loginForm input::placeholder {
+                color: #666;
+                opacity: 0.9;
+            }
+            
+            #loginForm input:focus {
+                border-color: #1565c0 !important;
+                box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2) !important;
+                outline: none !important;
+            }
+            /* ===== END ADMIN LOGIN FIX ===== */
+            #app {
+                max-width: 100% !important;
+                margin: 0 !important;
+                border-radius: 8px !important;
+            }
+            .content {
+                padding: 10px !important;
+            }
+            div {
+                display: block !important;
+            }
+            div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+            }
+            .btn {
+                display: block !important;
+                width: 100% !important;
+                margin: 5px 0 !important;
+                padding: 15px !important;
+                font-size: 16px !important;
+            }
+            input, select {
+                font-size: 16px !important;
+                padding: 15px !important;
+            }
+        }
+        /* Fix login buttons - Equal spacing */
+        .login-box > div[style*="display:flex"] {
+            display: flex !important;
+            gap: 20px !important;
+            margin-bottom: 25px !important;
+            justify-content: space-between !important;
+        }
+        
+        .login-box > div[style*="display:flex"] .btn {
+            flex: 1 !important;
+            padding: 16px !important;
+            margin: 0 !important;
+            border-radius: 10px !important;
+            font-size: 16px !important;
+            text-align: center !important;
+            min-height: 50px !important;
+        }
+        
+        .login-box > div[style*="display:flex"] .btn:first-child {
+            background: #1e88e5 !important;
+        }
+        
+        .login-box > div[style*="display:flex"] .btn:last-child {
+            background: #90caf9 !important;
+        }
+        /* ========== END MOBILE FIX ========== */
+    </style>
+    
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAYYE4-vtk3XXPdvwJ8-BWxiyJiKPASsnM",
+            authDomain: "savers-group-app.firebaseapp.com",
+            projectId: "savers-group-app",
+            storageBucket: "savers-group-app.firebasestorage.app",
+            messagingSenderId: "722000008713",
+            appId: "1:722000008713:web:5322f5a668bfcd6ff4cad8"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Make functions globally available
+        window.db = db;
+        window.doc = (db, collection, document) => db.collection(collection).doc(document);
+        window.getDoc = (docRef) => docRef.get();
+        window.setDoc = (docRef, data) => docRef.set(data);
+    </script>
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <h1>💰 SAVERS GROUP</h1>
+            <p>Digital Savings System</p>
+        </div>
+        <div class="content">
+            <div class="login-box">
+                <h2>Login</h2>
+                <div style="display:flex;gap:10px;margin-bottom:20px;">
+                    <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:#1e88e5;">👑 Admin</button>
+                    <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:#90caf9;">👤 Member</button>
+                </div>
+                <div id="loginForm">
+                    <input type="text" id="username" placeholder="Admin username">
+                    <input type="password" id="password" placeholder="Admin password">
+                    <button class="btn" onclick="login('admin')" style="width:100%;">🔐 ADMIN LOGIN</button>
+                </div>
+                <!-- Footer -->
+                <div style="text-align: center; margin-top: 30px; color: #999; font-size: 0.85rem; opacity: 0.8; font-family: sans-serif; line-height: 1.4;">
+                    Created by Tha for Chibombo Savers Group
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====================
+        // SIMPLE WORKING VERSION
+        // ====================
+        console.log("🔥 SAVERS GROUP APP STARTING...");
+        
+        // ===== PWA SERVICE WORKER REGISTRATION =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registered:', reg))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+        
+        const firestoreDb = window.db;
+        
+        async function loadMembers() {
+            try {
+                const docRef = doc(firestoreDb, 'groups', 'main');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists) {
+                    members = docSnap.data().members || [];
+                } else {
+                    members = [
+                        { id: "1", name: "Stephen Mabena", phone: "0977123456", savings: 40747.52, loanPrincipal: 4600, loanInterest: 0, membershipPaid: true, socialPaid: true, transactions: [
+                            { type: 'savings', amount: 40747.52, date: new Date().toISOString(), note: 'Initial balance' },
+                            { type: 'loan', amount: 4600, date: new Date().toISOString(), note: 'Existing loan' }
+                        ] },
+                        { id: "2", name: "Peter Mwiinga", phone: "0977654321", savings: 27500, loanPrincipal: 16500, loanInterest: 0, membershipPaid: true, socialPaid: true, transactions: [
+                            { type: 'savings', amount: 27500, date: new Date().toISOString(), note: 'Initial balance' },
+                            { type: 'loan', amount: 16500, date: new Date().toISOString(), note: 'Existing loan' }
+                        ] }
+                    ];
+                }
+            } catch (e) {
+                console.error('Error loading members:', e);
+                members = [];
+            }
+        }
+        
+        async function saveMembers() {
+            try {
+                await setDoc(doc(firestoreDb, 'groups', 'main'), { members });
+            } catch (e) {
+                console.error('Error saving members:', e);
+            }
+        }
+        
+        let members = [];
+        let currentUser = null;
+        let selectedLoanMemberId = null;
+
+        function fmtDate(iso) {
+            try {
+                return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) { return iso; }
+        }
+        
+        const RULES = {
+            MIN_SAVINGS: 200,
+            MEMBERSHIP_FEE: 50,
+            SOCIAL_FUND: 100,
+            INTEREST: 0.10
+        };
+        
+        // ====================
+        // 1. LOGIN SYSTEM
+        // ====================
+        function showAdminLogin() {
+            document.getElementById('loginForm').innerHTML = `
+                <input type="text" id="username" value="admin" placeholder="Admin username">
+                <input type="password" id="password" value="ChiSave" placeholder="Admin password">
+                <button class="btn" onclick="login('admin')" style="width:100%;">🔐 ADMIN LOGIN</button>
+            `;
+            document.getElementById('adminBtn').style.background = '#1e88e5';
+            document.getElementById('memberBtn').style.background = '#90caf9';
+        }
+        
+        function showMemberLogin() {
+            document.getElementById('loginForm').innerHTML = `
+                <select id="memberSelect" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">
+                    <option value="">-- Select Your Name --</option>
+                    ${members.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}
+                </select>
+                <input type="password" id="memberPass" placeholder="Password">
+                <button class="btn" onclick="login('member')" style="width:100%;background:#26a69a;">👤 MEMBER LOGIN</button>
+            `;
+            document.getElementById('memberBtn').style.background = '#1e88e5';
+            document.getElementById('adminBtn').style.background = '#90caf9';
+        }
+        
+        function login(type) {
+            if (type === 'admin') {
+                const user = document.getElementById('username').value;
+                const pass = document.getElementById('password').value;
+                
+                if (user === 'admin' && pass === 'ChiSave') {
+                    currentUser = { type: 'admin', name: 'Admin' };
+                    showAdminDashboard();
+                } else {
+                    alert('Wrong username or password');
+                }
+            } else {
+                const memberId = document.getElementById('memberSelect').value;
+                const pass = document.getElementById('memberPass').value;
+                
+                if (!memberId) {
+                    alert('Select your name');
+                    return;
+                }
+                
+                const member = members.find(m => m.id === memberId);
+                if (member && pass === member.phone.slice(-4)) {
+                    currentUser = { type: 'member', name: member.name, id: member.id };
+                    showMemberDashboard(member.id);
+                } else {
+                    alert('Wrong password');
+                }
+            }
+        }
+        
+        function logout() {
+            currentUser = null;
+            showLoginScreen();
+        }
+        
+        function showLoginScreen() {
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <h1>💰 SAVERS GROUP</h1>
+                    <p>Digital Savings System</p>
+                </div>
+                <div class="content">
+                    <div class="login-box">
+                        <h2>Login</h2>
+                        <div style="display:flex;gap:10px;margin-bottom:20px;">
+                            <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:#1e88e5;">👑 Admin</button>
+                            <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:#90caf9;">👤 Member</button>
+                        </div>
+                        <div id="loginForm">
+                            <input type="text" id="username" value="admin" placeholder="Admin username">
+                            <input type="password" id="password" value="ChiSave" placeholder="Admin password">
+                            <button class="btn" onclick="login('admin')" style="width:100%;">🔐 ADMIN LOGIN</button>
+                        </div>
+                        <div style="text-align: center !important; margin-top: 30px !important; color: #999 !important; font-size: 0.85rem !important; opacity: 0.8 !important; font-family: sans-serif !important; line-height: 1.4 !important; display: block !important; visibility: visible !important;">
+                            Created by Tha for Chibombo Savers Group
+                        </div>
+                    </div>
+                </div>
+            `;
+            showAdminLogin();
+        }
+        
+        // ====================
+        // 2. ADMIN DASHBOARD
+        // ====================
+        function showAdminDashboard() {
+            const totalSavings = members.reduce((sum, m) => sum + m.savings, 0);
+            const totalLoans = members.reduce((sum, m) => sum + m.loan, 0);
+            
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <h1>💰 SAVERS GROUP ADMIN</h1>
+                            <p>Welcome, Admin 👋</p>
+                        </div>
+                        <button class="btn" onclick="logout()" style="background:#666;">🚪 Logout</button>
+                    </div>
+                </div>
+                <div class="content">
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:30px;">
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;border:2px solid #bbdefb;">
+                            <div style="color:#666;font-size:0.9em;">Members</div>
+                            <div id="metricMembers" style="font-size:2em;font-weight:bold;color:#1e88e5;">${members.length}</div>
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;border:2px solid #bbdefb;">
+                            <div style="color:#666;font-size:0.9em;">Total Savings</div>
+                            <div id="metricSavings" style="font-size:2em;font-weight:bold;color:#1e88e5;">K${totalSavings.toLocaleString()}</div>
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;border:2px solid #bbdefb;">
+                            <div style="color:#666;font-size:0.9em;">Total Loans</div>
+                            <div id="metricLoans" style="font-size:2em;font-weight:bold;color:#1e88e5;">K${totalLoans.toLocaleString()}</div>
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;border:2px solid #bbdefb;">
+                            <div style="color:#666;font-size:0.9em;">Active</div>
+                            <div id="metricActive" style="font-size:2em;font-weight:bold;color:#1e88e5;">${members.filter(m => m.membershipPaid && m.socialPaid).length}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:30px;">
+                        <button class="btn" onclick="showAddMember()">👤 Add Member</button>
+                        <button class="btn" onclick="showAllMembers()">📋 View Members</button>
+                        <button class="btn" onclick="showAddSavings()">💰 Add Savings</button>
+                        <button class="btn" onclick="showLoanManagement()">🏦 Manage Loans</button>
+                        <button class="btn" onclick="showCollectFees()">✅ Collect Fees</button>
+                        <button class="btn" onclick="showShareAccount()">📊 Share Account</button>
+                    </div>
+                    
+                    <div id="contentArea">
+                        <div style="text-align:center;padding:40px;color:#666;">
+                            <h2>Welcome to Admin Dashboard</h2>
+                            <p>Select an action to begin</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ====================
+        // 3. ADD MEMBER
+        // ====================
+        function showAddMember() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>👤 Add New Member</h3>
+                    <input type="text" id="newName" placeholder="Full Name">
+                    <input type="tel" id="newPhone" placeholder="Phone Number">
+                    <input type="number" id="newSavings" value="200" min="200" step="200" placeholder="Initial Savings">
+                    <small style="color:#666;">Minimum K200, multiples of 200</small>
+                    
+                    <div style="margin:20px 0;padding:15px;background:#fff3e0;border-radius:10px;">
+                        <h4>One-Time Fees: K150</h4>
+                        <p>• Membership: K50</p>
+                        <p>• Social Fund: K100</p>
+                    </div>
+                    
+                    <button class="btn" onclick="addMember()">💾 Save Member</button>
+                    <button class="btn" onclick="showAdminDashboard()" style="background:#666;">↩️ Cancel</button>
+                </div>
+            `;
+        }
+        
+        async function addMember() {
+            const name = document.getElementById('newName').value;
+            const phone = document.getElementById('newPhone').value;
+            const savings = parseInt(document.getElementById('newSavings').value) || 200;
+            
+            if (!name) {
+                alert('Enter name');
+                return;
+            }
+
+            if (!phone || phone.length < 4) {
+                alert('Enter a valid phone number (at least 4 digits)');
+                return;
+            }
+            
+            if (savings < 200 || savings % 200 !== 0) {
+                alert('Must be K200+ in multiples of 200');
+                return;
+            }
+            
+            const newMember = {
+                id: Date.now().toString(),
+                name: name,
+                phone: phone,
+                savings: savings,
+                loanPrincipal: 0,
+                membershipPaid: false,
+                socialPaid: false
+            };
+            newMember.transactions = [];
+            if (savings > 0) {
+                newMember.transactions.push({ type: 'savings', amount: savings, date: new Date().toISOString(), note: 'Initial savings' });
+            }
+            
+            members.push(newMember);
+            await saveMembers();
+            alert(`✅ ${name} added!\nSavings: K${savings}`);
+            showAdminDashboard();
+        }
+        
+        // ====================
+        // 4. VIEW ALL MEMBERS
+        // ====================
+        function showAllMembers() {
+            let html = `<h3>📋 All Members (${members.length})</h3>`;
+            
+            members.forEach(member => {
+                const feesDue = (!member.membershipPaid ? 50 : 0) + (!member.socialPaid ? 100 : 0);
+                
+                html += `
+                    <div class="member-card">
+                        <strong>${member.name}</strong>
+                        <div style="color:#666;margin:10px 0;">
+                            Savings: K${member.savings.toLocaleString()} | 
+                            Loan: K${(((member.loanPrincipal||0) * (1 + RULES.INTEREST))).toLocaleString()}
+                        </div>
+                        <button class="btn" onclick="viewMember('${member.id}')">View</button>
+                        <button class="btn" onclick="deleteMember('${member.id}')" style="background:#f44336;">🗑️ Delete</button>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('contentArea').innerHTML = html;
+            updateAdminMetrics();
+        }
+        
+        function viewMember(memberId) {
+            const member = members.find(m => m.id === memberId);
+            const interest = (member.loanPrincipal || 0) * RULES.INTEREST;
+            
+            const txs = (member.transactions || []).slice().sort((a,b) => new Date(b.date) - new Date(a.date));
+            let txHtml = '<h4 style="margin-top:10px;">Recent Entries</h4>';
+            if (txs.length === 0) txHtml += '<div style="color:#666;">No entries yet</div>';
+            txs.forEach(t => {
+                const when = fmtDate(t.date);
+                const amt = t.amount ? ('K' + t.amount.toLocaleString()) : '';
+                const note = t.note ? (' - ' + t.note) : '';
+                txHtml += `<div style="background:white;padding:10px;border-radius:8px;margin:8px 0;border:1px solid #eee;"><div style="font-weight:bold;">${when} ${amt}</div><div style="color:#666;font-size:0.9em;">${t.type}${note}</div></div>`;
+            });
+
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>👤 ${member.name}</h3>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0;">
+                        <div style="background:white;padding:15px;border-radius:10px;">
+                            <strong>Savings</strong><br>K${member.savings.toLocaleString()}
+                        </div>
+                        <div style="background:white;padding:15px;border-radius:10px;">
+                            <strong>Loan</strong><br>K${( (member.loanPrincipal||0) + ((member.loanPrincipal||0) * RULES.INTEREST) ).toLocaleString()}
+                        </div>
+                        <div style="background:white;padding:15px;border-radius:10px;">
+                            <strong>Interest Due</strong><br>K${interest.toFixed(2)}
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+                        <button class="btn" onclick="addSavingsFor('${member.id}')">💰 Add Savings</button>
+                        <button class="btn" onclick="addLoanFor('${member.id}')">🏦 Add Loan</button>
+                        ${!member.membershipPaid ? `<button class="btn" onclick="collectFee('${member.id}', 'membership')">✅ Pay K50 Membership</button>` : ''}
+                        ${!member.socialPaid ? `<button class="btn" onclick="collectFee('${member.id}', 'social')">✅ Pay K100 Social</button>` : ''}
+                        <button class="btn" onclick="showAllMembers()" style="background:#666;">↩️ Back</button>
+                        <button class="btn" onclick="deleteMember('${member.id}')" style="background:#f44336;">🗑️ Delete Member</button>
+                    </div>
+                    <div style="margin-top:20px;">${txHtml}</div>
+                </div>
+            `;
+        }
+        
+        async function deleteMember(memberId) {
+            if (confirm('Delete this member?')) {
+                members = members.filter(m => m.id !== memberId);
+                await saveMembers();
+                updateAdminMetrics();
+                showAllMembers();
+            }
+        }
+        
+        // ====================
+        // 5. COLLECT FEES
+        // ====================
+        function showCollectFees() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>✅ Collect Fees</h3>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0;">
+                        <button class="btn" onclick="showCollectMembership()">
+                            Collect Membership (K50)
+                        </button>
+                        <button class="btn" onclick="showCollectSocial()">
+                            Collect Social Fund (K100)
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showCollectMembership() {
+            const unpaid = members.filter(m => !m.membershipPaid);
+            let html = `<h3>Collect Membership Fees (K50)</h3>`;
+            
+            unpaid.forEach(member => {
+                html += `
+                    <div class="member-card">
+                        <strong>${member.name}</strong>
+                        <button class="btn" onclick="collectFee('${member.id}', 'membership')">✅ Mark Paid</button>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('contentArea').innerHTML = html;
+        }
+        
+        async function collectFee(memberId, type) {
+            const member = members.find(m => m.id === memberId);
+            if (type === 'membership') {
+                member.membershipPaid = true;
+                member.transactions = member.transactions || [];
+                member.transactions.push({ type: 'fee', amount: 50, date: new Date().toISOString(), note: 'Membership fee' });
+            } else {
+                member.socialPaid = true;
+                member.transactions = member.transactions || [];
+                member.transactions.push({ type: 'fee', amount: 100, date: new Date().toISOString(), note: 'Social fund' });
+            }
+            await saveMembers();
+            alert(`✅ Fee collected from ${member.name}`);
+            updateAdminMetrics();
+            const header = document.querySelector('#contentArea h3');
+            const headerText = header ? (header.textContent || '') : '';
+            if (headerText.includes('Collect Membership')) {
+                showCollectMembership();
+            } else if (headerText.includes('Collect Social')) {
+                showCollectSocial();
+            } else {
+                viewMember(memberId);
+            }
+        }
+        
+        // ====================
+        // 6. ADD SAVINGS
+        // ====================
+        function showAddSavings() {
+            let html = `<h3>💰 Add Savings</h3>`;
+            html += `<select id="savingsMember" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">`;
+            members.forEach(m => {
+                html += `<option value="${m.id}">${m.name} (K${m.savings.toLocaleString()})</option>`;
+            });
+            html += `</select>`;
+            html += `<input type="number" id="savingsAmount" value="200" min="200" step="200" placeholder="Amount">`;
+            html += `<button class="btn" onclick="processSavings()">✅ Add Savings</button>`;
+            html += `<button class="btn" onclick="showAdminDashboard()" style="background:#666;">↩️ Cancel</button>`;
+            
+            document.getElementById('contentArea').innerHTML = html;
+        }
+        
+        function addSavingsFor(memberId) {
+            showAddSavings();
+            document.getElementById('savingsMember').value = memberId;
+        }
+        
+        async function processSavings() {
+            const memberId = document.getElementById('savingsMember').value;
+            const member = members.find(m => m.id === memberId);
+            const amount = parseInt(document.getElementById('savingsAmount').value) || 200;
+            
+            if (amount < 200 || amount % 200 !== 0) {
+                alert('Must be K200+ in multiples of 200');
+                return;
+            }
+            
+            const interest = member.savings * RULES.INTEREST;
+            member.savings += (amount + interest);
+            member.transactions = member.transactions || [];
+            member.transactions.push({ type: 'savings', amount: amount, interest: interest, date: new Date().toISOString(), note: 'Savings deposit' });
+
+            await saveMembers();
+            alert(`✅ Deposit: K${amount}\n📈 Interest added: K${interest.toFixed(2)}\n💰 New Total: K${member.savings.toFixed(2)}`);
+            updateAdminMetrics();
+            viewMember(memberId);
+        }
+        
+        // ====================
+        // 7. LOAN MANAGEMENT
+        // ====================
+        function showLoanManagement() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>🏦 Loan Management</h3>
+                    <select id="loanMember" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">
+                        ${members.map(m => `<option value="${m.id}">${m.name} (Loan: K${(((m.loanPrincipal||0) * (1 + RULES.INTEREST))).toLocaleString()})</option>`).join('')}
+                    </select>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0;">
+                        <button class="btn" onclick="showContractLoan()">➕ Contract Loan</button>
+                        <button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showRepayLoan() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>💳 Repay Loan</h3>
+                    <select id="repayMember" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">
+                        ${members.map(m => `<option value="${m.id}">${m.name} (Loan: K${(((m.loanPrincipal||0) * (1 + RULES.INTEREST))).toLocaleString()})</option>`).join('')}
+                    </select>
+                    <input type="number" id="repayAmount" value="0" min="0" placeholder="Amount to repay">
+                    <div style="margin:20px 0;">
+                        <button class="btn" onclick="repayLoan()">✅ Repay</button>
+                        <button class="btn" onclick="showLoanManagement()" style="background:#666;">↩️ Cancel</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function repayLoan() {
+            const memberId = document.getElementById('repayMember').value;
+            const amount = parseFloat(document.getElementById('repayAmount').value) || 0;
+            const member = members.find(m => m.id === memberId);
+            if (!member) { alert('Select member'); return; }
+            if (amount <= 0) { alert('Enter amount > 0'); return; }
+            member.loanPrincipal = Math.max(0, (member.loanPrincipal || 0) - amount);
+            member.transactions = member.transactions || [];
+            member.transactions.push({ type: 'repayment', amount: amount, date: new Date().toISOString(), note: `Admin repayment` });
+            await saveMembers();
+            alert(`✅ Repaid K${amount}. Remaining loan principal: K${(member.loanPrincipal||0).toLocaleString()}`);
+            if ((member.loanPrincipal||0) === 0) {
+                member.membershipPaid = true;
+                member.socialPaid = true;
+                member.transactions.push({ type: 'fee-clear', amount: 0, date: new Date().toISOString(), note: 'Loan cleared — fees auto-cleared' });
+                await saveMembers();
+                alert(`✅ ${member.name}'s loan cleared — membership/social fees auto-cleared.`);
+            }
+            updateAdminMetrics();
+            showLoanManagement();
+        }
+        
+        function addLoanFor(memberId) {
+            showLoanManagement();
+            document.getElementById('loanMember').value = memberId;
+        }
+        
+        function showContractLoan() {
+            const memberId = document.getElementById('loanMember').value;
+            selectedLoanMemberId = memberId;
+            const member = members.find(m => m.id === memberId);
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>➕ Contract Loan for ${member.name}</h3>
+                    <input type="number" id="loanAmount" value="1000" min="100" placeholder="Loan Amount">
+                    <div style="margin:20px 0;padding:15px;background:#fff3e0;border-radius:10px;">
+                        <p><strong>10% Interest:</strong> K<span id="loanInterest">100</span></p>
+                        <p><strong>Total:</strong> K<span id="loanTotal">1100</span></p>
+                    </div>
+                    <button class="btn" onclick="contractLoan()">✅ Contract Loan</button>
+                    <button class="btn" onclick="showLoanManagement()" style="background:#666;">↩️ Cancel</button>
+                </div>
+            `;
+            
+            document.getElementById('loanAmount').oninput = function() {
+                const amount = parseFloat(this.value) || 0;
+                const interest = amount * RULES.INTEREST;
+                document.getElementById('loanInterest').textContent = interest.toFixed(2);
+                document.getElementById('loanTotal').textContent = (amount + interest).toFixed(2);
+            };
+        }
+        
+        async function contractLoan() {
+            const memberId = selectedLoanMemberId || (document.getElementById('loanMember') && document.getElementById('loanMember').value);
+            if (!memberId) {
+                alert('No member selected for loan.');
+                return;
+            }
+            const member = members.find(m => m.id === memberId);
+            if (!member) {
+                alert('Member not found');
+                return;
+            }
+            const amount = parseInt(document.getElementById('loanAmount').value) || 0;
+            const interest = amount * RULES.INTEREST;
+
+            member.loanPrincipal = (member.loanPrincipal || 0) + amount;
+            member.transactions = member.transactions || [];
+            member.transactions.push({ type: 'loan', amount: amount, date: new Date().toISOString(), note: `Loan contracted (interest ${ (amount*RULES.INTEREST).toFixed(2) })` });
+
+            await saveMembers();
+            alert(`✅ Loan contracted! Principal: K${amount}, Interest (estimated): K${interest.toFixed(2)}`);
+            selectedLoanMemberId = null;
+            updateAdminMetrics();
+            showLoanManagement();
+        }
+        
+        // ====================
+        // 8. SHARE ACCOUNT
+        // ====================
+        function showShareAccount() {
+            const totalSavings = members.reduce((sum, m) => sum + m.savings, 0);
+            const totalLoans = members.reduce((sum, m) => sum + ((m.loanPrincipal||0) * (1 + RULES.INTEREST)), 0);
+            const netValue = totalSavings - totalLoans;
+            const sharePool = netValue * 0.10;
+            
+            let html = `<h3>📊 Share Account (10% Share Out)</h3><div style="margin:10px 0;"><button class="btn" onclick="exportShareCSV()">⬇️ Export CSV</button></div>`;
+            html += `<div style="background:#e8f5e9;padding:20px;border-radius:10px;margin:20px 0;">`;
+            html += `<p><strong>Total Group Savings:</strong> K${totalSavings.toLocaleString()}</p>`;
+            html += `<p><strong>Total Group Loans:</strong> K${totalLoans.toLocaleString()}</p>`;
+            html += `<p><strong>10% Share Pool:</strong> K${sharePool.toFixed(2)}</p>`;
+            html += `<p><strong style="color:blue;">Net Value:</strong> K${netValue.toLocaleString()}</p>`;
+            html += `</div>`;
+            
+            members.forEach(member => {
+                const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
+                const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
+                const memberNet = memberSavingsIncl - memberLoanIncl;
+                const shareFraction = netValue !== 0 ? (memberNet / netValue) : 0;
+                const takeHome = sharePool * shareFraction;
+
+                html += `
+                    <div class="member-card">
+                        <strong>${member.name}</strong>
+                        <div style="color:#666;margin:8px 0;">Savings (incl.): K${memberSavingsIncl.toLocaleString()}</div>
+                        <div style="color:#666;margin:8px 0;">Loan (incl.): K${memberLoanIncl.toLocaleString()}</div>
+                        <div style="color:#666;margin:8px 0;">Net Position: K${memberNet.toLocaleString()}</div>
+                        <div style="font-weight:bold;color:#1e88e5;">Pool Payout (10% share): K${takeHome.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('contentArea').innerHTML = html;
+            updateAdminMetrics();
+        }
+
+        function exportShareCSV() {
+            const rows = [];
+            rows.push(['Name', 'Savings_incl', 'Loan_incl', 'NetPosition', 'ShareFraction', 'PoolPayout', 'TakeHome']);
+
+            members.forEach(member => {
+                const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
+                const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
+                const memberNet = memberSavingsIncl - memberLoanIncl;
+                const shareFraction = memberNet / (memberSavingsIncl + 1e-9);
+                const poolPayout = memberNet * 0.10;
+                const takeHome = memberNet;
+
+                rows.push([
+                    member.name,
+                    memberSavingsIncl.toFixed(2),
+                    memberLoanIncl.toFixed(2),
+                    memberNet.toFixed(2),
+                    (shareFraction * 100).toFixed(2) + '%',
+                    poolPayout.toFixed(2),
+                    takeHome.toFixed(2)
+                ]);
+            });
+
+            const csv = rows.map(r => r.map(field => `"${String(field).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+            const filename = `Chibombo_ShareOut_${new Date().toISOString().slice(0,10)}.csv`;
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+        
+        // ====================
+        // 9. MEMBER DASHBOARD
+        // ====================
+        function showMemberDashboard(memberId) {
+            const member = members.find(m => m.id === memberId);
+            const loanInterestDue = (member.loanPrincipal || 0) * RULES.INTEREST;
+            const totalSavingsIncl = members.reduce((sum, m) => sum + (m.savings * (1 + RULES.INTEREST)), 0);
+            const totalLoansIncl = members.reduce((sum, m) => sum + ((m.loanPrincipal || 0) * (1 + RULES.INTEREST)), 0);
+            const netValue = totalSavingsIncl - totalLoansIncl;
+            const sharePool = netValue * 0.10;
+            const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
+            const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
+            const memberNet = memberSavingsIncl - memberLoanIncl;
+            const memberTakeHome = netValue !== 0 ? (sharePool * (memberNet / netValue)) : 0;
+            
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <h1>💰 SAVERS GROUP</h1>
+                            <p>Welcome, ${member.name} 👋</p>
+                        </div>
+                        <button class="btn" onclick="logout()" style="background:#666;">🚪 Logout</button>
+                    </div>
+                </div>
+                <div class="content">
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:30px;">
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;">
+                            <strong>Your Savings (incl. 10%)</strong><br>
+                            K${(member.savings * (1 + RULES.INTEREST)).toLocaleString()}
+                            <div style="color:#666;font-size:0.9em;margin-top:6px;">Principal: K${member.savings.toLocaleString()} &middot; Interest (10%): K${(member.savings * RULES.INTEREST).toFixed(2)}</div>
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;">
+                            <strong>Savings Interest (${(RULES.INTEREST*100).toFixed(0)}%)</strong><br>
+                            K${(member.savings * RULES.INTEREST).toFixed(2)}
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;">
+                            <strong>Your Loan</strong><br>
+                            K${(((member.loanPrincipal||0) * (1 + RULES.INTEREST))).toLocaleString()}
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;">
+                            <strong>Interest Due</strong><br>
+                            K${loanInterestDue.toFixed(2)}
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;">
+                            <strong>Net Position</strong><br>
+                            K${memberNet.toLocaleString()}
+                        </div>
+                        <div style="background:#f8fdff;padding:15px;border-radius:10px;">
+                            <strong>Pool Payout (10%)</strong><br>
+                            K${memberTakeHome.toFixed(2)}
+                        </div>
+                    </div>
+                    
+                    <div style="text-align:center;color:#666;padding:40px;">
+                        <h3>Member Portal</h3>
+                        <p>For transactions, contact the group administrator.</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Initialize
+        (async () => {
+            await loadMembers();
+            console.log("✅ App initialized!");
+        })();
+        
+        function updateAdminMetrics() {
+            const elMembers = document.getElementById('metricMembers');
+            const elSavings = document.getElementById('metricSavings');
+            const elLoans = document.getElementById('metricLoans');
+            const elActive = document.getElementById('metricActive');
+            if (!elMembers) return;
+
+            const totalSavings = members.reduce((sum, m) => sum + m.savings, 0);
+            const totalLoans = members.reduce((sum, m) => sum + (((m.loanPrincipal||0) * (1 + RULES.INTEREST))), 0);
+            const active = members.filter(m => m.membershipPaid && m.socialPaid).length;
+
+            elMembers.textContent = members.length;
+            elSavings.textContent = 'K' + totalSavings.toLocaleString();
+            elLoans.textContent = 'K' + totalLoans.toLocaleString();
+            elActive.textContent = active;
+        }
+    </script>
+</body>
+</html>
