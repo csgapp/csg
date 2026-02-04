@@ -352,6 +352,15 @@
                 <div style="text-align: center; margin-top: 30px; color: #999; font-size: 0.85rem; opacity: 0.8; font-family: sans-serif; line-height: 1.4;">
                     Created by Tha for Chibombo Savers Group
                 </div>
+
+                 <button id="installButton" style="display:none; background:#2e7d32; color:white; padding:12px; border-radius:8px; margin-top:20px; width:100%; font-size:16px;">
+                    📲 Install App on Home Screen
+                </button>
+            </div>
+        </div>
+    `;
+    showAdminLogin();
+}
             </div>
         </div>
     </div>
@@ -362,6 +371,31 @@
         // ====================
         console.log("🔥 SAVERS GROUP APP STARTING...");
         
+        // ===== PWA INSTALL BUTTON =====
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installButton) installButton.style.display = 'block';
+    
+    installButton.onclick = () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choice => {
+            if (choice.outcome === 'accepted') console.log('User installed');
+            deferredPrompt = null;
+            installButton.style.display = 'none';
+        });
+    };
+});
+
+window.addEventListener('appinstalled', () => {
+    if (installButton) installButton.style.display = 'none';
+    deferredPrompt = null;
+});
+
+// ===== END PWA INSTALL =====
         // ===== PWA SERVICE WORKER REGISTRATION =====
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
