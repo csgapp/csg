@@ -1,23 +1,21 @@
 {
-  "name": "Savers App",
-  "short_name": "Savers",
-  "description": "Group Savings Management",
+  "name": "Savers Group",
+  "short_name": "CSG Savings",
+  "description": "Digital Savings System for Chibombo Savers Group",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#e3f2fd",
   "theme_color": "#1e88e5",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "type": "image/png"
     }
   ]
 }
