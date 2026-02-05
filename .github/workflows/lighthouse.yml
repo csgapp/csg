@@ -31,8 +31,20 @@ jobs:
             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
             --no-enable-error-reporting
 
-      - name: Upload Lighthouse HTML report
+      - name: Run Lighthouse (installability audit) - block Firebase to avoid timeouts
+        run: |
+          npx -y lighthouse "https://csgapp.github.io/csg/" \
+            --output html \
+            --output-path=./lighthouse-installability-report.html \
+            --only-audits=installable-manifest,service-worker,works-offline \
+            --blockedUrlPatterns="https://firestore.googleapis.com/*,https://www.gstatic.com/firebasejs/*" \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --no-enable-error-reporting
+
+      - name: Upload Lighthouse HTML reports
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: lighthouse-report.html
+          path: |
+            lighthouse-report.html
+            lighthouse-installability-report.html
