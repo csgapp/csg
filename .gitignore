@@ -1,0 +1,10 @@
+# Node
+node_modules/
+
+# Package lock (optional)
+# package-lock.json
+
+# Temp files
+*.log
+npm-debug.log*
+.DS_Store

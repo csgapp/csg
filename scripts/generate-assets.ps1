@@ -41,20 +41,27 @@ $splashSizes = @(
   @{ name='apple-splash-640x1136.png'; w=640; h=1136 }
 )
 
-function Run-Magick($input, $output, $w, $h) {
+function Run-Magick($infile, $output, $w, $h) {
   if (Get-Command magick -ErrorAction SilentlyContinue) {
-    Write-Host "magick convert $input -resize ${w}x${h} $output"
-    & magick convert $input -resize ${w}x${h} $output
+    Write-Host "magick convert $infile -resize ${w}x${h} $output"
+    & magick convert $infile -resize ${w}x${h} $output
     return $LASTEXITCODE -eq 0
   }
   return $false
 }
 
-function Run-Sharp($input, $output, $w, $h) {
+function Run-Sharp($infile, $output, $w, $h) {
   if (Get-Command npx -ErrorAction SilentlyContinue) {
-    Write-Host "npx sharp $input -o $output -r ${w}x${h}"
-    & npx sharp $input -o $output -r ${w}x${h} 2>$null
-    return $LASTEXITCODE -eq 0
+    $temp = Join-Path $env:TEMP "sharp-out"
+    New-Item -ItemType Directory -Force -Path $temp | Out-Null
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($infile)
+    Write-Host "npx sharp -i $infile -o $temp resize $w $h"
+    & npx sharp -i $infile -o $temp resize $w $h
+    if ($LASTEXITCODE -ne 0) { return $false }
+    $generated = Join-Path $temp "${base}.png"
+    if (-Not (Test-Path $generated)) { return $false }
+    Move-Item -Force $generated $output
+    return $true
   }
   return $false
 }
