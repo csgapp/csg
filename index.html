@@ -349,8 +349,15 @@
 <body>
     <div id="app">
         <div class="header">
-            <h1>💰 SAVERS GROUP</h1>
-            <p>Digital Savings System</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <h1>💰 SAVERS GROUP</h1>
+                    <p>Digital Savings System</p>
+                </div>
+                <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:8px;border-radius:8px;font-weight:bold;color:#fff;">
+                    Checking...
+                </div>
+            </div>
         </div>
         <div class="content">
             <div class="login-box">
@@ -694,6 +701,7 @@ window.addEventListener('appinstalled', () => {
                             Loan: K${(((member.loanPrincipal||0) * (1 + RULES.INTEREST))).toLocaleString()}
                         </div>
                         <button class="btn" onclick="viewMember('${member.id}')">View</button>
+                        <button class="btn" onclick="showEditMember('${member.id}')">✏️ Edit</button>
                         <button class="btn" onclick="deleteMember('${member.id}')" style="background:#f44336;">🗑️ Delete</button>
                     </div>
                 `;
@@ -737,6 +745,7 @@ window.addEventListener('appinstalled', () => {
                         <button class="btn" onclick="addLoanFor('${member.id}')">🏦 Add Loan</button>
                         ${!member.membershipPaid ? `<button class="btn" onclick="collectFee('${member.id}', 'membership')">✅ Pay K50 Membership</button>` : ''}
                         ${!member.socialPaid ? `<button class="btn" onclick="collectFee('${member.id}', 'social')">✅ Pay K100 Social</button>` : ''}
+                        <button class="btn" onclick="showEditMember('${member.id}')">✏️ Edit</button>
                         <button class="btn" onclick="showAllMembers()" style="background:#666;">↩️ Back</button>
                         <button class="btn" onclick="deleteMember('${member.id}')" style="background:#f44336;">🗑️ Delete Member</button>
                     </div>
@@ -1066,7 +1075,11 @@ window.addEventListener('appinstalled', () => {
                             <h1>💰 SAVERS GROUP</h1>
                             <p>Welcome, ${member.name} 👋</p>
                         </div>
-                        <button class="btn" onclick="logout()" style="background:#666;">🚪 Logout</button>
+                        <div style="display:flex;gap:10px;align-items:center;">
+                            <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px;border-radius:8px;font-weight:bold;color:#fff;margin-right:8px;">Checking...</div>
+                            <button class="btn" onclick="showEditProfile('${member.id}')">✏️ Edit Profile</button>
+                            <button class="btn" onclick="logout()" style="background:#666;">🚪 Logout</button>
+                        </div>
                     </div>
                 </div>
                 <div class="content">
@@ -1112,6 +1125,119 @@ window.addEventListener('appinstalled', () => {
             console.log("✅ App initialized!");
         })();
         
+        /* ===== Network status & edit helpers ===== */
+        function showToast(msg, timeout=3000) {
+            const t = document.createElement('div');
+            t.textContent = msg;
+            t.style = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:9999;';
+            document.body.appendChild(t);
+            setTimeout(()=> t.remove(), timeout);
+        }
+
+        function updateNetworkStatus(silent=false) {
+            const els = document.querySelectorAll('#networkStatus');
+            if (!els || els.length === 0) return;
+            els.forEach(el => {
+                if (navigator.onLine) {
+                    el.textContent = 'Online';
+                    el.style.background = 'rgba(255,255,255,0.15)';
+                    el.style.color = '#fff';
+                    if (!silent) showToast('You are online', 1500);
+                } else {
+                    el.textContent = 'Offline';
+                    el.style.background = '#f44336';
+                    el.style.color = '#fff';
+                    if (!silent) showToast('You are offline', 3000);
+                }
+            });
+            document.body.classList.toggle('offline', !navigator.onLine);
+        }
+
+        window.addEventListener('online', () => updateNetworkStatus(false));
+        window.addEventListener('offline', () => updateNetworkStatus(false));
+        // Call once to initialize silently
+        setTimeout(() => updateNetworkStatus(true), 500);
+
+        function showEditMember(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) { alert('Member not found'); return; }
+            document.getElementById('contentArea').innerHTML = `
+                <div class="member-card">
+                    <h3>✏️ Edit ${member.name}</h3>
+                    <input type="text" id="editName" value="${member.name}" placeholder="Full Name">
+                    <input type="tel" id="editPhone" value="${member.phone||''}" placeholder="Phone Number">
+                    <input type="number" id="editSavings" value="${member.savings||0}" min="0" placeholder="Savings">
+                    <input type="number" id="editLoan" value="${member.loanPrincipal||0}" min="0" placeholder="Loan Principal">
+                    <div style="display:flex;gap:10px;margin-top:15px;">
+                        <label style="display:flex;align-items:center;gap:8px;"><input id="editMembership" type="checkbox" ${member.membershipPaid ? 'checked' : ''}> Membership paid</label>
+                        <label style="display:flex;align-items:center;gap:8px;"><input id="editSocial" type="checkbox" ${member.socialPaid ? 'checked' : ''}> Social paid</label>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <button class="btn" id="saveEditBtn" onclick="saveEditedMember('${member.id}')">💾 Save</button>
+                        <button class="btn" onclick="showAllMembers()" style="background:#666;">↩️ Cancel</button>
+                    </div>
+                </div>
+            `;
+            updateNetworkStatus();
+        }
+
+        async function saveEditedMember(memberId) {
+            if (!navigator.onLine) { alert('You are offline — cannot save changes right now.'); return; }
+            const member = members.find(m => m.id === memberId);
+            if (!member) { alert('Member not found'); return; }
+            const name = document.getElementById('editName').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            const savings = parseFloat(document.getElementById('editSavings').value) || 0;
+            const loan = parseFloat(document.getElementById('editLoan').value) || 0;
+            const membershipPaid = document.getElementById('editMembership').checked;
+            const socialPaid = document.getElementById('editSocial').checked;
+
+            if (!name) { alert('Enter a name'); return; }
+            if (!phone || phone.length < 4) { alert('Enter a valid phone'); return; }
+
+            member.name = name;
+            member.phone = phone;
+            member.savings = savings;
+            member.loanPrincipal = loan;
+            member.membershipPaid = membershipPaid;
+            member.socialPaid = socialPaid;
+
+            await saveMembers();
+            showToast('Member saved');
+            showAllMembers();
+            updateAdminMetrics();
+        }
+
+        function showEditProfile(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <h1>💰 SAVERS GROUP</h1>
+                            <p>Edit Profile</p>
+                        </div>
+                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:8px;border-radius:8px;font-weight:bold;color:#fff;">
+                            Checking...
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="member-card">
+                        <h3>Edit Your Profile</h3>
+                        <input type="text" id="editName" value="${member.name}" placeholder="Full Name">
+                        <input type="tel" id="editPhone" value="${member.phone||''}" placeholder="Phone Number">
+                        <div style="margin-top:20px;">
+                            <button class="btn" onclick="saveEditedMember('${member.id}')">💾 Save</button>
+                            <button class="btn" onclick="showMemberDashboard('${member.id}')" style="background:#666;">↩️ Back</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            updateNetworkStatus();
+        }
+
         function updateAdminMetrics() {
             const elMembers = document.getElementById('metricMembers');
             const elSavings = document.getElementById('metricSavings');
