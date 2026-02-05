@@ -19,5 +19,16 @@ if (-not (Get-Command npx -ErrorAction SilentlyContinue)) {
 
 $report = Join-Path (Get-Location) "lighthouse-installability-report.html"
 Write-Host "Running Lighthouse for $url (this may take a minute)..."
-& npx -y lighthouse $url --only-categories=pwa --chrome-flags="--headless" --output html --output-path $report
-if ($LASTEXITCODE -eq 0) { Write-Host "Lighthouse finished. Report: $report" } else { Write-Error "Lighthouse failed. Check your environment and that Chrome is installed." }
+# Use a repo-local temp dir to avoid permission / locking issues on system Temp
+$tempDir = Join-Path (Get-Location) '.lighthouse-temp'
+New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
+$env:TEMP = $tempDir
+$env:TMP = $tempDir
+$exitCode = 1
+try {
+  & npx -y lighthouse $url --only-categories=best-practices --chrome-flags="--headless --no-sandbox --disable-gpu --disable-dev-shm-usage" --no-enable-error-reporting --output html --output-path $report
+  $exitCode = $LASTEXITCODE
+} finally {
+  Remove-Item -Recurse -Force $tempDir -ErrorAction SilentlyContinue
+}
+if ($exitCode -eq 0) { Write-Host "Lighthouse finished. Report: $report" } else { Write-Error "Lighthouse failed. Check your environment and that Chrome is installed." }
