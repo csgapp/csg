@@ -1,0 +1,38 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Run Lighthouse and upload report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci --silent --no-audit --no-fund
+
+      - name: Run Lighthouse (best-practices focused)
+        run: |
+          npx -y lighthouse "https://csgapp.github.io/csg/" \
+            --output html \
+            --output-path=./lighthouse-report.html \
+            --only-categories=best-practices \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --no-enable-error-reporting
+
+      - name: Upload Lighthouse HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lighthouse-report.html
