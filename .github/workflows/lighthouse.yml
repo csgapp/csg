@@ -36,11 +36,14 @@ jobs:
           npx -y lighthouse "https://csgapp.github.io/csg/" \
             --output html \
             --output-path=./lighthouse-installability-report.html \
-            --only-audits=installable-manifest,service-worker,works-offline \
+            --only-categories=pwa \
             --blockedUrlPatterns="https://firestore.googleapis.com/*,https://www.gstatic.com/firebasejs/*" \
             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
             --no-enable-error-reporting
 
+      - name: Validate installability report is non-empty ✅
+        run: |
+          node -e "const fs=require('fs');const f=fs.readFileSync('lighthouse-installability-report.html','utf8');const m=f.match(/window.__LIGHTHOUSE_JSON__\s*=\s*(\{[\s\S]*?\})\s*;/);if(!m){console.error('Lighthouse JSON not found in file');process.exit(1);}const j=JSON.parse(m[1]);if(!j.audits||Object.keys(j.audits).length===0){console.error('Installability audits missing or empty');console.error('audits:',Object.keys(j.audits||{}));process.exit(1);}console.log('Installability audits present:',Object.keys(j.audits));"
       - name: Upload Lighthouse HTML reports
         uses: actions/upload-artifact@v4
         with:
