@@ -2,8 +2,8 @@
   "name": "Savers Group",
   "short_name": "CSG Savings",
   "description": "Digital Savings System for Chibombo Savers Group",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/csg/",
+  "scope": "/csg/",
   "display": "standalone",
   "background_color": "#e3f2fd",
   "theme_color": "#1e88e5",
@@ -47,7 +47,7 @@
     {
       "name": "Open Savers",
       "short_name": "Open",
-      "url": "/",
+      "url": "/csg/",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
