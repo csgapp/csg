@@ -1,6 +1,38 @@
+
 {
+  "name": "savers-group",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
   "devDependencies": {
     "sharp": "^0.34.5",
-    "sharp-cli": "^5.2.0"
+    "sharp-cli": "^5.2.0",
+    "electron": "^29.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.savers.group",
+    "productName": "Savers Group",
+    "directories": {
+      "output": "artifacts"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "assets/**/*"
+    ],
+    "win": {
+      "icon": "assets/icons/icon.512.ico"
+    },
+    "mac": {
+      "icon": "assets/icons/savers.icns"
+    },
+    "linux": {
+      "icon": "assets/icons/savers.png"
+    }
   }
 }
