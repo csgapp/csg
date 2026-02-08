@@ -501,10 +501,10 @@ window.addEventListener('appinstalled', () => {
         // ====================
         // 1. LOGIN SYSTEM
         // ====================
-        function showAdminLogin() {
+       function showAdminLogin() {
     document.getElementById('loginForm').innerHTML = `
-        <input type="text" id="username" value="admin" placeholder="Admin username" autocomplete="username">
-        <input type="password" id="password" value="ChiSave" placeholder="Admin password" autocomplete="current-password">
+        <input type="text" id="username" placeholder="Admin username" autocomplete="username">
+        <input type="password" id="password" placeholder="Admin password" autocomplete="current-password">
         <button class="btn" onclick="login('admin')" style="width:100%;">🔐 ADMIN LOGIN</button>
     `;
     document.getElementById('adminBtn').style.background = '#1e88e5';
@@ -574,8 +574,8 @@ window.addEventListener('appinstalled', () => {
                     <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:#90caf9;">👤 Member</button>
                 </div>
                 <div id="loginForm">
-                    <input type="text" id="username" value="admin" placeholder="Admin username" autocomplete="username">
-                    <input type="password" id="password" value="ChiSave" placeholder="Admin password" autocomplete="current-password">
+                    <input type="text" id="username" placeholder="Admin username" autocomplete="username">
+                    <input type="password" id="password" placeholder="Admin password" autocomplete="current-password">
                     <button class="btn" onclick="login('admin')" style="width:100%;">🔐 ADMIN LOGIN</button>
                 </div>
                 <div style="text-align: center !important; margin-top: 30px !important; color: #999 !important; font-size: 0.85rem !important; opacity: 0.8 !important; font-family: sans-serif !important; line-height: 1.4 !important; display: block !important; visibility: visible !important;">
