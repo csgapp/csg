@@ -1,0 +1,31 @@
+# Node
+node_modules/
+
+# Package lock (optional)
+# package-lock.json
+
+# Temp files
+*.log
+npm-debug.log*
+.DS_Store
+
+# Electron build outputs
+artifacts/
+dist/
+win-unpacked/
+mac/
+linux/
+
+# Installer files
+*.exe
+*.blockmap
+*.yml
+*.dmg
+*.AppImage
+*.snap
+
+# Misc
+Thumbs.db
+
+# updated ignore rules
+

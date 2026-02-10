@@ -1,0 +1,53 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Run Lighthouse and upload report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci --silent --no-audit --no-fund
+
+      - name: Run Lighthouse (best-practices focused)
+        run: |
+          npx -y lighthouse "https://csgapp.github.io/csg/" \
+            --output html \
+            --output-path=./lighthouse-report.html \
+            --only-categories=best-practices \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --no-enable-error-reporting
+
+      - name: Run Lighthouse (installability audit) - block Firebase to avoid timeouts
+        run: |
+          npx -y lighthouse "https://csgapp.github.io/csg/" \
+            --output html \
+            --output-path=./lighthouse-installability-report.html \
+            --only-categories=pwa \
+            --blockedUrlPatterns="https://firestore.googleapis.com/*,https://www.gstatic.com/firebasejs/*" \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --no-enable-error-reporting
+
+      - name: Validate installability report is non-empty ✅
+        run: |
+          node -e "const fs=require('fs');const f=fs.readFileSync('lighthouse-installability-report.html','utf8');const m=f.match(/window.__LIGHTHOUSE_JSON__\s*=\s*(\{[\s\S]*?\})\s*;/);if(!m){console.error('Lighthouse JSON not found in file');process.exit(1);}const j=JSON.parse(m[1]);if(!j.audits||Object.keys(j.audits).length===0){console.error('Installability audits missing or empty');console.error('audits:',Object.keys(j.audits||{}));process.exit(1);}console.log('Installability audits present:',Object.keys(j.audits));"
+      - name: Upload Lighthouse HTML reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: |
+            lighthouse-report.html
+            lighthouse-installability-report.html
