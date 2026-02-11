@@ -858,45 +858,63 @@ window.addEventListener('appinstalled', () => {
         // ====================
         // 6. ADD SAVINGS
         // ====================
-        function showAddSavings() {
-            let html = `<h3>💰 Add Savings</h3>`;
-            html += `<select id="savingsMember" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">`;
-            members.forEach(m => {
-                html += `<option value="${m.id}">${m.name} (K${m.savings.toLocaleString()})</option>`;
-            });
-            html += `</select>`;
-            html += `<input type="number" id="savingsAmount" value="200" min="200" step="200" placeholder="Amount">`;
-            html += `<button class="btn" onclick="processSavings()">✅ Add Savings</button>`;
-            html += `<button class="btn" onclick="showAdminDashboard()" style="background:#666;">↩️ Cancel</button>`;
-            
-            document.getElementById('contentArea').innerHTML = html;
-        }
-        
-        function addSavingsFor(memberId) {
-            showAddSavings();
-            document.getElementById('savingsMember').value = memberId;
-        }
+       function showAddSavings() {
+    let html = `<h3>💰 Add Savings</h3>`;
+    html += `<select id="savingsMember" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">`;
+    members.forEach(m => {
+        html += `<option value="${m.id}">${m.name} (K${m.savings.toLocaleString()})</option>`;
+    });
+    html += `</select>`;
+    html += `<input type="number" id="savingsAmount" value="200" min="200" step="200" placeholder="Amount">`;
+    // ADD DATE INPUT HERE
+    html += `<input type="date" id="savingsDate" style="width:100%;padding:12px;margin:10px 0;border:2px solid #90caf9;border-radius:8px;">`;
+    html += `<button class="btn" onclick="processSavings()">✅ Add Savings</button>`;
+    html += `<button class="btn" onclick="showAdminDashboard()" style="background:#666;">↩️ Cancel</button>`;
+    
+    document.getElementById('contentArea').innerHTML = html;
+    
+    // Set default date to today
+    document.getElementById('savingsDate').value = new Date().toISOString().split('T')[0];
+}
+
+function addSavingsFor(memberId) {
+    showAddSavings();
+    document.getElementById('savingsMember').value = memberId;
+}
         
         async function processSavings() {
-            const memberId = document.getElementById('savingsMember').value;
-            const member = members.find(m => m.id === memberId);
-            const amount = parseInt(document.getElementById('savingsAmount').value) || 200;
-            
-            if (amount < 200 || amount % 200 !== 0) {
-                alert('Must be K200+ in multiples of 200');
-                return;
-            }
-            
-            const interest = member.savings * RULES.INTEREST;
-            member.savings += (amount + interest);
-            member.transactions = member.transactions || [];
-            member.transactions.push({ type: 'savings', amount: amount, interest: interest, date: new Date().toISOString(), note: 'Savings deposit' });
+    const memberId = document.getElementById('savingsMember').value;
+    const member = members.find(m => m.id === memberId);
+    const amount = parseInt(document.getElementById('savingsAmount').value) || 200;
+    
+    if (amount < 200 || amount % 200 !== 0) {
+        alert('Must be K200+ in multiples of 200');
+        return;
+    }
+    
+    // Add 10% interest and record transaction
+    const interest = member.savings * RULES.INTEREST;
+    member.savings += (amount + interest);
+    
+    // CUSTOM DATE PICKER
+    const customDate = document.getElementById('savingsDate').value 
+        ? new Date(document.getElementById('savingsDate').value).toISOString()
+        : new Date().toISOString();
+    
+    member.transactions = member.transactions || [];
+    member.transactions.push({ 
+        type: 'savings', 
+        amount: amount, 
+        interest: interest, 
+        date: customDate,   // <-- custom date here
+        note: 'Savings deposit' 
+    });
 
-            await saveMembers();
-            alert(`✅ Deposit: K${amount}\n📈 Interest added: K${interest.toFixed(2)}\n💰 New Total: K${member.savings.toFixed(2)}`);
-            updateAdminMetrics();
-            viewMember(memberId);
-        }
+    await saveMembers();
+    alert(`✅ Deposit: K${amount}\n📈 Interest added: K${interest.toFixed(2)}\n💰 New Total: K${member.savings.toFixed(2)}`);
+    updateAdminMetrics();
+    viewMember(memberId);
+}
         
         // ====================
         // 7. LOAN MANAGEMENT
