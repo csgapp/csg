@@ -228,6 +228,28 @@ input[type="date"] {
     max-width: 100% !important;
     box-sizing: border-box !important;
 }
+
+/* DATE INPUT STYLING (keep this) */
+input[type="date"] {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px !important;
+    margin: 10px 0 !important;
+    border: 2px solid #90caf9 !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+}
+
+/* CONSTRAIN ALL INPUTS IN CONTENT AREA (add this new block) */
+#contentArea input,
+#contentArea select,
+#contentArea input[type="date"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    margin: 10px 0 !important;
+}
 /* ===== END DATE INPUT STYLING ===== */
             
             html {
