@@ -18,6 +18,8 @@
         /* ===== CLEAN CSS - NO CONFLICTS ===== */
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
@@ -53,34 +55,59 @@
             padding: 30px;
         }
         
-        /* ===== UNIFIED INPUT STYLING ===== */
-        input, select, textarea, button {
+        /* ===== UNIFIED INPUT STYLING - ALL EXACTLY THE SAME ===== */
+        input, select, button, textarea {
             font-family: inherit;
             font-size: 16px;
         }
         
+        /* ALL input types get EXACT same styling */
         input[type="text"],
         input[type="password"],
         input[type="tel"],
         input[type="number"],
         input[type="date"],
         select {
-            width: 100%;
-            padding: 14px;
-            margin: 8px 0;
-            border: 2px solid #90caf9;
-            border-radius: 8px;
-            background: white;
-            display: block;
+            width: 100% !important;
+            padding: 14px !important;
+            margin: 8px 0 !important;
+            border: 2px solid #90caf9 !important;
+            border-radius: 8px !important;
+            background: white !important;
+            display: block !important;
+            box-sizing: border-box !important;
+            height: auto !important;
+            line-height: normal !important;
         }
         
+        /* Date picker specific fix */
+        input[type="date"] {
+            font-family: Arial, sans-serif !important;
+            min-height: 50px !important;
+        }
+        
+        /* Focus states */
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            border-color: #1e88e5 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1) !important;
+        }
+        
+        /* Checkboxes */
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            margin: 0 8px 0 0;
+            margin-right: 8px;
             display: inline-block;
+            vertical-align: middle;
         }
         
+        /* Buttons */
         .btn {
             background: #1e88e5;
             color: white;
@@ -93,6 +120,7 @@
             margin: 5px;
             display: inline-block;
             transition: background 0.2s;
+            box-sizing: border-box;
         }
         
         .btn:hover {
@@ -207,10 +235,11 @@
         /* ===== STATUS INDICATOR ===== */
         #networkStatus {
             background: rgba(255,255,255,0.15);
-            padding: 8px;
+            padding: 8px 16px;
             border-radius: 8px;
             font-weight: bold;
             color: #fff;
+            display: inline-block;
         }
         
         .offline #networkStatus {
@@ -223,6 +252,20 @@
             padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
+        }
+        
+        /* ===== FORM CONTAINERS ===== */
+        .form-group {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        /* Force all form elements to be same width */
+        #contentArea select,
+        #contentArea input,
+        #contentArea .form-group {
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
     </style>
     
@@ -609,9 +652,15 @@
             document.getElementById('contentArea').innerHTML = `
                 <div class="member-card">
                     <h3>👤 Add New Member</h3>
-                    <input type="text" id="newName" placeholder="Full Name">
-                    <input type="tel" id="newPhone" placeholder="Phone Number">
-                    <input type="number" id="newSavings" value="200" min="200" step="200" placeholder="Initial Savings">
+                    <div class="form-group">
+                        <input type="text" id="newName" placeholder="Full Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="newPhone" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="newSavings" value="200" min="200" step="200" placeholder="Initial Savings">
+                    </div>
                     <small style="color:#666;display:block;">Minimum K200, multiples of 200</small>
                     
                     <div class="fee-section">
@@ -621,8 +670,8 @@
                     </div>
                     
                     <div style="display:flex;gap:10px;margin-top:20px;">
-                        <button class="btn" onclick="addMember()">💾 Save Member</button>
-                        <button class="btn" onclick="showAdminDashboard()" style="background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="addMember()" style="flex:1;">💾 Save Member</button>
+                        <button class="btn" onclick="showAdminDashboard()" style="flex:1;background:#666;">↩️ Cancel</button>
                     </div>
                 </div>
             `;
@@ -776,19 +825,33 @@
             }
         }
 
-        // ===== ADD SAVINGS =====
+        // ===== ADD SAVINGS - FIXED WITH PROPER CONTAINERS =====
         function showAddSavings() {
             let html = `<h3>💰 Add Savings</h3>`;
-            html += `<select id="savingsMember">`;
+            
+            // Member select - with proper container
+            html += `<div style="width:100%; margin-bottom:10px;">`;
+            html += `<select id="savingsMember" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">`;
             members.forEach(m => {
                 html += `<option value="${m.id}">${m.name} (K${(m.savings || 0).toLocaleString()})</option>`;
             });
             html += `</select>`;
-            html += `<input type="number" id="savingsAmount" value="200" min="200" step="200" placeholder="Amount">`;
-            html += `<input type="date" id="savingsDate">`;
+            html += `</div>`;
+            
+            // Amount input - with proper container
+            html += `<div style="width:100%; margin-bottom:10px;">`;
+            html += `<input type="number" id="savingsAmount" value="200" min="200" step="200" placeholder="Amount" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">`;
+            html += `</div>`;
+            
+            // Date picker - with proper container (NOW SAME WIDTH AS OTHERS)
+            html += `<div style="width:100%; margin-bottom:10px;">`;
+            html += `<input type="date" id="savingsDate" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box; font-family:Arial, sans-serif;">`;
+            html += `</div>`;
+            
+            // Buttons
             html += `<div style="display:flex;gap:10px;margin-top:20px;">`;
-            html += `<button class="btn" onclick="processSavings()">✅ Add Savings</button>`;
-            html += `<button class="btn" onclick="showAdminDashboard()" style="background:#666;">↩️ Cancel</button>`;
+            html += `<button class="btn" onclick="processSavings()" style="flex:1;">✅ Add Savings</button>`;
+            html += `<button class="btn" onclick="showAdminDashboard()" style="flex:1;background:#666;">↩️ Cancel</button>`;
             html += `</div>`;
             
             document.getElementById('contentArea').innerHTML = html;
@@ -847,12 +910,14 @@
             document.getElementById('contentArea').innerHTML = `
                 <div class="member-card">
                     <h3>🏦 Loan Management</h3>
-                    <select id="loanMember">
-                        ${members.map(m => {
-                            const loanTotal = (m.loanPrincipal || 0) * (1 + RULES.INTEREST);
-                            return `<option value="${m.id}">${m.name} (Loan: K${loanTotal.toLocaleString()})</option>`;
-                        }).join('')}
-                    </select>
+                    <div style="width:100%; margin-bottom:10px;">
+                        <select id="loanMember" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                            ${members.map(m => {
+                                const loanTotal = (m.loanPrincipal || 0) * (1 + RULES.INTEREST);
+                                return `<option value="${m.id}">${m.name} (Loan: K${loanTotal.toLocaleString()})</option>`;
+                            }).join('')}
+                        </select>
+                    </div>
                     <div class="grid-2" style="margin-top:20px;">
                         <button class="btn" onclick="showContractLoan()">➕ Contract Loan</button>
                         <button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button>
@@ -865,16 +930,20 @@
             document.getElementById('contentArea').innerHTML = `
                 <div class="member-card">
                     <h3>💳 Repay Loan</h3>
-                    <select id="repayMember">
-                        ${members.map(m => {
-                            const loanTotal = (m.loanPrincipal || 0) * (1 + RULES.INTEREST);
-                            return `<option value="${m.id}">${m.name} (Loan: K${loanTotal.toLocaleString()})</option>`;
-                        }).join('')}
-                    </select>
-                    <input type="number" id="repayAmount" value="0" min="0" step="100" placeholder="Amount to repay">
+                    <div style="width:100%; margin-bottom:10px;">
+                        <select id="repayMember" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                            ${members.map(m => {
+                                const loanTotal = (m.loanPrincipal || 0) * (1 + RULES.INTEREST);
+                                return `<option value="${m.id}">${m.name} (Loan: K${loanTotal.toLocaleString()})</option>`;
+                            }).join('')}
+                        </select>
+                    </div>
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="number" id="repayAmount" value="0" min="0" step="100" placeholder="Amount to repay" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
                     <div style="display:flex;gap:10px;margin-top:20px;">
-                        <button class="btn" onclick="repayLoan()">✅ Repay</button>
-                        <button class="btn" onclick="showLoanManagement()" style="background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="repayLoan()" style="flex:1;">✅ Repay</button>
+                        <button class="btn" onclick="showLoanManagement()" style="flex:1;background:#666;">↩️ Cancel</button>
                     </div>
                 </div>
             `;
@@ -938,14 +1007,16 @@
             document.getElementById('contentArea').innerHTML = `
                 <div class="member-card">
                     <h3>➕ Contract Loan for ${member.name}</h3>
-                    <input type="number" id="loanAmount" value="1000" min="100" step="100" placeholder="Loan Amount">
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="number" id="loanAmount" value="1000" min="100" step="100" placeholder="Loan Amount" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
                     <div class="fee-section">
                         <p><strong>10% Interest:</strong> K<span id="loanInterest">100</span></p>
                         <p><strong>Total Repayment:</strong> K<span id="loanTotal">1100</span></p>
                     </div>
                     <div style="display:flex;gap:10px;margin-top:20px;">
-                        <button class="btn" onclick="contractLoan()">✅ Contract Loan</button>
-                        <button class="btn" onclick="showLoanManagement()" style="background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="contractLoan()" style="flex:1;">✅ Contract Loan</button>
+                        <button class="btn" onclick="showLoanManagement()" style="flex:1;background:#666;">↩️ Cancel</button>
                     </div>
                 </div>
             `;
@@ -1079,7 +1150,6 @@
             await saveMembers();
             updateAdminMetrics();
             
-            // Return to appropriate view
             const header = document.querySelector('#contentArea h3');
             if (header && header.textContent.includes('Membership')) {
                 showCollectMembership();
@@ -1254,11 +1324,21 @@
             document.getElementById('contentArea').innerHTML = `
                 <div class="member-card">
                     <h3>✏️ Edit ${member.name}</h3>
-                    <input type="text" id="editName" value="${member.name}" placeholder="Full Name">
-                    <input type="tel" id="editPhone" value="${member.phone || ''}" placeholder="Phone Number">
-                    <input type="text" id="editPin" value="${member.pin || ''}" placeholder="PIN (4+ digits)">
-                    <input type="number" id="editSavings" value="${member.savings || 0}" min="0" placeholder="Savings">
-                    <input type="number" id="editLoan" value="${member.loanPrincipal || 0}" min="0" placeholder="Loan Principal">
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="text" id="editName" value="${member.name}" placeholder="Full Name" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="tel" id="editPhone" value="${member.phone || ''}" placeholder="Phone Number" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="text" id="editPin" value="${member.pin || ''}" placeholder="PIN (4+ digits)" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="number" id="editSavings" value="${member.savings || 0}" min="0" placeholder="Savings" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
+                    <div style="width:100%; margin-bottom:10px;">
+                        <input type="number" id="editLoan" value="${member.loanPrincipal || 0}" min="0" placeholder="Loan Principal" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                    </div>
                     
                     <div style="display:flex;gap:20px;margin:15px 0;">
                         <label style="display:flex;align-items:center;">
@@ -1270,9 +1350,9 @@
                     </div>
                     
                     <div style="display:flex;gap:10px;margin-top:20px;">
-                        <button class="btn" onclick="saveEditedMember('${member.id}')">💾 Save</button>
-                        <button class="btn" onclick="resetPin('${member.id}')" style="background:#ff9800;">🔐 Reset PIN</button>
-                        <button class="btn" onclick="showAllMembers()" style="background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="saveEditedMember('${member.id}')" style="flex:1;">💾 Save</button>
+                        <button class="btn" onclick="resetPin('${member.id}')" style="flex:1;background:#ff9800;">🔐 Reset PIN</button>
+                        <button class="btn" onclick="showAllMembers()" style="flex:1;background:#666;">↩️ Cancel</button>
                     </div>
                 </div>
             `;
@@ -1363,10 +1443,12 @@
                     <div class="member-card">
                         <h3>Change Your PIN</h3>
                         <p style="color:#666;">Your current PIN is the last 4 digits of your phone (${member.phone ? member.phone.slice(-4) : '----'}) unless you set a custom PIN.</p>
-                        <input type="password" id="editPin" placeholder="New 4-digit PIN" maxlength="8">
+                        <div style="width:100%; margin-bottom:10px;">
+                            <input type="password" id="editPin" placeholder="New 4-digit PIN" maxlength="8" style="width:100%; padding:14px; border:2px solid #90caf9; border-radius:8px; box-sizing:border-box;">
+                        </div>
                         <div style="display:flex;gap:10px;margin-top:20px;">
-                            <button class="btn" onclick="saveProfilePin('${member.id}')">💾 Save PIN</button>
-                            <button class="btn" onclick="showMemberDashboard('${member.id}')" style="background:#666;">↩️ Back</button>
+                            <button class="btn" onclick="saveProfilePin('${member.id}')" style="flex:1;">💾 Save PIN</button>
+                            <button class="btn" onclick="showMemberDashboard('${member.id}')" style="flex:1;background:#666;">↩️ Back</button>
                         </div>
                     </div>
                 </div>
