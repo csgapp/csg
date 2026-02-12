@@ -79,7 +79,48 @@
             margin: 0;
             line-height: 1.5;
         }
-        
+        /* ===== FIX FOR MEMBER SELECT DROPDOWN ON MOBILE ===== */
+select {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 16px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    appearance: none; /* Removes default styling */
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23666'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    min-height: 52px; /* Ensures touch target is large enough */
+    z-index: 10;
+}
+
+/* Ensure dropdown options are visible */
+select option {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    padding: 12px;
+    min-height: 44px; /* Good touch target on mobile */
+}
+
+/* Fix for iOS select appearance */
+@supports (-webkit-touch-callout: none) {
+    select {
+        font-size: 16px; /* Prevents zoom on focus */
+        background: var(--card-bg);
+    }
+}
+/* Fix for any hidden overflow issues */
+.card, .login-box, .member-card {
+    overflow: visible !important;
+}
+
+#loginForm {
+    overflow: visible !important;
+}
         #app {
             max-width: 100%;
             min-height: 100vh;
