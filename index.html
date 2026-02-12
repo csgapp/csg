@@ -5,8 +5,24 @@
     <title>Savers Group - Digital Savings System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Savers Group">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1e88e5">
+    
+    <!-- iOS Icons - Emoji Fallback (100% Working) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e88e5'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='%23FFD700' font-family='system-ui, -apple-system, Helvetica, Arial, sans-serif'>💰</text></svg>">
+    <link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e88e5'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='%23FFD700' font-family='system-ui, -apple-system, Helvetica, Arial, sans-serif'>💰</text></svg>">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e88e5'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='%23FFD700' font-family='system-ui, -apple-system, Helvetica, Arial, sans-serif'>💰</text></svg>">
+    
+    <!-- Android Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e88e5'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='%23FFD700' font-family='system-ui, -apple-system, Helvetica, Arial, sans-serif'>💰</text></svg>">
+    
+    <!-- Font Awesome - Deferred Loading -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
     
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -70,7 +86,7 @@
             background: var(--bg-secondary);
         }
         
-        /* ===== HEADER - MOBILE OPTIMIZED ===== */
+        /* ===== HEADER ===== */
         .header {
             background: var(--header-gradient);
             color: white;
@@ -135,6 +151,7 @@
             border-bottom: 1px solid var(--border-color);
             color: var(--text-primary);
             text-decoration: none;
+            cursor: pointer;
         }
         
         .menu-item:last-child {
@@ -151,7 +168,7 @@
             background: rgba(30,136,229,0.1);
         }
         
-        /* ===== METRICS GRID - MOBILE FIRST ===== */
+        /* ===== METRICS GRID ===== */
         .metrics-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -254,6 +271,15 @@
             text-align: center;
         }
         
+        .action-btn:active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .action-btn:active i {
+            color: white;
+        }
+        
         /* ===== MEMBER CARD ===== */
         .member-row {
             background: var(--card-bg);
@@ -310,7 +336,7 @@
             border: 1px solid var(--border-color);
         }
         
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 14px;
             border: 2px solid var(--border-color);
@@ -319,6 +345,11 @@
             background: var(--card-bg);
             color: var(--text-primary);
             margin-bottom: 12px;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
         }
         
         .btn {
@@ -424,6 +455,24 @@
             gap: 6px;
         }
         
+        /* ===== INSTALL BUTTON ===== */
+        .install-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin: 16px 0;
+            cursor: pointer;
+        }
+        
         /* ===== UTILITIES ===== */
         .d-none { display: none; }
         .d-block { display: block; }
@@ -431,57 +480,6 @@
         .mt-3 { margin-top: 12px; }
         .mb-3 { margin-bottom: 12px; }
         .gap-2 { gap: 8px; }
-        
-        /* ===== FAB ===== */
-        .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(30,136,229,0.4);
-            cursor: pointer;
-            z-index: 99;
-        }
-        
-        .fab-menu {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            padding: 8px;
-            min-width: 200px;
-            z-index: 100;
-            border: 1px solid var(--border-color);
-        }
-        
-        .fab-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-        }
-        
-        .fab-menu-item i {
-            width: 20px;
-            text-align: center;
-        }
-        
-        .fab-menu-item:active {
-            background: rgba(30,136,229,0.1);
-        }
     </style>
 </head>
 <body>
@@ -745,6 +743,95 @@
             });
         }
 
+        // ===== PWA INSTALL - COMPLETE FIX (iOS, Huawei, Android) =====
+        let deferredPrompt;
+
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        function isHuaweiNoGMS() {
+            return navigator.userAgent.includes('Huawei') || 
+                   navigator.userAgent.includes('HONOR') ||
+                   !('beforeinstallprompt' in window);
+        }
+
+        function setupInstallButton() {
+            const installBtn = document.getElementById('installButton');
+            const installText = document.getElementById('installButtonText');
+            const installOptions = document.getElementById('installOptions');
+            
+            if (!installBtn) return;
+            
+            // Already installed?
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                installBtn.style.display = 'none';
+                if (installOptions) installOptions.style.display = 'none';
+                return;
+            }
+            
+            // iOS Devices
+            if (isIOS()) {
+                installBtn.style.display = 'block';
+                installBtn.style.background = '#2e7d32';
+                if (installText) installText.textContent = 'iOS: Add to Home Screen';
+                installBtn.onclick = () => {
+                    alert('📱 TO INSTALL ON iOS:\n\n1. Tap Share icon (📤)\n2. Scroll down\n3. Tap "Add to Home Screen"\n4. Tap "Add"');
+                };
+                return;
+            }
+            
+            // Huawei/No GMS Devices
+            if (isHuaweiNoGMS()) {
+                installBtn.style.display = 'block';
+                installBtn.style.background = '#c8102e';
+                if (installText) installText.textContent = 'Huawei: Add to Home Screen';
+                installBtn.onclick = () => {
+                    alert('📱 TO INSTALL ON HUAWEI:\n\n1. Tap ⋮ menu (3 dots)\n2. Select "Add to Home screen"\n3. Tap "Add"');
+                };
+                
+                if (installOptions) {
+                    installOptions.style.display = 'block';
+                    installOptions.innerHTML = `
+                        <div style="padding:12px; background:#fff3e0; border-radius:12px; margin-top:8px;">
+                            <p style="margin-bottom:8px; font-size:13px;">
+                                <i class="fas fa-store" style="color:#ff9800;"></i> 
+                                <strong>Huawei AppGallery:</strong>
+                            </p>
+                            <a href="https://appgallery.huawei.com" 
+                               style="display:block; background:#c8102e; color:white; padding:12px; border-radius:8px; text-align:center; text-decoration:none;"
+                               target="_blank">
+                                <i class="fas fa-download"></i> Open AppGallery
+                            </a>
+                        </div>
+                    `;
+                }
+                return;
+            }
+            
+            // Android with GMS - Standard PWA
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                installBtn.style.display = 'block';
+                installBtn.style.background = '#2e7d32';
+                if (installText) installText.textContent = 'Install App';
+                
+                installBtn.onclick = async () => {
+                    if (!deferredPrompt) return;
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        installBtn.style.display = 'none';
+                        if (installOptions) installOptions.style.display = 'none';
+                        NotificationManager.add('App installed!', 'success');
+                    }
+                    deferredPrompt = null;
+                };
+            });
+        }
+
         // ===== LOGIN =====
         function showAdminLogin() {
             const form = document.getElementById('loginForm');
@@ -820,6 +907,13 @@
                 <div style="padding:16px;">
                     <div class="card" style="max-width:400px;margin:20px auto;">
                         <h2 style="margin-bottom:20px;text-align:center;">Login</h2>
+                        
+                        <!-- INSTALL BUTTON - VISIBLE ON LOGIN SCREEN -->
+                        <button id="installButton" style="display:none; width:100%; padding:14px; border-radius:12px; color:white; font-weight:600; border:none; margin-bottom:16px; background:#2e7d32;">
+                            <i class="fas fa-download"></i> <span id="installButtonText">Install App</span>
+                        </button>
+                        <div id="installOptions" style="display:none; margin-bottom:16px;"></div>
+                        
                         <div style="display:flex;gap:12px;margin-bottom:20px;">
                             <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:#1e88e5;">👑 Admin</button>
                             <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:#90caf9;">👤 Member</button>
@@ -837,6 +931,7 @@
             `;
             showAdminLogin();
             updateNetworkStatus();
+            setTimeout(setupInstallButton, 500);
         }
 
         // ===== ADMIN DASHBOARD =====
@@ -857,12 +952,10 @@
                                 ${navigator.onLine ? '● Online' : '○ Offline'}
                             </div>
                             
-                            <!-- Mobile Menu Toggle -->
                             <div class="menu-toggle" onclick="toggleAdminMenu(event)">
                                 <i class="fas fa-ellipsis-v"></i>
                             </div>
                             
-                            <!-- Admin Menu Dropdown -->
                             <div id="adminMenu" class="menu-dropdown">
                                 <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();">
                                     <i class="fas ${document.documentElement.getAttribute('data-theme') === 'light' ? 'fa-moon' : 'fa-sun'}"></i>
@@ -879,7 +972,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Notification Dropdown -->
                             <div id="notificationDropdown" class="notification-dropdown"></div>
                         </div>
                     </div>
@@ -949,174 +1041,6 @@
             NotificationManager.renderBadge();
             NotificationManager.renderDropdown();
             ThemeManager.updateUI();
-            addFloatingActionButton();
-        }
-
-        // ===== MEMBER DASHBOARD - FULLY VISIBLE ON MOBILE =====
-        function showMemberDashboard(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            const loanInterestDue = (member.loanPrincipal || 0) * RULES.INTEREST;
-            const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
-            const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
-            const memberNet = memberSavingsIncl - memberLoanIncl;
-            
-            const transactions = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
-            
-            let txHtml = '';
-            transactions.forEach(t => {
-                const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
-                            t.type === 'loan' ? 'fa-hand-holding-usd' : 
-                            t.type === 'repayment' ? 'fa-undo' : 'fa-check-circle';
-                const color = t.type === 'savings' ? '#2e7d32' : 
-                             t.type === 'loan' ? '#f44336' : 
-                             t.type === 'repayment' ? '#ff9800' : '#9c27b0';
-                
-                txHtml += `
-                    <div class="transaction-item">
-                        <div class="transaction-icon" style="background:${color}20;color:${color};">
-                            <i class="fas ${icon}"></i>
-                        </div>
-                        <div style="flex:1;min-width:0;">
-                            <div style="display:flex;justify-content:space-between;align-items:start;">
-                                <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
-                                <span style="font-weight:700;color:${color};font-size:15px;">K${(t.amount||0).toLocaleString()}</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;margin-top:4px;">
-                                <span style="color:var(--text-secondary);font-size:12px;">${fmtDate(t.date)}</span>
-                                ${t.interest ? `<span style="color:${color};font-size:12px;">+K${t.interest.toFixed(2)}</span>` : ''}
-                            </div>
-                            ${t.note ? `<div style="color:var(--text-secondary);font-size:11px;margin-top:4px;">${t.note}</div>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('app').innerHTML = `
-                <div class="header">
-                    <div class="header-content">
-                        <div class="header-title">
-                            <h1>💰 SAVERS GROUP</h1>
-                            <p>${member.name}</p>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
-                                ${navigator.onLine ? '● Online' : '○ Offline'}
-                            </div>
-                            
-                            <!-- Mobile Menu Toggle -->
-                            <div class="menu-toggle" onclick="toggleMemberMenu(event)">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </div>
-                            
-                            <!-- Member Menu Dropdown -->
-                            <div id="memberMenu" class="menu-dropdown">
-                                <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();">
-                                    <i class="fas ${document.documentElement.getAttribute('data-theme') === 'light' ? 'fa-moon' : 'fa-sun'}"></i>
-                                    <span>${document.documentElement.getAttribute('data-theme') === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
-                                </div>
-                                <div class="menu-item" onclick="showEditProfile('${member.id}');closeAllMenus();">
-                                    <i class="fas fa-key"></i>
-                                    <span>Change PIN</span>
-                                </div>
-                                <div class="menu-item" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Logout</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="metrics-grid">
-                    <!-- Savings Card -->
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(30,136,229,0.1);">
-                            <i class="fas fa-piggy-bank" style="color:#1e88e5;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Savings</div>
-                            <div class="metric-value" style="color:#1e88e5;font-size:1.2rem;">K${(member.savings||0).toLocaleString()}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);">+10%: K${((member.savings||0)*RULES.INTEREST).toFixed(2)}</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Loan Card -->
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(244,67,54,0.1);">
-                            <i class="fas fa-hand-holding-usd" style="color:#f44336;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Loan</div>
-                            <div class="metric-value" style="color:#f44336;font-size:1.2rem;">K${((member.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);">Due: K${loanInterestDue.toFixed(2)}</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Net Position Card -->
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(46,125,50,0.1);">
-                            <i class="fas fa-calculator" style="color:#2e7d32;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Net Position</div>
-                            <div class="metric-value" style="color:#2e7d32;font-size:1.2rem;">K${memberNet.toLocaleString()}</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Share Out Card -->
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(255,152,0,0.1);">
-                            <i class="fas fa-gift" style="color:#ff9800;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Share Out</div>
-                            <div class="metric-value" style="color:#ff9800;font-size:1.2rem;">K${(memberNet*0.1).toFixed(2)}</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Status Cards - Full Width -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px;">
-                    <div class="${member.membershipPaid ? 'status-paid' : 'status-due'}" style="justify-content:center;">
-                        <i class="fas fa-id-card"></i>
-                        <span>Membership ${member.membershipPaid ? 'Paid' : 'Due'}</span>
-                    </div>
-                    <div class="${member.socialPaid ? 'status-paid' : 'status-due'}" style="justify-content:center;">
-                        <i class="fas fa-users"></i>
-                        <span>Social ${member.socialPaid ? 'Paid' : 'Due'}</span>
-                    </div>
-                </div>
-                
-                <!-- Transactions Card -->
-                <div class="card" style="margin-top:0;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                        <h3 style="margin:0;font-size:18px;"><i class="fas fa-history"></i> Transactions</h3>
-                        <select id="txFilter" onchange="filterMemberTxs('${member.id}')" style="width:120px;padding:8px;margin:0;font-size:14px;">
-                            <option value="all">All</option>
-                            <option value="savings">Savings</option>
-                            <option value="loan">Loans</option>
-                            <option value="repayment">Repayments</option>
-                            <option value="fee">Fees</option>
-                        </select>
-                    </div>
-                    
-                    <div id="memberTxList" style="max-height:400px;overflow-y:auto;">
-                        ${txHtml || '<p style="text-align:center;padding:20px;color:var(--text-secondary);">No transactions yet</p>'}
-                    </div>
-                    
-                    <div style="margin-top:20px;padding:16px;background:rgba(30,136,229,0.05);border-radius:12px;text-align:center;">
-                        <i class="fas fa-shield-alt" style="color:var(--primary);"></i>
-                        <p style="margin:8px 0 0;font-size:12px;color:var(--text-secondary);">
-                            View-only history. Contact admin for corrections.
-                        </p>
-                    </div>
-                </div>
-            `;
-            
-            ThemeManager.updateUI();
-            updateNetworkStatus();
         }
 
         // ===== TOGGLE MENUS =====
@@ -1203,7 +1127,7 @@
             showAdminDashboard();
         }
 
-        // ===== VIEW MEMBERS =====
+        // ===== VIEW ALL MEMBERS =====
         function showAllMembers() {
             let html = `<h3 style="margin-bottom:16px;padding:0 16px;">All Members (${members.length})</h3>`;
             html += `<div style="padding:0 16px;">`;
@@ -1232,6 +1156,7 @@
             document.getElementById('contentArea').innerHTML = html;
         }
 
+        // ===== VIEW MEMBER DETAILS =====
         function viewMember(memberId) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
@@ -1245,10 +1170,12 @@
                 txs.slice(0, 5).forEach(t => {
                     const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
                                 t.type === 'loan' ? 'fa-hand-holding-usd' : 
-                                t.type === 'repayment' ? 'fa-undo' : 'fa-check-circle';
+                                t.type === 'repayment' ? 'fa-undo' : 
+                                t.type === 'admin-edit' ? 'fa-edit' : 'fa-check-circle';
                     const color = t.type === 'savings' ? '#2e7d32' : 
                                  t.type === 'loan' ? '#f44336' : 
-                                 t.type === 'repayment' ? '#ff9800' : '#9c27b0';
+                                 t.type === 'repayment' ? '#ff9800' : 
+                                 t.type === 'admin-edit' ? '#ff9800' : '#9c27b0';
                     
                     txHtml += `
                         <div class="transaction-item">
@@ -1258,7 +1185,7 @@
                             <div style="flex:1;min-width:0;">
                                 <div style="display:flex;justify-content:space-between;">
                                     <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
-                                    <span style="font-weight:700;color:${color};">K${(t.amount||0).toLocaleString()}</span>
+                                    <span style="font-weight:700;color:${color};">${t.amount ? 'K' + t.amount.toLocaleString() : ''}</span>
                                 </div>
                                 <div style="color:var(--text-secondary);font-size:12px;margin-top:4px;">
                                     ${fmtDate(t.date)} • ${t.note || ''}
@@ -1297,12 +1224,154 @@
                         <button class="btn-sm" onclick="addLoanFor('${member.id}')">🏦 Add Loan</button>
                         ${!member.membershipPaid ? `<button class="btn-sm" onclick="collectFee('${member.id}', 'membership')" style="background:#2e7d32;">✅ Membership</button>` : ''}
                         ${!member.socialPaid ? `<button class="btn-sm" onclick="collectFee('${member.id}', 'social')" style="background:#2e7d32;">✅ Social</button>` : ''}
+                        <button class="btn-sm" onclick="showEditMember('${member.id}')" style="background:#ff9800;">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
                         <button class="btn-sm" onclick="showAllMembers()" style="background:#666;">↩️ Back</button>
                     </div>
                     
                     ${txHtml}
                 </div>
             `;
+        }
+
+        // ===== EDIT MEMBER - ADMIN ONLY =====
+        function showEditMember(memberId) {
+            if (!currentUser || currentUser.type !== 'admin') {
+                alert('Admin access required');
+                return;
+            }
+            
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <h3 style="margin-bottom:20px;"><i class="fas fa-edit"></i> Edit Member</h3>
+                    
+                    <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+                        <div class="avatar" style="width:64px; height:64px; font-size:24px; background:${['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'][member.name.length % 6]};">
+                            ${member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                        </div>
+                        <div>
+                            <h4 style="margin:0;">${member.name}</h4>
+                            <p style="color:var(--text-secondary); margin:4px 0 0;">ID: ${member.id.slice(-6)}</p>
+                        </div>
+                    </div>
+                    
+                    <input type="text" id="editName" value="${member.name}" placeholder="Full Name">
+                    <input type="tel" id="editPhone" value="${member.phone || ''}" placeholder="Phone Number">
+                    <input type="text" id="editPin" value="${member.pin || ''}" placeholder="PIN (4+ digits)">
+                    <input type="number" id="editSavings" value="${member.savings || 0}" step="0.01" placeholder="Savings Amount">
+                    <input type="number" id="editLoan" value="${member.loanPrincipal || 0}" step="0.01" placeholder="Loan Principal">
+                    
+                    <div style="display:flex; gap:16px; margin:16px 0;">
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="editMembership" ${member.membershipPaid ? 'checked' : ''}> Membership Paid
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="editSocial" ${member.socialPaid ? 'checked' : ''}> Social Paid
+                        </label>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:20px;">
+                        <button class="btn" onclick="saveEditedMember('${member.id}')" style="background:var(--primary);">💾 Save</button>
+                        <button class="btn" onclick="resetMemberPin('${member.id}')" style="background:#ff9800;">🔐 Reset PIN</button>
+                        <button class="btn" onclick="viewMember('${member.id}')" style="background:#666;">↩️ Cancel</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== SAVE EDITED MEMBER =====
+        async function saveEditedMember(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const name = document.getElementById('editName')?.value.trim();
+            const phone = document.getElementById('editPhone')?.value.trim();
+            const pin = document.getElementById('editPin')?.value.trim();
+            const savings = parseFloat(document.getElementById('editSavings')?.value) || 0;
+            const loan = parseFloat(document.getElementById('editLoan')?.value) || 0;
+            const membershipPaid = document.getElementById('editMembership')?.checked || false;
+            const socialPaid = document.getElementById('editSocial')?.checked || false;
+            
+            if (!name) { alert('Name cannot be empty'); return; }
+            
+            const changes = [];
+            if (member.name !== name) changes.push(`Name: ${member.name} → ${name}`);
+            if (member.savings !== savings) changes.push(`Savings: K${member.savings} → K${savings}`);
+            if (member.loanPrincipal !== loan) changes.push(`Loan: K${member.loanPrincipal} → K${loan}`);
+            
+            Object.assign(member, { name, phone, pin, savings, loanPrincipal: loan, membershipPaid, socialPaid });
+            
+            member.transactions = member.transactions || [];
+            member.transactions.push({
+                type: 'admin-edit',
+                amount: 0,
+                date: new Date().toISOString(),
+                note: `Admin edited: ${changes.join(', ')}`
+            });
+            
+            await saveMembers();
+            NotificationManager.add('Member updated successfully', 'success');
+            viewMember(member.id);
+        }
+
+        // ===== RESET MEMBER PIN (ADMIN) =====
+        async function resetMemberPin(memberId) {
+            if (!currentUser || currentUser.type !== 'admin') {
+                alert('Admin access required');
+                return;
+            }
+            
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            if (confirm(`Reset PIN for ${member.name} to last 4 digits of phone?`)) {
+                const newPin = (member.phone || '').slice(-4) || '0000';
+                member.pin = newPin;
+                
+                member.transactions = member.transactions || [];
+                member.transactions.push({
+                    type: 'admin-edit',
+                    amount: 0,
+                    date: new Date().toISOString(),
+                    note: `Admin reset PIN`
+                });
+                
+                await saveMembers();
+                NotificationManager.add(`PIN reset to ${newPin}`, 'success');
+                viewMember(member.id);
+            }
+        }
+
+        // ===== MEMBER SELF-SERVICE PIN RESET =====
+        async function memberResetPin(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const newPin = prompt('Enter new 4-digit PIN:', member.pin || member.phone?.slice(-4) || '0000');
+            if (!newPin) return;
+            
+            if (newPin.length < 4) {
+                alert('PIN must be at least 4 digits');
+                return;
+            }
+            
+            member.pin = newPin;
+            
+            member.transactions = member.transactions || [];
+            member.transactions.push({
+                type: 'pin-change',
+                amount: 0,
+                date: new Date().toISOString(),
+                note: 'Member changed PIN'
+            });
+            
+            await saveMembers();
+            NotificationManager.add('PIN updated successfully', 'success');
+            showMemberDashboard(member.id);
         }
 
         // ===== ADD SAVINGS =====
@@ -1620,7 +1689,168 @@
             document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
         }
 
-        // ===== FILTER TRANSACTIONS =====
+        // ===== MEMBER DASHBOARD =====
+        function showMemberDashboard(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const loanInterestDue = (member.loanPrincipal || 0) * RULES.INTEREST;
+            const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
+            const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
+            const memberNet = memberSavingsIncl - memberLoanIncl;
+            
+            const transactions = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            let txHtml = '';
+            transactions.forEach(t => {
+                const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
+                            t.type === 'loan' ? 'fa-hand-holding-usd' : 
+                            t.type === 'repayment' ? 'fa-undo' : 
+                            t.type === 'pin-change' ? 'fa-key' : 'fa-check-circle';
+                const color = t.type === 'savings' ? '#2e7d32' : 
+                             t.type === 'loan' ? '#f44336' : 
+                             t.type === 'repayment' ? '#ff9800' : 
+                             t.type === 'pin-change' ? '#ff9800' : '#9c27b0';
+                
+                txHtml += `
+                    <div class="transaction-item">
+                        <div class="transaction-icon" style="background:${color}20;color:${color};">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <div style="display:flex;justify-content:space-between;">
+                                <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
+                                <span style="font-weight:700;color:${color};">${t.amount ? 'K' + t.amount.toLocaleString() : ''}</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+                                <span style="color:var(--text-secondary);font-size:12px;">${fmtDate(t.date)}</span>
+                                ${t.interest ? `<span style="color:${color};font-size:12px;">+K${t.interest.toFixed(2)}</span>` : ''}
+                            </div>
+                            ${t.note ? `<div style="color:var(--text-secondary);font-size:11px;margin-top:4px;">${t.note}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <div class="header-content">
+                        <div class="header-title">
+                            <h1>💰 SAVERS GROUP</h1>
+                            <p>${member.name}</p>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
+                                ${navigator.onLine ? '● Online' : '○ Offline'}
+                            </div>
+                            
+                            <div class="menu-toggle" onclick="toggleMemberMenu(event)">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                            
+                            <div id="memberMenu" class="menu-dropdown">
+                                <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();">
+                                    <i class="fas ${document.documentElement.getAttribute('data-theme') === 'light' ? 'fa-moon' : 'fa-sun'}"></i>
+                                    <span>${document.documentElement.getAttribute('data-theme') === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                                </div>
+                                <div class="menu-item" onclick="memberResetPin('${member.id}');closeAllMenus();">
+                                    <i class="fas fa-key"></i>
+                                    <span>Change PIN</span>
+                                </div>
+                                <div class="menu-item" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background:rgba(30,136,229,0.1);">
+                            <i class="fas fa-piggy-bank" style="color:#1e88e5;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Savings</div>
+                            <div class="metric-value" style="color:#1e88e5;font-size:1.2rem;">K${(member.savings||0).toLocaleString()}</div>
+                            <div style="font-size:11px;color:var(--text-secondary);">+10%: K${((member.savings||0)*RULES.INTEREST).toFixed(2)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background:rgba(244,67,54,0.1);">
+                            <i class="fas fa-hand-holding-usd" style="color:#f44336;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Loan</div>
+                            <div class="metric-value" style="color:#f44336;font-size:1.2rem;">K${((member.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div>
+                            <div style="font-size:11px;color:var(--text-secondary);">Due: K${loanInterestDue.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background:rgba(46,125,50,0.1);">
+                            <i class="fas fa-calculator" style="color:#2e7d32;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Net Position</div>
+                            <div class="metric-value" style="color:#2e7d32;font-size:1.2rem;">K${memberNet.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background:rgba(255,152,0,0.1);">
+                            <i class="fas fa-gift" style="color:#ff9800;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Share Out</div>
+                            <div class="metric-value" style="color:#ff9800;font-size:1.2rem;">K${(memberNet*0.1).toFixed(2)}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px;">
+                    <div class="${member.membershipPaid ? 'status-paid' : 'status-due'}" style="justify-content:center;">
+                        <i class="fas fa-id-card"></i>
+                        <span>Membership ${member.membershipPaid ? 'Paid' : 'Due'}</span>
+                    </div>
+                    <div class="${member.socialPaid ? 'status-paid' : 'status-due'}" style="justify-content:center;">
+                        <i class="fas fa-users"></i>
+                        <span>Social ${member.socialPaid ? 'Paid' : 'Due'}</span>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3 style="margin:0;font-size:18px;"><i class="fas fa-history"></i> Transactions</h3>
+                        <select id="txFilter" onchange="filterMemberTxs('${member.id}')" style="width:120px;padding:8px;margin:0;font-size:14px;">
+                            <option value="all">All</option>
+                            <option value="savings">Savings</option>
+                            <option value="loan">Loans</option>
+                            <option value="repayment">Repayments</option>
+                            <option value="fee">Fees</option>
+                        </select>
+                    </div>
+                    
+                    <div id="memberTxList" style="max-height:400px;overflow-y:auto;">
+                        ${txHtml || '<p style="text-align:center;padding:20px;color:var(--text-secondary);">No transactions yet</p>'}
+                    </div>
+                    
+                    <div style="margin-top:20px;padding:16px;background:rgba(30,136,229,0.05);border-radius:12px;text-align:center;">
+                        <i class="fas fa-shield-alt" style="color:var(--primary);"></i>
+                        <p style="margin:8px 0 0;font-size:12px;color:var(--text-secondary);">
+                            View-only history. Contact admin for corrections.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            ThemeManager.updateUI();
+            updateNetworkStatus();
+        }
+
+        // ===== FILTER MEMBER TRANSACTIONS =====
         function filterMemberTxs(memberId) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
@@ -1633,10 +1863,12 @@
             filtered.forEach(t => {
                 const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
                             t.type === 'loan' ? 'fa-hand-holding-usd' : 
-                            t.type === 'repayment' ? 'fa-undo' : 'fa-check-circle';
+                            t.type === 'repayment' ? 'fa-undo' : 
+                            t.type === 'pin-change' ? 'fa-key' : 'fa-check-circle';
                 const color = t.type === 'savings' ? '#2e7d32' : 
                              t.type === 'loan' ? '#f44336' : 
-                             t.type === 'repayment' ? '#ff9800' : '#9c27b0';
+                             t.type === 'repayment' ? '#ff9800' : 
+                             t.type === 'pin-change' ? '#ff9800' : '#9c27b0';
                 
                 html += `
                     <div class="transaction-item">
@@ -1646,7 +1878,7 @@
                         <div style="flex:1;min-width:0;">
                             <div style="display:flex;justify-content:space-between;">
                                 <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
-                                <span style="font-weight:700;color:${color};">K${(t.amount||0).toLocaleString()}</span>
+                                <span style="font-weight:700;color:${color};">${t.amount ? 'K' + t.amount.toLocaleString() : ''}</span>
                             </div>
                             <div style="display:flex;justify-content:space-between;margin-top:4px;">
                                 <span style="color:var(--text-secondary);font-size:12px;">${fmtDate(t.date)}</span>
@@ -1658,105 +1890,6 @@
             });
             
             document.getElementById('memberTxList').innerHTML = html || '<p style="text-align:center;padding:20px;color:var(--text-secondary);">No transactions found</p>';
-        }
-
-        // ===== EDIT PROFILE =====
-        function showEditProfile(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            document.getElementById('app').innerHTML = `
-                <div class="header">
-                    <div class="header-content">
-                        <div class="header-title">
-                            <h1>💰 SAVERS GROUP</h1>
-                            <p>Change PIN</p>
-                        </div>
-                        <button class="btn-sm" onclick="showMemberDashboard('${member.id}')" style="background:rgba(255,255,255,0.2);">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                    </div>
-                </div>
-                <div style="padding:16px;">
-                    <div class="card" style="max-width:400px;margin:0 auto;">
-                        <div style="text-align:center;margin-bottom:24px;">
-                            <div class="avatar" style="width:80px;height:80px;font-size:32px;margin:0 auto;background:${['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'][member.name.length % 6]};">
-                                ${member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                            </div>
-                            <h3 style="margin:12px 0 4px;">${member.name}</h3>
-                            <p style="color:var(--text-secondary);font-size:14px;">Current PIN: ${member.phone?.slice(-4) || '----'}</p>
-                        </div>
-                        
-                        <input type="password" id="newPin" placeholder="New 4-digit PIN" maxlength="8">
-                        <div style="display:flex;gap:12px;margin-top:20px;">
-                            <button class="btn" onclick="saveProfilePin('${member.id}')" style="flex:1;background:#ff9800;">💾 Save PIN</button>
-                            <button class="btn" onclick="showMemberDashboard('${member.id}')" style="flex:1;background:#666;">↩️ Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function saveProfilePin(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            const pin = document.getElementById('newPin')?.value.trim();
-            if (!pin || pin.length < 4) { alert('Enter at least 4 digits'); return; }
-            
-            member.pin = pin;
-            await saveMembers();
-            NotificationManager.add('PIN changed successfully!', 'success');
-            showMemberDashboard(memberId);
-        }
-
-        // ===== FLOATING ACTION BUTTON =====
-        function addFloatingActionButton() {
-            const existing = document.querySelector('.fab');
-            if (existing) existing.remove();
-            
-            if (!currentUser || currentUser.type !== 'admin') return;
-            
-            const fab = document.createElement('div');
-            fab.className = 'fab';
-            fab.innerHTML = '<i class="fas fa-plus"></i>';
-            
-            let menu = null;
-            
-            fab.onclick = () => {
-                if (menu) { menu.remove(); menu = null; return; }
-                
-                menu = document.createElement('div');
-                menu.className = 'fab-menu';
-                menu.innerHTML = `
-                    <div class="fab-menu-item" onclick="showAddMember(); this.parentElement.remove();">
-                        <i class="fas fa-user-plus" style="color:var(--primary);"></i>
-                        <span>Add Member</span>
-                    </div>
-                    <div class="fab-menu-item" onclick="showAddSavings(); this.parentElement.remove();">
-                        <i class="fas fa-piggy-bank" style="color:var(--success);"></i>
-                        <span>Add Savings</span>
-                    </div>
-                    <div class="fab-menu-item" onclick="showLoanManagement(); this.parentElement.remove();">
-                        <i class="fas fa-hand-holding-usd" style="color:var(--warning);"></i>
-                        <span>Manage Loans</span>
-                    </div>
-                `;
-                
-                document.body.appendChild(menu);
-                
-                setTimeout(() => {
-                    document.addEventListener('click', function removeMenu(e) {
-                        if (menu && !menu.contains(e.target) && !fab.contains(e.target)) {
-                            menu.remove();
-                            menu = null;
-                            document.removeEventListener('click', removeMenu);
-                        }
-                    });
-                }, 100);
-            };
-            
-            document.body.appendChild(fab);
         }
 
         // ===== INIT =====
