@@ -709,22 +709,21 @@ select option {
             }
         };
 
-        // ===== FIREBASE HELPERS - FIXED FOR SUBCOLLECTION STRUCTURE =====
+        // ===== FIREBASE HELPERS - FIXED FOR ARRAY STRUCTURE =====
         async function loadMembers() {
             try {
-                console.log('Loading members from subcollection...');
+                console.log('Loading members from main document array...');
                 
-                // READ FROM SUBCOLLECTION, NOT ARRAY FIELD!
-                const membersSnapshot = await db.collection('groups').doc('main').collection('members').get();
+                // READ FROM ARRAY FIELD IN MAIN DOCUMENT
+                const docRef = db.collection('groups').doc('main');
+                const docSnap = await docRef.get();
                 
-                if (!membersSnapshot.empty) {
-                    members = membersSnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                    console.log(`✅ Loaded ${members.length} members from subcollection:`, members);
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    members = data.members || [];
+                    console.log(`✅ Loaded ${members.length} members from main document array`);
                 } else {
-                    console.log('⚠️ No members found in subcollection - starting with empty array');
+                    console.log('⚠️ Main document does not exist');
                     members = [];
                 }
                 
@@ -732,7 +731,7 @@ select option {
                 localStorage.setItem('members', JSON.stringify(members));
                 
             } catch (e) {
-                console.error('❌ Error loading members from Firestore:', e);
+                console.error('❌ Error loading members:', e);
                 
                 // Fallback to localStorage if offline
                 const local = localStorage.getItem('members');
@@ -757,25 +756,18 @@ select option {
             }
             
             try {
-                console.log('Saving members to Firestore subcollection...');
+                console.log('Saving members to main document array...');
                 
-                // Save each member as a document in the subcollection
-                const batch = db.batch();
-                const membersRef = db.collection('groups').doc('main').collection('members');
+                // Save the entire members array to the main document
+                await db.collection('groups').doc('main').set({
+                    members: members
+                }, { merge: true }); // merge: true preserves other fields
                 
-                members.forEach(member => {
-                    const memberRef = membersRef.doc(member.id);
-                    // Remove id from the data to avoid duplication
-                    const { id, ...memberData } = member;
-                    batch.set(memberRef, memberData);
-                });
-                
-                await batch.commit();
-                console.log('✅ Members saved successfully to Firestore');
+                console.log('✅ Members saved successfully');
                 return true;
                 
             } catch (e) {
-                console.error('❌ Error saving members to Firestore:', e);
+                console.error('❌ Error saving members:', e);
                 return false;
             }
         }
@@ -1974,7 +1966,7 @@ select option {
         (async () => {
             NotificationManager.init();
             ThemeManager.init();
-            await loadMembers();  // Now properly loads from subcollection!
+            await loadMembers();  // Now properly loads from array in main document!
             updateNetworkStatus();
             showLoginScreen();
             
