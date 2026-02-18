@@ -502,24 +502,6 @@ select option {
             gap: 6px;
         }
         
-        /* ===== INSTALL BUTTON ===== */
-        .install-btn {
-            background: #2e7d32;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            margin: 16px 0;
-            cursor: pointer;
-        }
-        
         /* ===== UTILITIES ===== */
         .d-none { display: none; }
         .d-block { display: block; }
@@ -796,95 +778,6 @@ select option {
             });
         }
 
-        // ===== PWA INSTALL - COMPLETE FIX (iOS, Huawei, Android) =====
-        let deferredPrompt;
-
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        }
-
-        function isHuaweiNoGMS() {
-            return navigator.userAgent.includes('Huawei') || 
-                   navigator.userAgent.includes('HONOR') ||
-                   !('beforeinstallprompt' in window);
-        }
-
-        function setupInstallButton() {
-            const installBtn = document.getElementById('installButton');
-            const installText = document.getElementById('installButtonText');
-            const installOptions = document.getElementById('installOptions');
-            
-            if (!installBtn) return;
-            
-            // Already installed?
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                installBtn.style.display = 'none';
-                if (installOptions) installOptions.style.display = 'none';
-                return;
-            }
-            
-            // iOS Devices
-            if (isIOS()) {
-                installBtn.style.display = 'block';
-                installBtn.style.background = '#2e7d32';
-                if (installText) installText.textContent = 'iOS: Add to Home Screen';
-                installBtn.onclick = () => {
-                    alert('📱 TO INSTALL ON iOS:\n\n1. Tap Share icon (📤)\n2. Scroll down\n3. Tap "Add to Home Screen"\n4. Tap "Add"');
-                };
-                return;
-            }
-            
-            // Huawei/No GMS Devices
-            if (isHuaweiNoGMS()) {
-                installBtn.style.display = 'block';
-                installBtn.style.background = '#c8102e';
-                if (installText) installText.textContent = 'Huawei: Add to Home Screen';
-                installBtn.onclick = () => {
-                    alert('📱 TO INSTALL ON HUAWEI:\n\n1. Tap ⋮ menu (3 dots)\n2. Select "Add to Home screen"\n3. Tap "Add"');
-                };
-                
-                if (installOptions) {
-                    installOptions.style.display = 'block';
-                    installOptions.innerHTML = `
-                        <div style="padding:12px; background:#fff3e0; border-radius:12px; margin-top:8px;">
-                            <p style="margin-bottom:8px; font-size:13px;">
-                                <i class="fas fa-store" style="color:#ff9800;"></i> 
-                                <strong>Huawei AppGallery:</strong>
-                            </p>
-                            <a href="https://appgallery.huawei.com" 
-                               style="display:block; background:#c8102e; color:white; padding:12px; border-radius:8px; text-align:center; text-decoration:none;"
-                               target="_blank">
-                                <i class="fas fa-download"></i> Open AppGallery
-                            </a>
-                        </div>
-                    `;
-                }
-                return;
-            }
-            
-            // Android with GMS - Standard PWA
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                
-                installBtn.style.display = 'block';
-                installBtn.style.background = '#2e7d32';
-                if (installText) installText.textContent = 'Install App';
-                
-                installBtn.onclick = async () => {
-                    if (!deferredPrompt) return;
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        installBtn.style.display = 'none';
-                        if (installOptions) installOptions.style.display = 'none';
-                        NotificationManager.add('App installed!', 'success');
-                    }
-                    deferredPrompt = null;
-                };
-            });
-        }
-
         // ===== LOGIN =====
         function showAdminLogin() {
             const form = document.getElementById('loginForm');
@@ -978,12 +871,6 @@ select option {
                     <div class="card" style="max-width:400px;margin:20px auto;">
                         <h2 style="margin-bottom:20px;text-align:center;">Login</h2>
                         
-                        <!-- INSTALL BUTTON - VISIBLE ON LOGIN SCREEN -->
-                        <button id="installButton" style="display:none; width:100%; padding:14px; border-radius:12px; color:white; font-weight:600; border:none; margin-bottom:16px; background:#2e7d32;">
-                            <i class="fas fa-download"></i> <span id="installButtonText">Install App</span>
-                        </button>
-                        <div id="installOptions" style="display:none; margin-bottom:16px;"></div>
-                        
                         <div style="display:flex;gap:12px;margin-bottom:20px;">
                             <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:#1e88e5;">👑 Admin</button>
                             <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:#90caf9;">👤 Member</button>
@@ -1001,7 +888,6 @@ select option {
             `;
             showAdminLogin();
             updateNetworkStatus();
-            setTimeout(setupInstallButton, 500);
         }
 
         // ===== ADMIN DASHBOARD =====
