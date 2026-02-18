@@ -543,6 +543,7 @@ select option {
             appId: "1:722000008713:web:5322f5a668bfcd6ff4cad8"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
@@ -708,64 +709,77 @@ select option {
             }
         };
 
-        // ===== FIREBASE HELPERS =====
+        // ===== FIREBASE HELPERS - FIXED FOR SUBCOLLECTION STRUCTURE =====
         async function loadMembers() {
             try {
-                const docRef = db.collection('groups').doc('main');
-                const docSnap = await docRef.get();
-                if (docSnap.exists) {
-                    members = docSnap.data().members || [];
+                console.log('Loading members from subcollection...');
+                
+                // READ FROM SUBCOLLECTION, NOT ARRAY FIELD!
+                const membersSnapshot = await db.collection('groups').doc('main').collection('members').get();
+                
+                if (!membersSnapshot.empty) {
+                    members = membersSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    console.log(`✅ Loaded ${members.length} members from subcollection:`, members);
                 } else {
-                    members = [
-                        { 
-                            id: "1", 
-                            name: "Stephen Mabena", 
-                            phone: "0977123456", 
-                            savings: 40747.52, 
-                            loanPrincipal: 4600, 
-                            membershipPaid: true, 
-                            socialPaid: true, 
-                            pin: '3456',
-                            transactions: [
-                                { type: 'savings', amount: 40747.52, date: new Date().toISOString(), note: 'Initial balance' },
-                                { type: 'loan', amount: 4600, date: new Date().toISOString(), note: 'Existing loan' }
-                            ]
-                        },
-                        { 
-                            id: "2", 
-                            name: "Peter Mwiinga", 
-                            phone: "0977654321", 
-                            savings: 27500, 
-                            loanPrincipal: 16500, 
-                            membershipPaid: true, 
-                            socialPaid: true, 
-                            pin: '4321',
-                            transactions: [
-                                { type: 'savings', amount: 27500, date: new Date().toISOString(), note: 'Initial balance' },
-                                { type: 'loan', amount: 16500, date: new Date().toISOString(), note: 'Existing loan' }
-                            ]
-                        }
-                    ];
+                    console.log('⚠️ No members found in subcollection - starting with empty array');
+                    members = [];
                 }
+                
+                // Also save to localStorage for offline access
                 localStorage.setItem('members', JSON.stringify(members));
+                
             } catch (e) {
+                console.error('❌ Error loading members from Firestore:', e);
+                
+                // Fallback to localStorage if offline
                 const local = localStorage.getItem('members');
-                members = local ? JSON.parse(local) : [];
+                if (local) {
+                    members = JSON.parse(local);
+                    console.log(`📱 Loaded ${members.length} members from localStorage (offline mode)`);
+                } else {
+                    console.log('ℹ️ No members in localStorage either');
+                    members = [];
+                }
             }
         }
 
         async function saveMembers() {
+            // Always save to localStorage first
             localStorage.setItem('members', JSON.stringify(members));
-            if (!navigator.onLine) return false;
+            
+            // If offline, don't try Firestore
+            if (!navigator.onLine) {
+                console.log('📱 Offline - saved to localStorage only');
+                return false;
+            }
+            
             try {
-                await db.collection('groups').doc('main').set({ members });
+                console.log('Saving members to Firestore subcollection...');
+                
+                // Save each member as a document in the subcollection
+                const batch = db.batch();
+                const membersRef = db.collection('groups').doc('main').collection('members');
+                
+                members.forEach(member => {
+                    const memberRef = membersRef.doc(member.id);
+                    // Remove id from the data to avoid duplication
+                    const { id, ...memberData } = member;
+                    batch.set(memberRef, memberData);
+                });
+                
+                await batch.commit();
+                console.log('✅ Members saved successfully to Firestore');
                 return true;
+                
             } catch (e) {
+                console.error('❌ Error saving members to Firestore:', e);
                 return false;
             }
         }
 
-        // ===== UI HELPERS =====
         function fmtDate(iso) {
             try {
                 return new Date(iso).toLocaleDateString('en-ZM', { 
@@ -894,10 +908,27 @@ select option {
         function showMemberLogin() {
             const form = document.getElementById('loginForm');
             if (form) {
+                // Check if members array has data
+                console.log('Showing member login with members:', members);
+                
+                if (!members || members.length === 0) {
+                    form.innerHTML = `
+                        <div style="padding:20px; text-align:center; color:var(--text-secondary);">
+                            <i class="fas fa-spinner fa-spin" style="font-size:24px; margin-bottom:10px;"></i>
+                            <p>Loading members...</p>
+                        </div>
+                    `;
+                    // Try to reload members
+                    loadMembers().then(() => {
+                        showMemberLogin(); // Recursive call after loading
+                    });
+                    return;
+                }
+                
                 form.innerHTML = `
                     <select id="memberSelect">
                         <option value="">-- Select Your Name --</option>
-                        ${members.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}
+                        ${members.map(m => `<option value="${m.id}">${m.name || 'Unknown'}</option>`).join('')}
                     </select>
                     <input type="password" id="memberPass" placeholder="PIN (last 4 digits)">
                     <button class="btn" onclick="login('member')" style="background:#26a69a;">👤 MEMBER LOGIN</button>
@@ -1943,7 +1974,7 @@ select option {
         (async () => {
             NotificationManager.init();
             ThemeManager.init();
-            await loadMembers();
+            await loadMembers();  // Now properly loads from subcollection!
             updateNetworkStatus();
             showLoginScreen();
             
