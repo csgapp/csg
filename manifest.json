@@ -1,0 +1,23 @@
+{
+  "name": "Savers Group",
+  "short_name": "Savers",
+  "description": "Digital Savings System for Chibombo Savers Group",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e88e5",
+  "theme_color": "#1e88e5",
+  "icons": [
+    {
+      "src": "assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
