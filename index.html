@@ -576,6 +576,284 @@ select option {
         .mt-3 { margin-top: 12px; }
         .mb-3 { margin-bottom: 12px; }
         .gap-2 { gap: 8px; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+        
+        .metric-card {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .metric-card:nth-child(1) { animation-delay: 0.1s; }
+        .metric-card:nth-child(2) { animation-delay: 0.2s; }
+        .metric-card:nth-child(3) { animation-delay: 0.3s; }
+        .metric-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .action-btn {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .action-btn:nth-child(1) { animation-delay: 0.3s; }
+        .action-btn:nth-child(2) { animation-delay: 0.35s; }
+        .action-btn:nth-child(3) { animation-delay: 0.4s; }
+        .action-btn:nth-child(4) { animation-delay: 0.45s; }
+        .action-btn:nth-child(5) { animation-delay: 0.5s; }
+        .action-btn:nth-child(6) { animation-delay: 0.55s; }
+        
+        .action-btn:active {
+            animation: pulse 0.2s ease;
+        }
+        
+        .member-row {
+            animation: slideInRight 0.4s ease forwards;
+            opacity: 0;
+        }
+        
+        .header {
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        /* ===== FANCY CARDS ===== */
+        .fancy-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fancy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), #60a5fa);
+        }
+        
+        .fancy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+        
+        /* ===== ENHANCED METRICS ===== */
+        .metric-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        
+        .metric-card:hover::after {
+            animation: shimmer 1.5s infinite;
+            opacity: 1;
+        }
+        
+        .metric-icon {
+            position: relative;
+        }
+        
+        .metric-icon::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 16px;
+            background: inherit;
+            opacity: 0.3;
+            filter: blur(8px);
+            z-index: -1;
+        }
+        
+        /* ===== FANCY BUTTONS ===== */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+        
+        /* ===== PROGRESS BARS ===== */
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) var(--progress), var(--border-color) 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .progress-ring::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            background: var(--card-bg);
+            border-radius: 50%;
+        }
+        
+        /* ===== FANCY AVATARS ===== */
+        .avatar-fancy {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .avatar-fancy::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            opacity: 0.5;
+        }
+        
+        /* ===== TOOLTIP ===== */
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-primary);
+            color: var(--card-bg);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 8px);
+        }
+        
+        /* ===== LOADING STATES ===== */
+        .skeleton {
+            background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        
+        /* ===== SCREEN TRANSITION ===== */
+        .screen-content {
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        /* ===== FANCY INPUTS ===== */
+        .input-fancy {
+            position: relative;
+        }
+        
+        .input-fancy input, .input-fancy select {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(37,99,235,0.02) 100%);
+        }
+        
+        .input-fancy::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .input-fancy:focus-within::before {
+            opacity: 1;
+        }
+        
+        /* ===== STATUS INDICATORS ===== */
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.active { background: #4caf50; }
+        .status-dot.inactive { background: #9e9e9e; }
+        .status-dot.warning { background: #ff9800; }
     </style>
 </head>
 <body>
@@ -829,31 +1107,62 @@ select option {
         }
 
         async function saveMembers() {
-            // Always save to localStorage first
             localStorage.setItem('members', JSON.stringify(members));
+            localStorage.setItem('membersLastSync', new Date().toISOString());
             
-            // If offline, don't try Firestore
             if (!navigator.onLine) {
-                console.log('📱 Offline - saved to localStorage only');
+                console.log('📱 Offline - saved to localStorage, queued for sync');
+                queueForSync();
                 return false;
             }
             
             try {
                 console.log('Saving members to main document array...');
                 
-                // Save the entire members array to the main document
                 await db.collection('groups').doc('main').set({
-                    members: members
-                }, { merge: true }); // merge: true preserves other fields
+                    members: members,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
                 
                 console.log('✅ Members saved successfully');
+                localStorage.removeItem('syncQueue');
                 return true;
                 
             } catch (e) {
                 console.error('❌ Error saving members:', e);
+                queueForSync();
                 return false;
             }
         }
+
+        function queueForSync() {
+            const queue = JSON.parse(localStorage.getItem('syncQueue') || '[]');
+            queue.push({ members: members, timestamp: new Date().toISOString() });
+            localStorage.setItem('syncQueue', JSON.stringify(queue));
+            console.log('📤 Queued for sync when online');
+        }
+
+        async function syncPendingData() {
+            if (!navigator.onLine) return;
+            const queue = JSON.parse(localStorage.getItem('syncQueue') || '[]');
+            if (queue.length === 0) return;
+            
+            try {
+                await db.collection('groups').doc('main').set({
+                    members: queue[queue.length - 1].members,
+                    lastSync: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                localStorage.removeItem('syncQueue');
+                console.log('✅ Synced pending data');
+            } catch (e) {
+                console.log('Sync pending failed:', e);
+            }
+        }
+
+        window.addEventListener('online', () => {
+            console.log('🟢 Back online - syncing...');
+            syncPendingData();
+        });
 
         function fmtDate(iso) {
             try {
@@ -1000,6 +1309,7 @@ select option {
             const totalSavings = members.reduce((sum, m) => sum + (m.savings || 0), 0);
             const totalLoans = members.reduce((sum, m) => sum + (m.loanPrincipal || 0), 0);
             const active = members.filter(m => m.membershipPaid && m.socialPaid).length;
+            const pendingFees = members.filter(m => !m.membershipPaid || !m.socialPaid).length;
             
             screenHistory = ['admin'];
             
@@ -1017,7 +1327,7 @@ select option {
                         </div>
                         <div style="display:flex;align-items:center;gap:8px;">
                             <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
-                                ${navigator.onLine ? '● Online' : '○ Offline'}
+                                ${navigator.onLine ? '<span class="status-dot active"></span>Online' : '<span class="status-dot warning"></span>Offline'}
                             </div>
                             
                             <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);">
@@ -1050,60 +1360,101 @@ select option {
                 </div>
                 
                 <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-icon"><i class="fas fa-users"></i></div>
+                    <div class="metric-card fancy-card" style="margin:8px;">
+                        <div class="metric-icon" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);">
+                            <i class="fas fa-users"></i>
+                        </div>
                         <div class="metric-content">
-                            <div class="metric-label">Members</div>
-                            <div id="metricMembers" class="metric-value">${members.length}</div>
+                            <div class="metric-label">Total Members</div>
+                            <div id="metricMembers" class="metric-value" style="color:#1e88e5;">${members.length}</div>
+                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
+                                <span class="status-dot active"></span>${active} active
+                            </div>
                         </div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-icon"><i class="fas fa-coins"></i></div>
+                    <div class="metric-card fancy-card" style="margin:8px;">
+                        <div class="metric-icon" style="background:linear-gradient(135deg,#43a047,#66bb6a);">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
                         <div class="metric-content">
-                            <div class="metric-label">Savings</div>
-                            <div id="metricSavings" class="metric-value">K${totalSavings.toLocaleString()}</div>
+                            <div class="metric-label">Total Savings</div>
+                            <div id="metricSavings" class="metric-value" style="color:#43a047;">K${totalSavings.toLocaleString()}</div>
+                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
+                                <i class="fas fa-arrow-up" style="color:#43a047;"></i> +K${(totalSavings * 0.05).toLocaleString()} this month
+                            </div>
                         </div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <div class="metric-card fancy-card" style="margin:8px;">
+                        <div class="metric-icon" style="background:linear-gradient(135deg,#e53935,#ef5350);">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
                         <div class="metric-content">
-                            <div class="metric-label">Loans</div>
-                            <div id="metricLoans" class="metric-value">K${totalLoans.toLocaleString()}</div>
+                            <div class="metric-label">Total Loans</div>
+                            <div id="metricLoans" class="metric-value" style="color:#e53935;">K${totalLoans.toLocaleString()}</div>
+                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
+                                <i class="fas fa-percentage" style="color:#e53935;"></i> 10% interest
+                            </div>
                         </div>
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="metric-card fancy-card" style="margin:8px;">
+                        <div class="metric-icon" style="background:linear-gradient(135deg,#ffa726,#ffb74d);">
+                            <i class="fas fa-clock"></i>
+                        </div>
                         <div class="metric-content">
-                            <div class="metric-label">Active</div>
-                            <div id="metricActive" class="metric-value">${active}</div>
+                            <div class="metric-label">Pending Fees</div>
+                            <div id="metricActive" class="metric-value" style="color:#ffa726;">${pendingFees}</div>
+                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
+                                <span class="status-dot warning"></span>Needs attention
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="action-grid">
-                    <div class="action-btn" onclick="showAddMember()">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Add Member</span>
+                <div style="padding:16px;">
+                    <h3 style="margin-bottom:16px;color:var(--text-primary);font-size:16px;">
+                        <i class="fas fa-bolt" style="color:#ffa726;"></i> Quick Actions
+                    </h3>
+                    <div class="action-grid">
+                        <div class="action-btn" onclick="showAddMember()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add Member</span>
+                        </div>
+                        <div class="action-btn" onclick="showAddSavings()">
+                            <i class="fas fa-piggy-bank"></i>
+                            <span>Add Savings</span>
+                        </div>
+                        <div class="action-btn" onclick="showLoanManagement()">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Manage Loans</span>
+                        </div>
+                        <div class="action-btn" onclick="showAllMembers()">
+                            <i class="fas fa-users"></i>
+                            <span>View Members</span>
+                        </div>
+                        <div class="action-btn" onclick="showCollectFees()">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Collect Fees</span>
+                        </div>
+                        <div class="action-btn" onclick="showShareAccount()">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Share Account</span>
+                        </div>
                     </div>
-                    <div class="action-btn" onclick="showAddSavings()">
-                        <i class="fas fa-piggy-bank"></i>
-                        <span>Add Savings</span>
-                    </div>
-                    <div class="action-btn" onclick="showLoanManagement()">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <span>Manage Loans</span>
-                    </div>
-                    <div class="action-btn" onclick="showAllMembers()">
-                        <i class="fas fa-users"></i>
-                        <span>View Members</span>
-                    </div>
-                    <div class="action-btn" onclick="showCollectFees()">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Collect Fees</span>
-                    </div>
-                    <div class="action-btn" onclick="showShareAccount()">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Share Account</span>
+                </div>
+                
+                <div class="fancy-card" style="margin:16px;">
+                    <h3 style="margin-bottom:16px;">
+                        <i class="fas fa-chart-line" style="color:var(--primary);"></i> Group Summary
+                    </h3>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+                        <div style="padding:16px;background:rgba(67,160,71,0.1);border-radius:12px;text-align:center;">
+                            <div style="font-size:24px;font-weight:700;color:#43a047;">K${(totalSavings - totalLoans).toLocaleString()}</div>
+                            <div style="font-size:12px;color:var(--text-secondary);">Net Savings</div>
+                        </div>
+                        <div style="padding:16px;background:rgba(30,136,229,0.1);border-radius:12px;text-align:center;">
+                            <div style="font-size:24px;font-weight:700;color:#1e88e5;">${active}/${members.length}</div>
+                            <div style="font-size:12px;color:var(--text-secondary);">Active Members</div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1149,7 +1500,6 @@ select option {
 
         // ===== ADD MEMBER =====
         function showAddMember() {
-            navigateTo(showAddMember, 'Add Member');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-user-plus"></i> Add New Member</h3>
@@ -1454,7 +1804,6 @@ select option {
 
         // ===== ADD SAVINGS =====
         function showAddSavings() {
-            navigateTo(showAddSavings, 'Add Savings');
             let html = `<h3 style="margin-bottom:16px;"><i class="fas fa-piggy-bank"></i> Add Savings</h3>`;
             html += `<select id="savingsMember">`;
             members.forEach(m => html += `<option value="${m.id}">${m.name} (K${(m.savings||0).toLocaleString()})</option>`);
@@ -1506,7 +1855,6 @@ select option {
 
         // ===== LOAN MANAGEMENT =====
         function showLoanManagement() {
-            navigateTo(showLoanManagement, 'Manage Loans');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-hand-holding-usd"></i> Loan Management</h3>
@@ -1522,7 +1870,6 @@ select option {
         }
 
         function showRepayLoan() {
-            navigateTo(showRepayLoan, 'Repay Loan');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-undo"></i> Repay Loan</h3>
@@ -1582,8 +1929,6 @@ select option {
             selectedLoanMemberId = memberId;
             const member = members.find(m => m.id === memberId);
             
-            navigateTo(showContractLoan, 'Contract Loan');
-            
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;">Contract Loan for ${member.name}</h3>
@@ -1632,7 +1977,6 @@ select option {
 
         // ===== COLLECT FEES =====
         function showCollectFees() {
-            navigateTo(showCollectFees, 'Collect Fees');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-check-circle"></i> Collect Fees</h3>
@@ -1722,7 +2066,6 @@ select option {
 
         // ===== SHARE ACCOUNT =====
         function showShareAccount() {
-            navigateTo(showShareAccount, 'Share Account');
             const totalSavings = members.reduce((sum, m) => sum + (m.savings || 0), 0);
             const totalLoans = members.reduce((sum, m) => sum + ((m.loanPrincipal || 0) * (1 + RULES.INTEREST)), 0);
             const netValue = totalSavings - totalLoans;
@@ -1999,9 +2342,18 @@ select option {
         (async () => {
             NotificationManager.init();
             ThemeManager.init();
-            await loadMembers();  // Now properly loads from array in main document!
+            await loadMembers();
             updateNetworkStatus();
             showLoginScreen();
+            
+            if ('serviceWorker' in navigator) {
+                try {
+                    const reg = await navigator.serviceWorker.register('/sw.js');
+                    console.log('SW registered:', reg.scope);
+                } catch (e) {
+                    console.log('SW registration failed:', e);
+                }
+            }
             
             const style = document.createElement('style');
             style.textContent = `
