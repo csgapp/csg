@@ -611,9 +611,14 @@ select option {
 
         // ===== SCREEN HISTORY =====
         function navigateTo(screenFn, screenName) {
-            screenHistory.push(screenName);
-            updateNavButtons();
-            screenFn();
+            const last = screenHistory[screenHistory.length - 1];
+            if (last === screenName) {
+                screenFn();
+            } else {
+                screenHistory.push(screenName);
+                updateNavButtons();
+                screenFn();
+            }
         }
         
         function goBack() {
