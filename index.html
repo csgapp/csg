@@ -611,8 +611,6 @@ select option {
 
         // ===== SCREEN HISTORY =====
         function navigateTo(screenFn, screenName) {
-            const last = screenHistory[screenHistory.length - 1];
-            if (last === screenName) return;
             screenHistory.push(screenName);
             updateNavButtons();
             screenFn();
@@ -629,10 +627,8 @@ select option {
                     showMemberDashboard(currentUser.id);
                 } else if (prev === 'login') {
                     logout();
-                } else if (prev === 'admin') {
+                } else {
                     showAdminDashboard();
-                } else if (prev === 'member' && currentUser) {
-                    showMemberDashboard(currentUser.id);
                 }
             } else {
                 logout();
@@ -641,20 +637,8 @@ select option {
         
         function updateNavButtons() {
             const backBtn = document.getElementById('backBtn');
-            const navTitle = document.getElementById('navTitle');
             if (backBtn) {
                 backBtn.style.display = screenHistory.length > 1 ? 'flex' : 'none';
-            }
-            if (navTitle) {
-                const current = screenHistory[screenHistory.length - 1] || '';
-                if (current === 'admin') navTitle.textContent = 'Dashboard';
-                else if (current === 'member') navTitle.textContent = 'My Account';
-                else if (current.includes('Add')) navTitle.textContent = current;
-                else if (current.includes('View')) navTitle.textContent = current;
-                else if (current.includes('Loan')) navTitle.textContent = 'Loans';
-                else if (current.includes('Fee')) navTitle.textContent = 'Fees';
-                else if (current.includes('Member')) navTitle.textContent = current;
-                else navTitle.textContent = '';
             }
         }
 
@@ -1252,7 +1236,8 @@ select option {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
             
-            navigateTo(() => viewMember(memberId), `Member: ${member.name.split(' ')[0]}`);
+            screenHistory.push(`Member: ${member.name.split(' ')[0]}`);
+            updateNavButtons();
             
             const txs = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
             
