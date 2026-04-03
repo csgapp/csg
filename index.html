@@ -44,36 +44,40 @@
         }
         
         :root {
-            --primary: #1e88e5;
-            --primary-dark: #1565c0;
-            --success: #2e7d32;
-            --warning: #ff9800;
-            --danger: #f44336;
-            --purple: #9c27b0;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --success: #16a34a;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --purple: #9333ea;
             --gray-100: #f8f9fa;
             --gray-200: #e9ecef;
             --gray-300: #dee2e6;
             --gray-600: #6c757d;
             --gray-900: #212529;
             
-            --bg-primary: #e3f2fd;
-            --bg-secondary: white;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --border-color: #dee2e6;
-            --card-bg: white;
-            --header-gradient: linear-gradient(135deg, #1e88e5, #64b5f6);
-            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --bg-primary: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+            --bg-secondary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --card-bg: #ffffff;
+            --header-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+            --shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+            --shadow-lg: 0 8px 24px rgba(37, 99, 235, 0.18);
         }
         
         [data-theme="dark"] {
-            --bg-primary: #121212;
-            --bg-secondary: #1e1e1e;
-            --text-primary: #f8f9fa;
-            --text-secondary: #adb5bd;
-            --border-color: #495057;
-            --card-bg: #2d2d2d;
-            --header-gradient: linear-gradient(135deg, #0d47a1, #1e88e5);
+            --bg-primary: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+            --bg-secondary: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
+            --card-bg: #374151;
+            --header-gradient: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
         
         body {
@@ -141,12 +145,38 @@ select option {
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: var(--shadow);
         }
         
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
         }
         
         .header-title h1 {
@@ -158,6 +188,15 @@ select option {
         .header-title p {
             font-size: 0.75rem;
             opacity: 0.9;
+        }
+        
+        .nav-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.85;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
         }
         
         /* ===== MOBILE MENU ===== */
@@ -243,6 +282,13 @@ select option {
             display: flex;
             align-items: center;
             gap: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+        
+        .metric-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
         
         .metric-icon {
@@ -305,6 +351,13 @@ select option {
             gap: 8px;
             cursor: pointer;
             color: var(--text-primary);
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
         }
         
         .action-btn i {
@@ -321,6 +374,7 @@ select option {
         .action-btn:active {
             background: var(--primary);
             color: white;
+            transform: translateY(0);
         }
         
         .action-btn:active i {
@@ -337,6 +391,12 @@ select option {
             display: flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.2s;
+        }
+        
+        .member-row:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
         }
         
         .avatar {
@@ -381,6 +441,7 @@ select option {
             padding: 16px;
             margin: 16px;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
         }
         
         input, select, textarea {
@@ -467,6 +528,12 @@ select option {
             border: 1px solid var(--border-color);
             border-radius: 12px;
             margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+        
+        .transaction-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow);
         }
         
         .transaction-icon {
@@ -533,6 +600,7 @@ select option {
         let members = [];
         let currentUser = null;
         let selectedLoanMemberId = null;
+        let screenHistory = [];
         
         const RULES = {
             MIN_SAVINGS: 200,
@@ -540,6 +608,53 @@ select option {
             SOCIAL_FUND: 100,
             INTEREST: 0.10
         };
+
+        // ===== SCREEN HISTORY =====
+        function navigateTo(screenFn, screenName) {
+            screenHistory.push(screenName);
+            updateNavButtons();
+            screenFn();
+        }
+        
+        function goBack() {
+            if (screenHistory.length > 1) {
+                screenHistory.pop();
+                const prev = screenHistory[screenHistory.length - 1];
+                updateNavButtons();
+                if (prev === 'admin' && currentUser?.type === 'admin') {
+                    showAdminDashboard();
+                } else if (prev === 'member' && currentUser?.type === 'member') {
+                    showMemberDashboard(currentUser.id);
+                } else if (prev === 'login') {
+                    logout();
+                } else if (prev === 'admin') {
+                    showAdminDashboard();
+                } else if (prev === 'member' && currentUser) {
+                    showMemberDashboard(currentUser.id);
+                }
+            } else {
+                logout();
+            }
+        }
+        
+        function updateNavButtons() {
+            const backBtn = document.getElementById('backBtn');
+            const navTitle = document.getElementById('navTitle');
+            if (backBtn) {
+                backBtn.style.display = screenHistory.length > 1 ? 'flex' : 'none';
+            }
+            if (navTitle) {
+                const current = screenHistory[screenHistory.length - 1] || '';
+                if (current === 'admin') navTitle.textContent = 'Dashboard';
+                else if (current === 'member') navTitle.textContent = 'My Account';
+                else if (current.includes('Add')) navTitle.textContent = current;
+                else if (current.includes('View')) navTitle.textContent = current;
+                else if (current.includes('Loan')) navTitle.textContent = 'Loans';
+                else if (current.includes('Fee')) navTitle.textContent = 'Fees';
+                else if (current.includes('Member')) navTitle.textContent = current;
+                else navTitle.textContent = '';
+            }
+        }
 
         // ===== NOTIFICATION MANAGER =====
         const NotificationManager = {
@@ -828,6 +943,7 @@ select option {
                 if (user === 'admin' && pass === 'ChiSave') {
                     currentUser = { type: 'admin', name: 'Admin' };
                     NotificationManager.add('Welcome back, Admin!', 'success');
+                    screenHistory = ['login', 'admin'];
                     showAdminDashboard();
                 } else {
                     alert('Wrong username or password');
@@ -841,6 +957,7 @@ select option {
                 if (member && pass === expectedPin) {
                     currentUser = { type: 'member', name: member.name, id: member.id };
                     NotificationManager.add(`Welcome back, ${member.name}!`, 'success');
+                    screenHistory = ['login', 'member'];
                     showMemberDashboard(member.id);
                 } else {
                     alert('Wrong PIN');
@@ -851,10 +968,12 @@ select option {
         function logout() {
             currentUser = null;
             closeAllMenus();
+            screenHistory = ['login'];
             showLoginScreen();
         }
 
         function showLoginScreen() {
+            screenHistory = ['login'];
             document.getElementById('app').innerHTML = `
                 <div class="header">
                     <div class="header-content">
@@ -872,8 +991,8 @@ select option {
                         <h2 style="margin-bottom:20px;text-align:center;">Login</h2>
                         
                         <div style="display:flex;gap:12px;margin-bottom:20px;">
-                            <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:#1e88e5;">👑 Admin</button>
-                            <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:#90caf9;">👤 Member</button>
+                            <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:var(--primary);">👑 Admin</button>
+                            <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:var(--primary-light);">👤 Member</button>
                         </div>
                         <div id="loginForm">
                             <input type="text" id="username" value="admin" placeholder="Admin username">
@@ -896,16 +1015,27 @@ select option {
             const totalLoans = members.reduce((sum, m) => sum + (m.loanPrincipal || 0), 0);
             const active = members.filter(m => m.membershipPaid && m.socialPaid).length;
             
+            screenHistory = ['admin'];
+            
             document.getElementById('app').innerHTML = `
                 <div class="header">
                     <div class="header-content">
-                        <div class="header-title">
-                            <h1>💰 SAVERS GROUP</h1>
-                            <p>Admin Dashboard</p>
+                        <div class="header-left">
+                            <div class="nav-btn" id="backBtn" onclick="goBack()" style="display:none;">
+                                <i class="fas fa-arrow-left"></i>
+                            </div>
+                            <div class="header-title">
+                                <h1>💰 SAVERS GROUP</h1>
+                                <p>Admin Dashboard</p>
+                            </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:8px;">
                             <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
                                 ${navigator.onLine ? '● Online' : '○ Offline'}
+                            </div>
+                            
+                            <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);">
+                                <i class="fas fa-door-open"></i>
                             </div>
                             
                             <div class="menu-toggle" onclick="toggleAdminMenu(event)">
@@ -1033,6 +1163,7 @@ select option {
 
         // ===== ADD MEMBER =====
         function showAddMember() {
+            navigateTo(showAddMember, 'Add Member');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-user-plus"></i> Add New Member</h3>
@@ -1049,7 +1180,7 @@ select option {
                     
                     <div style="display:flex;gap:12px;">
                         <button class="btn" onclick="addMember()" style="flex:1;">💾 Save Member</button>
-                        <button class="btn" onclick="showAdminDashboard()" style="flex:1;background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
                     </div>
                 </div>
             `;
@@ -1080,11 +1211,12 @@ select option {
             members.push(newMember);
             await saveMembers();
             NotificationManager.add('Member added successfully!', 'success');
-            showAdminDashboard();
+            goBack();
         }
 
         // ===== VIEW ALL MEMBERS =====
         function showAllMembers() {
+            navigateTo(showAllMembers, 'View Members');
             let html = `<h3 style="margin-bottom:16px;padding:0 16px;">All Members (${members.length})</h3>`;
             html += `<div style="padding:0 16px;">`;
             
@@ -1116,6 +1248,8 @@ select option {
         function viewMember(memberId) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
+            
+            navigateTo(() => viewMember(memberId), `Member: ${member.name.split(' ')[0]}`);
             
             const txs = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
             
@@ -1183,7 +1317,7 @@ select option {
                         <button class="btn-sm" onclick="showEditMember('${member.id}')" style="background:#ff9800;">
                             <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button class="btn-sm" onclick="showAllMembers()" style="background:#666;">↩️ Back</button>
+                        <button class="btn-sm" onclick="goBack()" style="background:#666;">↩️ Back</button>
                     </div>
                     
                     ${txHtml}
@@ -1332,6 +1466,7 @@ select option {
 
         // ===== ADD SAVINGS =====
         function showAddSavings() {
+            navigateTo(showAddSavings, 'Add Savings');
             let html = `<h3 style="margin-bottom:16px;"><i class="fas fa-piggy-bank"></i> Add Savings</h3>`;
             html += `<select id="savingsMember">`;
             members.forEach(m => html += `<option value="${m.id}">${m.name} (K${(m.savings||0).toLocaleString()})</option>`);
@@ -1340,7 +1475,7 @@ select option {
             html += `<input type="date" id="savingsDate">`;
             html += `<div style="display:flex;gap:12px;margin-top:16px;">`;
             html += `<button class="btn" onclick="processSavings()" style="flex:1;">✅ Add</button>`;
-            html += `<button class="btn" onclick="showAdminDashboard()" style="flex:1;background:#666;">↩️ Cancel</button>`;
+            html += `<button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>`;
             html += `</div>`;
             
             document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
@@ -1383,6 +1518,7 @@ select option {
 
         // ===== LOAN MANAGEMENT =====
         function showLoanManagement() {
+            navigateTo(showLoanManagement, 'Manage Loans');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-hand-holding-usd"></i> Loan Management</h3>
@@ -1398,6 +1534,7 @@ select option {
         }
 
         function showRepayLoan() {
+            navigateTo(showRepayLoan, 'Repay Loan');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-undo"></i> Repay Loan</h3>
@@ -1407,7 +1544,7 @@ select option {
                     <input type="number" id="repayAmount" value="0" min="0" step="100" placeholder="Amount to repay">
                     <div style="display:flex;gap:12px;margin-top:20px;">
                         <button class="btn" onclick="repayLoan()" style="flex:1;">✅ Repay</button>
-                        <button class="btn" onclick="showLoanManagement()" style="flex:1;background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
                     </div>
                 </div>
             `;
@@ -1457,6 +1594,8 @@ select option {
             selectedLoanMemberId = memberId;
             const member = members.find(m => m.id === memberId);
             
+            navigateTo(showContractLoan, 'Contract Loan');
+            
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;">Contract Loan for ${member.name}</h3>
@@ -1467,7 +1606,7 @@ select option {
                     </div>
                     <div style="display:flex;gap:12px;">
                         <button class="btn" onclick="contractLoan()" style="flex:1;">✅ Contract</button>
-                        <button class="btn" onclick="showLoanManagement()" style="flex:1;background:#666;">↩️ Cancel</button>
+                        <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
                     </div>
                 </div>
             `;
@@ -1505,6 +1644,7 @@ select option {
 
         // ===== COLLECT FEES =====
         function showCollectFees() {
+            navigateTo(showCollectFees, 'Collect Fees');
             document.getElementById('contentArea').innerHTML = `
                 <div class="card">
                     <h3 style="margin-bottom:16px;"><i class="fas fa-check-circle"></i> Collect Fees</h3>
@@ -1594,6 +1734,7 @@ select option {
 
         // ===== SHARE ACCOUNT =====
         function showShareAccount() {
+            navigateTo(showShareAccount, 'Share Account');
             const totalSavings = members.reduce((sum, m) => sum + (m.savings || 0), 0);
             const totalLoans = members.reduce((sum, m) => sum + ((m.loanPrincipal || 0) * (1 + RULES.INTEREST)), 0);
             const netValue = totalSavings - totalLoans;
@@ -1688,16 +1829,29 @@ select option {
                 `;
             });
             
+            if (screenHistory[screenHistory.length - 1] !== 'member') {
+                screenHistory.push('member');
+            }
+            
             document.getElementById('app').innerHTML = `
                 <div class="header">
                     <div class="header-content">
-                        <div class="header-title">
-                            <h1>💰 SAVERS GROUP</h1>
-                            <p>${member.name}</p>
+                        <div class="header-left">
+                            <div class="nav-btn" id="backBtn" onclick="goBack()" style="display:none;">
+                                <i class="fas fa-arrow-left"></i>
+                            </div>
+                            <div class="header-title">
+                                <h1>💰 SAVERS GROUP</h1>
+                                <p>${member.name}</p>
+                            </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:8px;">
                             <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
                                 ${navigator.onLine ? '● Online' : '○ Offline'}
+                            </div>
+                            
+                            <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);">
+                                <i class="fas fa-door-open"></i>
                             </div>
                             
                             <div class="menu-toggle" onclick="toggleMemberMenu(event)">
