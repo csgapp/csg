@@ -612,13 +612,10 @@ select option {
         // ===== SCREEN HISTORY =====
         function navigateTo(screenFn, screenName) {
             const last = screenHistory[screenHistory.length - 1];
-            if (last === screenName) {
-                screenFn();
-            } else {
-                screenHistory.push(screenName);
-                updateNavButtons();
-                screenFn();
-            }
+            if (last === screenName) return;
+            screenHistory.push(screenName);
+            updateNavButtons();
+            screenFn();
         }
         
         function goBack() {
@@ -1221,7 +1218,8 @@ select option {
 
         // ===== VIEW ALL MEMBERS =====
         function showAllMembers() {
-            navigateTo(showAllMembers, 'View Members');
+            screenHistory.push('View Members');
+            updateNavButtons();
             let html = `<h3 style="margin-bottom:16px;padding:0 16px;">All Members (${members.length})</h3>`;
             html += `<div style="padding:0 16px;">`;
             
@@ -1802,6 +1800,11 @@ select option {
             const memberNet = memberSavingsIncl - memberLoanIncl;
             
             const transactions = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            if (screenHistory[screenHistory.length - 1] !== 'member') {
+                screenHistory.push('member');
+                updateNavButtons();
+            }
             
             let txHtml = '';
             transactions.forEach(t => {
