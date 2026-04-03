@@ -1865,9 +1865,52 @@ select option {
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
                         <button class="btn" onclick="showContractLoan()">➕ Contract Loan</button>
                         <button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button>
+                        <button class="btn" onclick="showVerifyScroll()" style="grid-column:span 2;background:#7b1fa2;">📜 Verify Scroll</button>
                     </div>
                 </div>
             `;
+        }
+
+        function showVerifyScroll() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="card">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-clipboard-check"></i> Scroll Validation</h3>
+                    <p style="color:var(--text-secondary);margin-bottom:16px;">Enter scroll values to verify against formula:</p>
+                    <p style="font-size:12px;background:#e3f2fd;padding:12px;border-radius:8px;margin-bottom:16px;">
+                        <strong>Formula:</strong> Final Total Loan = Loan Balance + Top-up Loan
+                    </p>
+                    <input type="number" id="scrollLoanBalance" placeholder="Loan Balance (e.g. 18000)">
+                    <input type="number" id="scrollTopUpLoan" placeholder="Top-up Loan (e.g. 32800)">
+                    <input type="number" id="scrollFinalTotal" placeholder="Final Total Loan from scroll">
+                    <button class="btn" onclick="validateScrollEntry()">✅ Validate</button>
+                    <button class="btn" onclick="goBack()" style="background:#666;margin-top:8px;">↩️ Back</button>
+                </div>
+            `;
+        }
+
+        function validateScrollEntry() {
+            const loanBalance = parseFloat(document.getElementById('scrollLoanBalance')?.value) || 0;
+            const topUpLoan = parseFloat(document.getElementById('scrollTopUpLoan')?.value) || 0;
+            const scrollValue = parseFloat(document.getElementById('scrollFinalTotal')?.value) || 0;
+            
+            const expectedFinal = loanBalance + topUpLoan;
+            const isMatch = scrollValue === expectedFinal;
+            
+            const resultDiv = document.getElementById('validationResult');
+            if (!resultDiv) {
+                const container = document.querySelector('.card');
+                const div = document.createElement('div');
+                div.id = 'validationResult';
+                div.style.cssText = 'margin-top:16px;padding:16px;border-radius:12px;text-align:center;font-size:14px;font-weight:600;';
+                container.appendChild(div);
+            }
+            
+            const resultEl = document.getElementById('validationResult');
+            resultEl.style.background = isMatch ? '#e8f5e9' : '#ffebee';
+            resultEl.style.color = isMatch ? '#2e7d32' : '#c62828';
+            resultEl.innerHTML = isMatch 
+                ? `✅ <strong>MATCH!</strong><br>Scroll: K${scrollValue} = Expected: K${expectedFinal}`
+                : `⚠️ <strong>MISMATCH!</strong><br>Scroll shows: K${scrollValue}<br>Formula calculates: K${expectedFinal}`;
         }
 
         function showRepayLoan() {
