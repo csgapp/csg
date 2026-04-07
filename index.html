@@ -99,31 +99,28 @@ select {
     background: var(--card-bg);
     color: var(--text-primary);
     margin-bottom: 12px;
-    appearance: none; /* Removes default styling */
+    appearance: none;
     -webkit-appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23666'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    min-height: 52px; /* Ensures touch target is large enough */
+    min-height: 52px;
     z-index: 10;
 }
 
-/* Ensure dropdown options are visible */
 select option {
     background: var(--card-bg);
     color: var(--text-primary);
     padding: 12px;
-    min-height: 44px; /* Good touch target on mobile */
+    min-height: 44px;
 }
 
-/* Fix for iOS select appearance */
 @supports (-webkit-touch-callout: none) {
     select {
-        font-size: 16px; /* Prevents zoom on focus */
+        font-size: 16px;
         background: var(--card-bg);
     }
 }
-/* Fix for any hidden overflow issues */
 .card, .login-box, .member-card {
     overflow: visible !important;
 }
@@ -1028,9 +1025,10 @@ select option {
                                         <div style="font-size:11px;color:var(--text-secondary);">${new Date(n.timestamp).toLocaleDateString()}</div>
                                     </div>
                                 </div>
-                </div>
-            `;
-        }
+                            </div>
+                        `;
+                    });
+                }
                 
                 container.innerHTML = html;
             }
@@ -1074,7 +1072,6 @@ select option {
             try {
                 console.log('Loading members from main document array...');
                 
-                // READ FROM ARRAY FIELD IN MAIN DOCUMENT
                 const docRef = db.collection('groups').doc('main');
                 const docSnap = await docRef.get();
                 
@@ -1087,13 +1084,11 @@ select option {
                     members = [];
                 }
                 
-                // Also save to localStorage for offline access
                 localStorage.setItem('members', JSON.stringify(members));
                 
             } catch (e) {
                 console.error('❌ Error loading members:', e);
                 
-                // Fallback to localStorage if offline
                 const local = localStorage.getItem('members');
                 if (local) {
                     members = JSON.parse(local);
@@ -1202,7 +1197,6 @@ select option {
         function showMemberLogin() {
             const form = document.getElementById('loginForm');
             if (form) {
-                // Check if members array has data
                 console.log('Showing member login with members:', members);
                 
                 if (!members || members.length === 0) {
@@ -1212,9 +1206,8 @@ select option {
                             <p>Loading members...</p>
                         </div>
                     `;
-                    // Try to reload members
                     loadMembers().then(() => {
-                        showMemberLogin(); // Recursive call after loading
+                        showMemberLogin();
                     });
                     return;
                 }
@@ -1490,7 +1483,6 @@ select option {
             }
         }
 
-        // Close menus when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.menu-dropdown') && !e.target.closest('.menu-toggle') && !e.target.closest('.notification-dropdown')) {
                 closeAllMenus();
@@ -1847,7 +1839,6 @@ select option {
 
             document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
 
-            // Set default date to today
             setTimeout(() => {
                 const dateInput = document.getElementById('savingsDate');
                 if (dateInput && !dateInput.value) {
@@ -1993,7 +1984,6 @@ select option {
                 document.getElementById('loanTotal').textContent = (amount + interest).toFixed(2);
             };
 
-            // Set default date to today
             setTimeout(() => {
                 const dateInput = document.getElementById('loanDate');
                 if (dateInput && !dateInput.value) {
@@ -2176,7 +2166,7 @@ select option {
             document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
         }
 
-        // ===== MEMBER DASHBOARD =====
+        // ===== MEMBER DASHBOARD (FIXED VERSION) =====
         function showMemberDashboard(memberId) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
@@ -2224,10 +2214,6 @@ select option {
                 `;
             });
             
-            if (screenHistory[screenHistory.length - 1] !== 'member') {
-                screenHistory.push('member');
-            }
-            
             document.getElementById('app').innerHTML = `
                 <div class="header">
                     <div class="header-content">
@@ -2262,7 +2248,7 @@ select option {
                                     <i class="fas fa-key"></i>
                                     <span>Change PIN</span>
                                 </div>
-                                <div class="menu-item" onclick="logout()">
+                                <div class="menu-item" onclick="logout();">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Logout</span>
                                 </div>
@@ -2428,3 +2414,5 @@ select option {
             document.head.appendChild(style);
         })();
     </script>
+</body>
+</html>
