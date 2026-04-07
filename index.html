@@ -1028,10 +1028,18 @@ select option {
                                         <div style="font-size:11px;color:var(--text-secondary);">${new Date(n.timestamp).toLocaleDateString()}</div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-                    });
+                </div>
+            `;
+            // Set default date to today
+            setTimeout(() => {
+                const dateInput = document.getElementById('repayDate');
+                if (dateInput && !dateInput.value) {
+                    dateInput.value = new Date().toISOString().split('T')[0];
                 }
+            }, 100);
+        }
+            }, 100);
+        }
                 
                 container.innerHTML = html;
             }
@@ -1295,8 +1303,7 @@ select option {
                             <button class="btn" onclick="login('admin')">🔐 ADMIN LOGIN</button>
                         </div>
                         <div style="text-align:center;margin-top:30px;color:var(--text-secondary);font-size:12px;">
-                            Created by Tha for Chibombo Savers Group<br>
-                            <small style="opacity:0.7">v2.1.0</small>
+                            Created by Tha for Chibombo Savers Group
                         </div>
                     </div>
                 </div>
@@ -1506,6 +1513,7 @@ select option {
                     <h3 style="margin-bottom:16px;"><i class="fas fa-user-plus"></i> Add New Member</h3>
                     <input type="text" id="newName" placeholder="Full Name">
                     <input type="tel" id="newPhone" placeholder="Phone Number">
+                    <input type="date" id="newCreatedDate" placeholder="Registration Date">
                     <input type="number" id="newSavings" value="200" min="200" step="200" placeholder="Initial Savings">
                     <small style="color:var(--text-secondary);display:block;margin-bottom:16px;">Minimum K200, multiples of 200</small>
                     
@@ -1526,21 +1534,25 @@ select option {
         async function addMember() {
             const name = document.getElementById('newName')?.value.trim();
             const phone = document.getElementById('newPhone')?.value.trim();
+            const createdDate = document.getElementById('newCreatedDate')?.value;
             const savings = parseInt(document.getElementById('newSavings')?.value) || 200;
             
             if (!name) { alert('Enter name'); return; }
             if (!phone || phone.length < 4) { alert('Enter valid phone'); return; }
             if (savings < 200 || savings % 200 !== 0) { alert('Must be K200+ in multiples of 200'); return; }
             
+            const registrationDate = createdDate ? new Date(createdDate).toISOString() : new Date().toISOString();
+
             const newMember = {
                 id: Date.now().toString(),
                 name, phone,
+                createdDate: registrationDate,
                 savings, loanPrincipal: 0,
                 membershipPaid: false, socialPaid: false,
                 pin: phone.slice(-4),
                 transactions: [{
                     type: 'savings', amount: savings,
-                    date: new Date().toISOString(),
+                    date: registrationDate,
                     note: 'Initial savings'
                 }]
             };
@@ -1690,6 +1702,7 @@ select option {
                     
                     <input type="text" id="editName" value="${member.name}" placeholder="Full Name">
                     <input type="tel" id="editPhone" value="${member.phone || ''}" placeholder="Phone Number">
+                    <input type="date" id="editCreatedDate" value="${member.createdDate ? new Date(member.createdDate).toISOString().split('T')[0] : ''}" placeholder="Registration Date">
                     <input type="text" id="editPin" value="${member.pin || ''}" placeholder="PIN (4+ digits)">
                     <input type="number" id="editSavings" value="${member.savings || 0}" step="0.01" placeholder="Savings Amount">
                     <input type="number" id="editLoan" value="${member.loanPrincipal || 0}" step="0.01" placeholder="Loan Principal">
@@ -1703,9 +1716,10 @@ select option {
                         </label>
                     </div>
                     
-                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:20px;">
+                    <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-top:20px;">
                         <button class="btn" onclick="saveEditedMember('${member.id}')" style="background:var(--primary);">💾 Save</button>
                         <button class="btn" onclick="resetMemberPin('${member.id}')" style="background:#ff9800;">🔐 Reset PIN</button>
+                        <button class="btn" onclick="deleteMember('${member.id}')" style="background:#dc2626;">🗑️ Delete</button>
                         <button class="btn" onclick="viewMember('${member.id}')" style="background:#666;">↩️ Cancel</button>
                     </div>
                 </div>
@@ -1719,6 +1733,7 @@ select option {
             
             const name = document.getElementById('editName')?.value.trim();
             const phone = document.getElementById('editPhone')?.value.trim();
+            const createdDate = document.getElementById('editCreatedDate')?.value;
             const pin = document.getElementById('editPin')?.value.trim();
             const savings = parseFloat(document.getElementById('editSavings')?.value) || 0;
             const loan = parseFloat(document.getElementById('editLoan')?.value) || 0;
@@ -1729,10 +1744,12 @@ select option {
             
             const changes = [];
             if (member.name !== name) changes.push(`Name: ${member.name} → ${name}`);
+            if (member.createdDate !== (createdDate ? new Date(createdDate).toISOString() : member.createdDate)) changes.push(`Created Date: ${fmtDate(member.createdDate)} → ${createdDate}`);
             if (member.savings !== savings) changes.push(`Savings: K${member.savings} → K${savings}`);
             if (member.loanPrincipal !== loan) changes.push(`Loan: K${member.loanPrincipal} → K${loan}`);
-            
-            Object.assign(member, { name, phone, pin, savings, loanPrincipal: loan, membershipPaid, socialPaid });
+
+            const updatedCreatedDate = createdDate ? new Date(createdDate).toISOString() : member.createdDate;
+            Object.assign(member, { name, phone, createdDate: updatedCreatedDate, pin, savings, loanPrincipal: loan, membershipPaid, socialPaid });
             
             member.transactions = member.transactions || [];
             member.transactions.push({
@@ -1772,6 +1789,27 @@ select option {
                 await saveMembers();
                 NotificationManager.add(`PIN reset to ${newPin}`, 'success');
                 viewMember(member.id);
+            }
+        }
+
+        // ===== DELETE MEMBER (ADMIN) =====
+        async function deleteMember(memberId) {
+            if (!currentUser || currentUser.type !== 'admin') {
+                alert('Admin access required');
+                return;
+            }
+
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+
+            if (confirm(`Are you sure you want to delete ${member.name}? This action cannot be undone.`)) {
+                const index = members.indexOf(member);
+                if (index > -1) {
+                    members.splice(index, 1);
+                    await saveMembers();
+                    NotificationManager.add('Member deleted successfully', 'success');
+                    showAllMembers();
+                }
             }
         }
 
@@ -1815,9 +1853,18 @@ select option {
             html += `<button class="btn" onclick="processSavings()" style="flex:1;">✅ Add</button>`;
             html += `<button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>`;
             html += `</div>`;
-            
+
             document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
-            document.getElementById('savingsDate').value = new Date().toISOString().split('T')[0];
+
+            // Set default date to today
+            setTimeout(() => {
+                const dateInput = document.getElementById('socialFeeDate');
+                if (dateInput && !dateInput.value) {
+                    dateInput.value = new Date().toISOString().split('T')[0];
+                }
+            }, 100);
+        }
+            }, 100);
         }
 
         function addSavingsFor(memberId) {
@@ -1865,52 +1912,9 @@ select option {
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
                         <button class="btn" onclick="showContractLoan()">➕ Contract Loan</button>
                         <button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button>
-                        <button class="btn" onclick="showVerifyScroll()" style="grid-column:span 2;background:#7b1fa2;">📜 Verify Scroll</button>
                     </div>
                 </div>
             `;
-        }
-
-        function showVerifyScroll() {
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:16px;"><i class="fas fa-clipboard-check"></i> Scroll Validation</h3>
-                    <p style="color:var(--text-secondary);margin-bottom:16px;">Enter scroll values to verify against formula:</p>
-                    <p style="font-size:12px;background:#e3f2fd;padding:12px;border-radius:8px;margin-bottom:16px;">
-                        <strong>Formula:</strong> Final Total Loan = Loan Balance + Top-up Loan
-                    </p>
-                    <input type="number" id="scrollLoanBalance" placeholder="Loan Balance (e.g. 18000)">
-                    <input type="number" id="scrollTopUpLoan" placeholder="Top-up Loan (e.g. 32800)">
-                    <input type="number" id="scrollFinalTotal" placeholder="Final Total Loan from scroll">
-                    <button class="btn" onclick="validateScrollEntry()">✅ Validate</button>
-                    <button class="btn" onclick="goBack()" style="background:#666;margin-top:8px;">↩️ Back</button>
-                </div>
-            `;
-        }
-
-        function validateScrollEntry() {
-            const loanBalance = parseFloat(document.getElementById('scrollLoanBalance')?.value) || 0;
-            const topUpLoan = parseFloat(document.getElementById('scrollTopUpLoan')?.value) || 0;
-            const scrollValue = parseFloat(document.getElementById('scrollFinalTotal')?.value) || 0;
-            
-            const expectedFinal = loanBalance + topUpLoan;
-            const isMatch = scrollValue === expectedFinal;
-            
-            const resultDiv = document.getElementById('validationResult');
-            if (!resultDiv) {
-                const container = document.querySelector('.card');
-                const div = document.createElement('div');
-                div.id = 'validationResult';
-                div.style.cssText = 'margin-top:16px;padding:16px;border-radius:12px;text-align:center;font-size:14px;font-weight:600;';
-                container.appendChild(div);
-            }
-            
-            const resultEl = document.getElementById('validationResult');
-            resultEl.style.background = isMatch ? '#e8f5e9' : '#ffebee';
-            resultEl.style.color = isMatch ? '#2e7d32' : '#c62828';
-            resultEl.innerHTML = isMatch 
-                ? `✅ <strong>MATCH!</strong><br>Scroll: K${scrollValue} = Expected: K${expectedFinal}`
-                : `⚠️ <strong>MISMATCH!</strong><br>Scroll shows: K${scrollValue}<br>Formula calculates: K${expectedFinal}`;
         }
 
         function showRepayLoan() {
@@ -1921,6 +1925,7 @@ select option {
                         ${members.map(m => `<option value="${m.id}">${m.name} (Loan: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()})</option>`).join('')}
                     </select>
                     <input type="number" id="repayAmount" value="0" min="0" step="100" placeholder="Amount to repay">
+                    <input type="date" id="repayDate" placeholder="Repayment Date">
                     <div style="display:flex;gap:12px;margin-top:20px;">
                         <button class="btn" onclick="repayLoan()" style="flex:1;">✅ Repay</button>
                         <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
@@ -1932,17 +1937,20 @@ select option {
         async function repayLoan() {
             const memberId = document.getElementById('repayMember')?.value;
             const amount = parseFloat(document.getElementById('repayAmount')?.value) || 0;
+            const repayDate = document.getElementById('repayDate')?.value;
             const member = members.find(m => m.id === memberId);
-            
+
             if (!member) { alert('Select member'); return; }
             if (amount <= 0) { alert('Enter amount > 0'); return; }
-            
+
+            const transactionDate = repayDate ? new Date(repayDate).toISOString() : new Date().toISOString();
+
             member.loanPrincipal = Math.max(0, (member.loanPrincipal || 0) - amount);
             member.transactions = member.transactions || [];
-            member.transactions.push({ 
-                type: 'repayment', amount, 
-                date: new Date().toISOString(), 
-                note: 'Loan repayment' 
+            member.transactions.push({
+                type: 'repayment', amount,
+                date: transactionDate,
+                note: 'Loan repayment'
             });
             
             await saveMembers();
@@ -1977,6 +1985,7 @@ select option {
                 <div class="card">
                     <h3 style="margin-bottom:16px;">Contract Loan for ${member.name}</h3>
                     <input type="number" id="loanAmount" value="1000" min="100" step="100" placeholder="Loan Amount">
+                    <input type="date" id="loanDate" placeholder="Loan Date">
                     <div style="background:#fff3e0;padding:16px;border-radius:12px;margin:20px 0;">
                         <p style="margin:4px 0;"><strong>10% Interest:</strong> K<span id="loanInterest">100</span></p>
                         <p style="margin:4px 0;"><strong>Total:</strong> K<span id="loanTotal">1100</span></p>
@@ -1994,23 +2003,34 @@ select option {
                 document.getElementById('loanInterest').textContent = interest.toFixed(2);
                 document.getElementById('loanTotal').textContent = (amount + interest).toFixed(2);
             };
+
+            // Set default date to today
+            setTimeout(() => {
+                const dateInput = document.getElementById('loanDate');
+                if (dateInput && !dateInput.value) {
+                    dateInput.value = new Date().toISOString().split('T')[0];
+                }
+            }, 100);
         }
 
         async function contractLoan() {
             const memberId = selectedLoanMemberId;
             if (!memberId) { alert('No member selected'); return; }
-            
+
             const member = members.find(m => m.id === memberId);
             const amount = parseInt(document.getElementById('loanAmount')?.value) || 0;
-            
+            const loanDate = document.getElementById('loanDate')?.value;
+
             if (amount < 100) { alert('Minimum loan is K100'); return; }
-            
+
+            const transactionDate = loanDate ? new Date(loanDate).toISOString() : new Date().toISOString();
+
             member.loanPrincipal = (member.loanPrincipal || 0) + amount;
             member.transactions = member.transactions || [];
-            member.transactions.push({ 
-                type: 'loan', amount, 
-                date: new Date().toISOString(), 
-                note: `Loan contracted (10% interest)` 
+            member.transactions.push({
+                type: 'loan', amount,
+                date: transactionDate,
+                note: `Loan contracted (10% interest)`
             });
             
             await saveMembers();
@@ -2039,7 +2059,8 @@ select option {
         function showCollectMembership() {
             const unpaid = members.filter(m => !m.membershipPaid);
             let html = `<h3 style="margin-bottom:16px;">Collect Membership Fees (K50)</h3>`;
-            
+            html += `<input type="date" id="membershipFeeDate" placeholder="Fee Date">`;
+
             if (unpaid.length === 0) {
                 html += `<p style="text-align:center;padding:20px;">✅ All members have paid!</p>`;
             } else {
@@ -2061,7 +2082,8 @@ select option {
         function showCollectSocial() {
             const unpaid = members.filter(m => !m.socialPaid);
             let html = `<h3 style="margin-bottom:16px;">Collect Social Fund (K100)</h3>`;
-            
+            html += `<input type="date" id="socialFeeDate" placeholder="Fee Date">`;
+
             if (unpaid.length === 0) {
                 html += `<p style="text-align:center;padding:20px;">✅ All members have paid!</p>`;
             } else {
@@ -2083,23 +2105,27 @@ select option {
         async function collectFee(memberId, type) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
-            
+
+            const feeDateInput = type === 'membership' ? 'membershipFeeDate' : 'socialFeeDate';
+            const feeDate = document.getElementById(feeDateInput)?.value;
+            const transactionDate = feeDate ? new Date(feeDate).toISOString() : new Date().toISOString();
+
             if (type === 'membership') {
                 member.membershipPaid = true;
                 member.transactions = member.transactions || [];
-                member.transactions.push({ 
-                    type: 'fee', amount: 50, 
-                    date: new Date().toISOString(), 
-                    note: 'Membership fee' 
+                member.transactions.push({
+                    type: 'fee', amount: 50,
+                    date: transactionDate,
+                    note: 'Membership fee'
                 });
                 NotificationManager.add(`K50 membership from ${member.name}`, 'success');
             } else {
                 member.socialPaid = true;
                 member.transactions = member.transactions || [];
-                member.transactions.push({ 
-                    type: 'fee', amount: 100, 
-                    date: new Date().toISOString(), 
-                    note: 'Social fund' 
+                member.transactions.push({
+                    type: 'fee', amount: 100,
+                    date: transactionDate,
+                    note: 'Social fund'
                 });
                 NotificationManager.add(`K100 social from ${member.name}`, 'success');
             }
