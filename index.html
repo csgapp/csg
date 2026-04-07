@@ -1030,15 +1030,6 @@ select option {
                                 </div>
                 </div>
             `;
-            // Set default date to today
-            setTimeout(() => {
-                const dateInput = document.getElementById('repayDate');
-                if (dateInput && !dateInput.value) {
-                    dateInput.value = new Date().toISOString().split('T')[0];
-                }
-            }, 100);
-        }
-            }, 100);
         }
                 
                 container.innerHTML = html;
