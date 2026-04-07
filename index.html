@@ -1858,12 +1858,10 @@ select option {
 
             // Set default date to today
             setTimeout(() => {
-                const dateInput = document.getElementById('socialFeeDate');
+                const dateInput = document.getElementById('savingsDate');
                 if (dateInput && !dateInput.value) {
                     dateInput.value = new Date().toISOString().split('T')[0];
                 }
-            }, 100);
-        }
             }, 100);
         }
 
