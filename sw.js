@@ -1,4 +1,4 @@
-const CACHE_NAME = 'csg-app-v2';
+const CACHE_NAME = 'savers-app-v2';
 const ASSETS = [
   '/index.html',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
@@ -25,6 +25,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = event.request.url;
+  
+  // Handle HTML files
+  if (url.endsWith('.html') || url === '/' || url.includes('index')) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        return cached || fetch(event.request);
+      })
+    );
+    return;
+  }
+  
+  // Handle Firebase and CDN assets
   if (url.includes('firebase') || url.includes('cdnjs')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => 
@@ -37,5 +49,11 @@ self.addEventListener('fetch', (event) => {
         })
       )
     );
+  }
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data === 'skipWaiting') {
+    self.skipWaiting();
   }
 });
