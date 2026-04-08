@@ -290,7 +290,7 @@
                     <div class="card login-card" style="max-width:400px;margin:20px auto;animation: fadeInUp 0.6s ease forwards;animation-delay:0.2s;opacity:0;">
                         <div style="text-align:center;margin-bottom:24px;">
                             <div style="width:80px;height:80px;margin:0 auto 16px;background:linear-gradient(135deg,#1e88e5,#42a5f5);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow: 0 8px 24px rgba(37,99,235,0.3);animation: pulse 2s infinite;">
-                                <i class="fas fa-piggy-bank" style="font-size:36px;color:white;"></i>
+                                <i class="fas fa-piggy-bank" style="font-size:36px;color:#FFD700;text-shadow: 0 2px 8px rgba(255,215,0,0.5);"></i>
                             </div>
                             <h2 style="margin-bottom:8px;">Welcome Back</h2>
                             <p style="color:var(--text-secondary);font-size:14px;">Login to manage your savings</p>
@@ -649,8 +649,36 @@
         function showHistoryPage() {
             screenHistory.push('history'); updateNavButtons();
             let transactions = getAllTransactions(currentUser?.type==='member'?currentUser.id:null);
-            document.getElementById('contentArea').innerHTML = `<div class="card"><h3><i class="fas fa-history"></i> Transaction History</h3><div style="display:flex;gap:10px;margin-bottom:20px;"><button class="btn-sm" onclick="exportHistoryCSV('current')">📄 Export CSV</button><button class="btn-sm" onclick="exportHistoryPDF()">📑 Print</button></div><div class="filter-panel" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">${currentUser?.type==='admin'?`<select id="filterMember"><option value="all">All Members</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select>`:''}<select id="filterType"><option value="all">All Types</option><option value="savings">Savings</option><option value="loan">Loan</option><option value="repayment">Repayment</option><option value="fee">Fee</option></select><input type="date" id="startDate"><input type="date" id="endDate"><button class="btn-sm" onclick="applyHistoryFilters()">Apply</button><button class="btn-sm" onclick="resetHistoryFilters()">Reset</button></div><div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody id="historyBody"></tbody></table></div><div id="pagination" style="display:flex;justify-content:center;gap:8px;margin-top:16px;"></div><div class="btn" onclick="goBack()">Back</div></div>`;
+            document.getElementById('contentArea').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 Transaction History</h1></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <h3><i class="fas fa-history"></i> Transaction History</h3>
+                    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+                        <button class="btn-sm" onclick="exportHistoryCSV('current')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        <button class="btn-sm" onclick="downloadExportTemplate()" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);"><i class="fas fa-download"></i> Sample Format</button>
+                        <button class="btn-sm" onclick="exportHistoryPDF()"><i class="fas fa-print"></i> Print</button>
+                    </div>
+                    <div class="filter-panel" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">${currentUser?.type==='admin'?`<select id="filterMember"><option value="all">All Members</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select>`:''}<select id="filterType"><option value="all">All Types</option><option value="savings">Savings</option><option value="loan">Loan</option><option value="repayment">Repayment</option><option value="fee">Fee</option></select><input type="date" id="startDate"><input type="date" id="endDate"><button class="btn-sm" onclick="applyHistoryFilters()">Apply</button><button class="btn-sm" onclick="resetHistoryFilters()">Reset</button></div>
+                    <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+                    <div id="pagination" style="display:flex;justify-content:center;gap:8px;margin-top:16px;"></div>
+                    <div style="margin-top:16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button></div>
+                </div>`;
             window.currentHistoryData = transactions; window.historyPageNum=1; renderHistoryTable(transactions);
+        }
+        
+        function downloadExportTemplate() {
+            const csv = "Date,Member,Type,Amount,Note\n2024-01-15,John Doe,savings,200,Monthly contribution\n2024-02-01,Jane Smith,loan,1000,Business loan\n2024-03-10,Mike Jones,repayment,500,Loan repayment";
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'export_format_sample.csv';
+            a.click();
+            NotificationManager.add('Sample format downloaded!', 'success');
         }
         function getAllTransactions(memberId=null) { let all=[]; const target = memberId?members.filter(m=>m.id===memberId):members; for(const m of target) (m.transactions||[]).forEach(t=>all.push({...t,memberId:m.id,memberName:m.name})); return all.sort((a,b)=>new Date(b.date)-new Date(a.date)); }
         function applyHistoryFilters() { let txs = getAllTransactions(currentUser?.type==='member'?currentUser.id:null); const member = document.getElementById('filterMember')?.value, type = document.getElementById('filterType')?.value, start = document.getElementById('startDate')?.value, end = document.getElementById('endDate')?.value; if(member && member!=='all') txs = txs.filter(t=>t.memberId===member); if(type && type!=='all') txs = txs.filter(t=>t.type===type); if(start) txs = txs.filter(t=>t.date>=start); if(end) txs = txs.filter(t=>t.date<=end); window.currentHistoryData=txs; window.historyPageNum=1; renderHistoryTable(txs); }
@@ -658,10 +686,71 @@
         function renderHistoryTable(txs) { const tbody = document.getElementById('historyBody'); if(!tbody) return; const perPage=15, start=(window.historyPageNum-1)*perPage, pageItems=txs.slice(start,start+perPage); if(!pageItems.length) { tbody.innerHTML='<tr><td colspan="5">No transactions</td></tr>'; return; } tbody.innerHTML=''; for(const t of pageItems) tbody.innerHTML+=`<tr><td style="padding:8px;">${fmtDate(t.date)}</td><td>${t.memberName}</td><td>${t.type}</td><td>K${(t.amount||0).toLocaleString()}</td><td>${t.note||''}</td></tr>`; const totalPages=Math.ceil(txs.length/perPage), pag=document.getElementById('pagination'); if(pag) { pag.innerHTML=''; for(let i=1;i<=Math.min(totalPages,5);i++) pag.innerHTML+=`<button class="btn-sm" onclick="window.historyPageNum=${i};renderHistoryTable(window.currentHistoryData);">${i}</button>`; } }
         function exportHistoryCSV(type) { let data = type==='current'?window.currentHistoryData:getAllTransactions(currentUser?.type==='member'?currentUser.id:null); let csv="Date,Member,Type,Amount,Note\n"; for(const t of data) csv+=`${fmtDate(t.date)},${t.memberName},${t.type},${t.amount||0},${t.note||''}\n`; const blob=new Blob([csv],{type:'text/csv'}), a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`history-${new Date().toISOString().split('T')[0]}.csv`; a.click(); NotificationManager.add('Export complete','success'); }
         function exportHistoryPDF() { window.print(); }
-        function showImportMembersCSV() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Import Members (CSV)</h3><p>Columns: Name, Phone, JoinDate, InitialSavings, MembershipPaid, SocialPaid</p><input type="file" id="memberCsvFile" accept=".csv"><div id="memberImportPreview"></div><button class="btn" onclick="confirmMemberImport()">Import Members</button><button class="btn" onclick="goBack()">Cancel</button></div>`; document.getElementById('memberCsvFile').addEventListener('change', handleMemberCSV); }
+        function showImportMembersCSV() { document.getElementById('contentArea').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 Import Members</h1></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <h3><i class="fas fa-file-import"></i> Import Members (CSV)</h3>
+                    <div style="background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.05));padding:16px;border-radius:12px;margin:16px 0;border:1px solid rgba(37,99,235,0.2);">
+                        <h4 style="margin-bottom:12px;">Required Columns:</h4>
+                        <code style="display:block;background:#1e293b;color:#e2e8f0;padding:12px;border-radius:8px;font-size:12px;overflow-x:auto;">Name, Phone, JoinDate, InitialSavings, MembershipPaid, SocialPaid</code>
+                    </div>
+                    <button class="btn" onclick="downloadMemberTemplate()" style="background:#26a69a;margin-bottom:16px;"><i class="fas fa-download"></i> Download Sample Template</button>
+                    <input type="file" id="memberCsvFile" accept=".csv" style="margin-bottom:12px;">
+                    <div id="memberImportPreview"></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <button class="btn" onclick="confirmMemberImport()" style="background:linear-gradient(135deg,#43a047,#66bb6a);">Import Members</button>
+                        <button class="btn" onclick="goBack()" style="background:#666;">Cancel</button>
+                    </div>
+                </div>`; document.getElementById('memberCsvFile').addEventListener('change', handleMemberCSV); }
+        
+        function downloadMemberTemplate() {
+            const csv = "Name,Phone,JoinDate,InitialSavings,MembershipPaid,SocialPaid\nJohn Doe,260971234567,2024-01-15,200,yes,no\nJane Smith,260971234568,2024-02-20,400,yes,yes\nMike Jones,260971234569,2024-03-10,200,no,no";
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'members_template.csv';
+            a.click();
+            NotificationManager.add('Template downloaded!', 'success');
+        }
         let memberImportData=[]; function handleMemberCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); memberImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]) memberImportData.push({name:vals[0],phone:vals[1],joinDate:vals[2]||new Date().toISOString().split('T')[0],savings:parseFloat(vals[3])||200,membershipPaid:vals[4]?.toLowerCase()==='yes',socialPaid:vals[5]?.toLowerCase()==='yes'}); } document.getElementById('memberImportPreview').innerHTML=`<p>${memberImportData.length} members ready to import</p><pre>${JSON.stringify(memberImportData.slice(0,3),null,2)}</pre>`; }; reader.readAsText(file); }
         async function confirmMemberImport() { let newCount=0, updateCount=0; for(const d of memberImportData) { const existing = members.find(m=>m.phone===d.phone); if(existing) { existing.name=d.name; existing.savings=d.savings; existing.membershipPaid=d.membershipPaid; existing.socialPaid=d.socialPaid; existing.createdDate=new Date(d.joinDate).toISOString(); updateCount++; } else { members.push({ id:Date.now().toString()+Math.random().toString(36).substr(2,4), name:d.name, phone:d.phone, createdDate:new Date(d.joinDate).toISOString(), savings:d.savings, loanPrincipal:0, membershipPaid:d.membershipPaid, socialPaid:d.socialPaid, pin:d.phone.slice(-4), transactions:[{type:'savings',amount:d.savings,date:new Date(d.joinDate).toISOString(),note:'CSV import'}] }); newCount++; } } await saveMembers(); NotificationManager.add(`✅ ${newCount} new, ${updateCount} updated`,'success'); goBack(); }
-        function showImportTransactionsCSV() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Import Transactions</h3><p>Columns: MemberName, Type, Amount, Date, Note</p><input type="file" id="txCsvFile" accept=".csv"><div id="txImportPreview"></div><button class="btn" onclick="confirmTransactionImport()">Import Transactions</button><button class="btn" onclick="goBack()">Cancel</button></div>`; document.getElementById('txCsvFile').addEventListener('change', handleTransactionCSV); }
+        function showImportTransactionsCSV() { document.getElementById('contentArea').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 Import Transactions</h1></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <h3><i class="fas fa-exchange-alt"></i> Import Transactions</h3>
+                    <div style="background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.05));padding:16px;border-radius:12px;margin:16px 0;border:1px solid rgba(37,99,235,0.2);">
+                        <h4 style="margin-bottom:12px;">Required Columns:</h4>
+                        <code style="display:block;background:#1e293b;color:#e2e8f0;padding:12px;border-radius:8px;font-size:12px;overflow-x:auto;">MemberName, Type, Amount, Date, Note</code>
+                        <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><strong>Type options:</strong> savings, loan, repayment, fee</p>
+                    </div>
+                    <button class="btn" onclick="downloadTransactionTemplate()" style="background:#26a69a;margin-bottom:16px;"><i class="fas fa-download"></i> Download Sample Template</button>
+                    <input type="file" id="txCsvFile" accept=".csv" style="margin-bottom:12px;">
+                    <div id="txImportPreview"></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <button class="btn" onclick="confirmTransactionImport()" style="background:linear-gradient(135deg,#43a047,#66bb6a);">Import Transactions</button>
+                        <button class="btn" onclick="goBack()" style="background:#666;">Cancel</button>
+                    </div>
+                </div>`; document.getElementById('txCsvFile').addEventListener('change', handleTransactionCSV); }
+        
+        function downloadTransactionTemplate() {
+            const csv = "MemberName,Type,Amount,Date,Note\nJohn Doe,savings,200,2024-01-15,Monthly contribution\nJohn Doe,loan,1000,2024-02-01,Business loan\nJane Smith,repayment,500,2024-03-10,Loan repayment\nMike Jones,fee,50,2024-01-20,Membership fee";
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'transactions_template.csv';
+            a.click();
+            NotificationManager.add('Template downloaded!', 'success');
+        }
         let transactionImportData=[]; function handleTransactionCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); transactionImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]&&vals[1]) transactionImportData.push({memberName:vals[0],type:vals[1].toLowerCase(),amount:parseFloat(vals[2])||0,date:vals[3]||new Date().toISOString().split('T')[0],note:vals[4]||''}); } document.getElementById('txImportPreview').innerHTML=`<p>${transactionImportData.length} transactions ready</p>`; }; reader.readAsText(file); }
         async function confirmTransactionImport() { let success=0; for(const d of transactionImportData) { const member = members.find(m=>m.name.toLowerCase()===d.memberName.toLowerCase()); if(!member) continue; if(d.type==='savings') { member.savings=(member.savings||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'savings',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } else if(d.type==='loan') { member.loanPrincipal=(member.loanPrincipal||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'loan',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } else if(d.type==='repayment') { member.loanPrincipal=Math.max(0,(member.loanPrincipal||0)-d.amount); member.transactions=member.transactions||[]; member.transactions.push({type:'repayment',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } } await saveMembers(); NotificationManager.add(`Imported ${success} transactions`,'success'); goBack(); }
         
@@ -672,7 +761,7 @@
         document.addEventListener('click',()=>closeAllMenus());
         
         // Make all functions global
-        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications;
+        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications;
         
         (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); showLoginScreen(); })();
     </script>
