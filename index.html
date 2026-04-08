@@ -12,36 +12,21 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1e88e5">
     
-    <!-- iOS Icons - ELEGANT MONEY BAG (Replaced Emoji) -->
+    <!-- iOS Icons -->
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e88e5'/%3E%3Cg transform='translate(20, 25)'%3E%3Cpath d='M15 10 L45 10 L50 30 L50 45 Q30 60 10 45 L10 30 Z' fill='%23FFD700' stroke='%23FFD700' stroke-width='1'/%3E%3Ctext x='30' y='48' font-size='28' text-anchor='middle' fill='%231e88e5' font-weight='300' font-family='Arial, Helvetica, sans-serif'%3E%24%3C/text%3E%3Cpath d='M25 5 Q30 0 35 5' stroke='%23FFD700' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cline x1='20' y1='25' x2='40' y2='25' stroke='%231e88e5' stroke-width='2' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e88e5'/%3E%3Cg transform='translate(20, 25)'%3E%3Cpath d='M15 10 L45 10 L50 30 L50 45 Q30 60 10 45 L10 30 Z' fill='%23FFD700' stroke='%23FFD700' stroke-width='1'/%3E%3Ctext x='30' y='48' font-size='28' text-anchor='middle' fill='%231e88e5' font-weight='300' font-family='Arial, Helvetica, sans-serif'%3E%24%3C/text%3E%3Cpath d='M25 5 Q30 0 35 5' stroke='%23FFD700' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cline x1='20' y1='25' x2='40' y2='25' stroke='%231e88e5' stroke-width='2' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e88e5'/%3E%3Cg transform='translate(20, 25)'%3E%3Cpath d='M15 10 L45 10 L50 30 L50 45 Q30 60 10 45 L10 30 Z' fill='%23FFD700' stroke='%23FFD700' stroke-width='1'/%3E%3Ctext x='30' y='48' font-size='28' text-anchor='middle' fill='%231e88e5' font-weight='300' font-family='Arial, Helvetica, sans-serif'%3E%24%3C/text%3E%3Cpath d='M25 5 Q30 0 35 5' stroke='%23FFD700' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cline x1='20' y1='25' x2='40' y2='25' stroke='%231e88e5' stroke-width='2' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E">
     
-    <!-- Android Icons - ELEGANT MONEY BAG -->
-    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e88e5'/%3E%3Cg transform='translate(20, 25)'%3E%3Cpath d='M15 10 L45 10 L50 30 L50 45 Q30 60 10 45 L10 30 Z' fill='%23FFD700' stroke='%23FFD700' stroke-width='1'/%3E%3Ctext x='30' y='48' font-size='28' text-anchor='middle' fill='%231e88e5' font-weight='300' font-family='Arial, Helvetica, sans-serif'%3E%24%3C/text%3E%3Cpath d='M25 5 Q30 0 35 5' stroke='%23FFD700' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cline x1='20' y1='25' x2='40' y2='25' stroke='%231e88e5' stroke-width='2' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E">
-    
-    <!-- Font Awesome - Deferred Loading -->
+    <!-- Font Awesome -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Firebase - All Core Libraries -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
-    <!-- Cache Control for Fresh Load -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
     <style>
         /* ===== RESET & VARIABLES ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         :root {
             --primary: #2563eb;
@@ -80,777 +65,156 @@
             --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 0;
-            margin: 0;
-            line-height: 1.5;
-        }
-        /* ===== FIX FOR MEMBER SELECT DROPDOWN ON MOBILE ===== */
-select {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    font-size: 16px;
-    background: var(--card-bg);
-    color: var(--text-primary);
-    margin-bottom: 12px;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23666'><path d='M7 10l5 5 5-5z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    min-height: 52px;
-    z-index: 10;
-}
-
-select option {
-    background: var(--card-bg);
-    color: var(--text-primary);
-    padding: 12px;
-    min-height: 44px;
-}
-
-@supports (-webkit-touch-callout: none) {
-    select {
-        font-size: 16px;
-        background: var(--card-bg);
-    }
-}
-.card, .login-box, .member-card {
-    overflow: visible !important;
-}
-
-#loginForm {
-    overflow: visible !important;
-}
-        #app {
-            max-width: 100%;
-            min-height: 100vh;
-            background: var(--bg-secondary);
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.5; }
         
-        /* ===== HEADER ===== */
-        .header {
-            background: var(--header-gradient);
-            color: white;
-            padding: 12px 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
-        }
+        select, input, textarea { width: 100%; padding: 14px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 16px; background: var(--card-bg); color: var(--text-primary); margin-bottom: 12px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin: 4px 0; }
+        .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; width: auto; }
+        .card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
         
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        /* Header */
+        .header { background: var(--header-gradient); color: white; padding: 12px 16px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .nav-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; }
         
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        /* Metrics Grid - YOUR ORIGINAL STYLES */
+        .metrics-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+        @media (min-width: 640px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .metrics-grid { grid-template-columns: repeat(4, 1fr); } }
         
-        .nav-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.3);
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-        
-        .nav-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-        
-        .header-title h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-        
-        .header-title p {
-            font-size: 0.75rem;
-            opacity: 0.9;
-        }
-        
-        .nav-title {
-            font-size: 0.85rem;
-            font-weight: 500;
-            opacity: 0.85;
-            background: rgba(255,255,255,0.15);
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-        
-        /* ===== MOBILE MENU ===== */
-        .menu-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        .menu-dropdown {
-            position: absolute;
-            top: 70px;
-            right: 16px;
-            width: 280px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            display: none;
-            z-index: 1000;
-        }
-        
-        .menu-dropdown.active {
-            display: block;
-        }
-        
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-        
-        .menu-item i {
-            width: 24px;
-            text-align: center;
-            color: var(--primary);
-        }
-        
-        .menu-item:active {
-            background: rgba(30,136,229,0.1);
-        }
-        
-        /* ===== METRICS GRID ===== */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            padding: 16px;
-        }
-        
-        @media (min-width: 640px) {
-            .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .metrics-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        
-        .metric-card {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: var(--shadow);
-            transition: all 0.2s;
-        }
-        
-        .metric-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-        
-        .metric-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background: rgba(30,136,229,0.1);
-            color: var(--primary);
-            flex-shrink: 0;
-        }
-        
-        .metric-content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .metric-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        /* ===== ACTION GRID ===== */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            padding: 0 16px 16px;
-        }
-        
-        @media (min-width: 768px) {
-            .action-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        
-        .action-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-            transition: all 0.2s;
-        }
-        
-        .action-btn:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow);
-            transform: translateY(-2px);
-        }
-        
-        .action-btn i {
-            font-size: 24px;
-            color: var(--primary);
-        }
-        
-        .action-btn span {
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-        }
-        
-        .action-btn:active {
-            background: var(--primary);
-            color: white;
-            transform: translateY(0);
-        }
-        
-        .action-btn:active i {
-            color: white;
-        }
-        
-        /* ===== MEMBER CARD ===== */
-        .member-row {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s;
-        }
-        
-        .member-row:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow);
-        }
-        
-        .avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-        
-        .member-info {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .member-name {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .member-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
-        /* ===== FORM ELEMENTS ===== */
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 16px;
-            margin: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 16px;
-            background: var(--card-bg);
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-        
-        input:focus, select:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-        
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            margin: 4px 0;
-        }
-        
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 13px;
-            border-radius: 8px;
-            width: auto;
-        }
-        
-        /* ===== NOTIFICATION ===== */
-        .notification-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: var(--danger);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .notification-dropdown {
-            position: absolute;
-            top: 70px;
-            right: 16px;
-            width: 300px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            display: none;
-            z-index: 1000;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .notification-dropdown.active {
-            display: block;
-        }
-        
-        /* ===== TRANSACTION ITEM ===== */
-        .transaction-item {
-            display: flex;
-            gap: 12px;
-            padding: 12px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 8px;
-            transition: all 0.2s;
-        }
-        
-        .transaction-item:hover {
-            border-color: var(--primary-light);
-            box-shadow: var(--shadow);
-        }
-        
-        .transaction-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        /* ===== STATUS BADGES ===== */
-        .status-paid {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .status-due {
-            background: #ffebee;
-            color: #f44336;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        /* ===== UTILITIES ===== */
-        .d-none { display: none; }
-        .d-block { display: block; }
-        .text-center { text-align: center; }
-        .mt-3 { margin-top: 12px; }
-        .mb-3 { margin-bottom: 12px; }
-        .gap-2 { gap: 8px; }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        .animate-in {
-            animation: fadeInUp 0.4s ease forwards;
-        }
-        
-        .metric-card {
-            animation: fadeInUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        
+        .metric-card { background: var(--card-bg); padding: 16px; border-radius: 16px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow); transition: all 0.2s; position: relative; overflow: hidden; animation: fadeInUp 0.5s ease forwards; opacity: 0; }
         .metric-card:nth-child(1) { animation-delay: 0.1s; }
         .metric-card:nth-child(2) { animation-delay: 0.2s; }
         .metric-card:nth-child(3) { animation-delay: 0.3s; }
         .metric-card:nth-child(4) { animation-delay: 0.4s; }
+        .metric-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
         
-        .action-btn {
-            animation: fadeInUp 0.5s ease forwards;
-            opacity: 0;
-        }
+        .metric-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .metric-content { flex: 1; min-width: 0; }
+        .metric-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-value { font-size: 1.4rem; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .action-btn:nth-child(1) { animation-delay: 0.3s; }
-        .action-btn:nth-child(2) { animation-delay: 0.35s; }
-        .action-btn:nth-child(3) { animation-delay: 0.4s; }
-        .action-btn:nth-child(4) { animation-delay: 0.45s; }
-        .action-btn:nth-child(5) { animation-delay: 0.5s; }
-        .action-btn:nth-child(6) { animation-delay: 0.55s; }
+        /* Action Grid */
+        .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 16px; }
+        @media (min-width: 768px) { .action-grid { grid-template-columns: repeat(4, 1fr); } }
         
-        .action-btn:active {
-            animation: pulse 0.2s ease;
-        }
+        .action-btn { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; animation: fadeInUp 0.5s ease forwards; opacity: 0; }
+        .action-btn i { font-size: 24px; color: var(--primary); }
+        .action-btn span { font-size: 12px; font-weight: 600; text-align: center; }
         
-        .member-row {
-            animation: slideInRight 0.4s ease forwards;
-            opacity: 0;
-        }
+        /* Member Row */
+        .member-row { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: all 0.2s; animation: slideInRight 0.4s ease forwards; opacity: 0; }
+        .member-row:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 18px; flex-shrink: 0; }
+        .member-info { flex: 1; min-width: 0; }
+        .member-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .member-details { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--text-secondary); }
         
-        .header {
-            animation: fadeInUp 0.3s ease;
-        }
+        /* Transaction Item */
+        .transaction-item { display: flex; gap: 12px; padding: 12px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 8px; }
         
-        /* ===== FANCY CARDS ===== */
-        .fancy-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            margin: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
+        /* Status Badges */
+        .status-paid { background: #e8f5e9; color: #2e7d32; padding: 8px 12px; border-radius: 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+        .status-due { background: #ffebee; color: #f44336; padding: 8px 12px; border-radius: 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
         
-        .fancy-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light), #60a5fa);
-        }
+        /* Menus */
+        .menu-dropdown, .notification-dropdown { position: absolute; top: 70px; right: 16px; width: 280px; background: var(--card-bg); border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); display: none; z-index: 1000; }
+        .menu-dropdown.active, .notification-dropdown.active { display: block; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer; }
+        .menu-item i { width: 24px; color: var(--primary); }
         
-        .fancy-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            transition: all 0.3s ease;
-        }
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         
-        /* ===== ENHANCED METRICS ===== */
-        .metric-card {
-            position: relative;
-            overflow: hidden;
-        }
+        .fancy-card { position: relative; overflow: hidden; }
+        .fancy-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--primary-light), #60a5fa); }
         
-        .metric-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-            opacity: 0;
-        }
+        .notification-badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
         
-        .metric-card:hover::after {
-            animation: shimmer 1.5s infinite;
-            opacity: 1;
-        }
+        .d-none { display: none; }
         
-        .metric-icon {
-            position: relative;
-        }
+        /* Enhanced Animations */
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 5px var(--primary); } 50% { box-shadow: 0 0 20px var(--primary), 0 0 30px var(--primary-light); } }
         
-        .metric-icon::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 16px;
-            background: inherit;
-            opacity: 0.3;
-            filter: blur(8px);
-            z-index: -1;
-        }
+        /* Card hover effects */
+        .metric-card { position: relative; }
+        .metric-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none; }
         
-        /* ===== FANCY BUTTONS ===== */
-        .btn-glow {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-        }
+        .action-btn:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); background: var(--primary); }
+        .action-btn:hover i, .action-btn:hover span { color: white; }
+        .action-btn:nth-child(1) { animation-delay: 0.1s; }
+        .action-btn:nth-child(2) { animation-delay: 0.15s; }
+        .action-btn:nth-child(3) { animation-delay: 0.2s; }
+        .action-btn:nth-child(4) { animation-delay: 0.25s; }
+        .action-btn:nth-child(5) { animation-delay: 0.3s; }
+        .action-btn:nth-child(6) { animation-delay: 0.35s; }
+        .action-btn:nth-child(7) { animation-delay: 0.4s; }
+        .action-btn:nth-child(8) { animation-delay: 0.45s; }
+        .action-btn:nth-child(9) { animation-delay: 0.5s; }
         
-        .btn-glow::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
+        /* Enhanced button styles */
+        .btn { position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        .btn:hover::before { left: 100%; }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
         
-        .btn-glow:hover::before {
-            left: 100%;
-        }
+        /* Member row hover */
+        .member-row:hover .avatar { transform: scale(1.1); }
+        .avatar { transition: transform 0.3s ease; }
         
-        /* ===== PROGRESS BARS ===== */
-        .progress-ring {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: conic-gradient(var(--primary) var(--progress), var(--border-color) 0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+        /* Toast animations */
+        .toast-enter { animation: slideDown 0.3s ease forwards; }
         
-        .progress-ring::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            background: var(--card-bg);
-            border-radius: 50%;
-        }
+        /* Dropdown menu enhancements */
+        .menu-dropdown { animation: slideDown 0.2s ease forwards; border-top: 3px solid var(--primary); }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { background: rgba(37, 99, 235, 0.05); }
         
-        /* ===== FANCY AVATARS ===== */
-        .avatar-fancy {
-            position: relative;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 18px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
+        /* Input focus states */
+        select:focus, input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         
-        .avatar-fancy::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            opacity: 0.5;
-        }
+        /* Quick actions section */
+        .quick-actions-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 600; margin-bottom: 12px; }
         
-        /* ===== TOOLTIP ===== */
-        .tooltip {
-            position: relative;
-        }
+        /* Header title gradient */
+        .header-title h1 { background: linear-gradient(90deg, #fff, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--text-primary);
-            color: var(--card-bg);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease;
-        }
+        /* Loading spinner */
+        .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
-        .tooltip:hover::after {
-            opacity: 1;
-            visibility: visible;
-            bottom: calc(100% + 8px);
-        }
+        /* Enhanced header */
+        .header { backdrop-filter: blur(10px); background: var(--header-gradient) !important; }
         
-        /* ===== LOADING STATES ===== */
-        .skeleton {
-            background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-        }
+        /* Member dashboard card */
+        .member-dashboard-card { background: var(--card-bg); border-radius: 16px; padding: 20px; margin: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); animation: fadeInUp 0.5s ease forwards; }
         
-        /* ===== SCREEN TRANSITION ===== */
-        .screen-content {
-            animation: fadeInUp 0.4s ease;
-        }
+        /* Status badges enhanced */
+        .status-paid { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #a5d6a7; }
+        .status-due { background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ef9a9a; }
         
-        /* ===== FANCY INPUTS ===== */
-        .input-fancy {
-            position: relative;
-        }
+        /* Transaction item enhanced */
+        .transaction-item { transition: all 0.3s ease; }
+        .transaction-item:hover { transform: translateX(4px); border-color: var(--primary); box-shadow: var(--shadow); }
         
-        .input-fancy input, .input-fancy select {
-            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(37,99,235,0.02) 100%);
-        }
+        /* Login page enhancements */
+        .login-card { animation: fadeInUp 0.6s ease forwards; }
         
-        .input-fancy::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 14px;
-            padding: 2px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+        /* Admin menu toggle */
+        .menu-toggle { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .menu-toggle:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
         
-        .input-fancy:focus-within::before {
-            opacity: 1;
-        }
+        /* Enhanced card shadows based on theme */
+        .card { transition: all 0.3s ease; }
+        .card:hover { box-shadow: var(--shadow-lg); }
         
-        /* ===== STATUS INDICATORS ===== */
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 6px;
-            animation: pulse 2s infinite;
-        }
-        
-        .status-dot.active { background: #4caf50; }
-        .status-dot.inactive { background: #9e9e9e; }
-        .status-dot.warning { background: #ff9800; }
+        /* Network status indicator */
+        .network-online { color: #4caf50; }
+        .network-offline { color: #f44336; }
     </style>
 </head>
 <body>
@@ -866,854 +230,193 @@ select option {
             messagingSenderId: "722000008713",
             appId: "1:722000008713:web:5322f5a668bfcd6ff4cad8"
         };
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        // ===== APP STATE =====
-        let members = [];
-        let currentUser = null;
-        let selectedLoanMemberId = null;
-        let screenHistory = [];
+        let members = [], currentUser = null, selectedLoanMemberId = null, screenHistory = [];
+        const RULES = { MIN_SAVINGS: 200, MEMBERSHIP_FEE: 50, SOCIAL_FUND: 100, INTEREST: 0.10 };
         
-        const RULES = {
-            MIN_SAVINGS: 200,
-            MEMBERSHIP_FEE: 50,
-            SOCIAL_FUND: 100,
-            INTEREST: 0.10
-        };
-
-        // ===== SCREEN HISTORY =====
-        function navigateTo(screenFn, screenName) {
-            screenHistory.push(screenName);
-            updateNavButtons();
-            screenFn();
-        }
+        function navigateTo(screenFn, screenName) { screenHistory.push(screenName); updateNavButtons(); screenFn(); }
+        function goBack() { if (screenHistory.length > 1) { screenHistory.pop(); updateNavButtons(); const prev = screenHistory[screenHistory.length-1]; if (prev === 'admin' && currentUser?.type === 'admin') showAdminDashboard(); else if (prev === 'member' && currentUser?.type === 'member') showMemberDashboard(currentUser.id); else logout(); } else logout(); }
+        function updateNavButtons() { const backBtn = document.getElementById('backBtn'); if (backBtn) backBtn.style.display = screenHistory.length > 1 ? 'flex' : 'none'; }
         
-        function goBack() {
-            if (screenHistory.length > 1) {
-                screenHistory.pop();
-                const prev = screenHistory[screenHistory.length - 1];
-                updateNavButtons();
-                if (prev === 'admin' && currentUser?.type === 'admin') {
-                    showAdminDashboard();
-                } else if (prev === 'member' && currentUser?.type === 'member') {
-                    showMemberDashboard(currentUser.id);
-                } else if (prev === 'login') {
-                    logout();
-                } else {
-                    showAdminDashboard();
-                }
-            } else {
-                logout();
-            }
-        }
-        
-        function updateNavButtons() {
-            const backBtn = document.getElementById('backBtn');
-            if (backBtn) {
-                backBtn.style.display = screenHistory.length > 1 ? 'flex' : 'none';
-            }
-        }
-
-        // ===== NOTIFICATION MANAGER =====
         const NotificationManager = {
-            notifications: [],
-            
-            init() {
-                const saved = localStorage.getItem('notifications');
-                this.notifications = saved ? JSON.parse(saved) : [];
+            notifications: [], init() { const saved = localStorage.getItem('notifications'); this.notifications = saved ? JSON.parse(saved) : []; },
+            add(message, type='info') { const n = { id: Date.now(), message, type, timestamp: new Date().toISOString(), read: false }; this.notifications.unshift(n); this.save(); this.renderBadge(); this.showToast(message, type); },
+            save() { localStorage.setItem('notifications', JSON.stringify(this.notifications)); },
+            markAsRead(id) { const n = this.notifications.find(n=>n.id===id); if(n) n.read=true; this.save(); this.renderBadge(); this.renderDropdown(); },
+            markAllRead() { this.notifications.forEach(n=>n.read=true); this.save(); this.renderBadge(); this.renderDropdown(); },
+            showToast(msg, type) { const toast = document.createElement('div'); toast.style.cssText = `position:fixed;top:20px;left:16px;right:16px;background:${type==='success'?'#2e7d32':type==='error'?'#f44336':'#1e88e5'};color:white;padding:14px;border-radius:12px;z-index:9999;animation:slideDown 0.3s;max-width:400px;margin:auto;`; toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${msg}`; document.body.appendChild(toast); setTimeout(()=>toast.remove(), 3000); },
+            renderBadge() { 
+                const unread = this.notifications.filter(n=>!n.read).length;
+                const badgeInMenu = document.getElementById('notificationBadge');
+                const badgeInHeader = document.getElementById('notificationBadgeTop');
+                const display = unread>0?'flex':'none';
+                if(badgeInMenu) { badgeInMenu.textContent = unread; badgeInMenu.style.display = display; }
+                if(badgeInHeader) { badgeInHeader.textContent = unread; badgeInHeader.style.display = display; }
             },
-            
-            add(message, type = 'info') {
-                const notification = {
-                    id: Date.now(),
-                    message,
-                    type,
-                    timestamp: new Date().toISOString(),
-                    read: false
-                };
-                this.notifications.unshift(notification);
-                this.save();
-                this.renderBadge();
-                this.showToast(message, type);
-            },
-            
-            save() {
-                localStorage.setItem('notifications', JSON.stringify(this.notifications));
-            },
-            
-            markAsRead(id) {
-                const n = this.notifications.find(n => n.id === id);
-                if (n) n.read = true;
-                this.save();
-                this.renderBadge();
-                this.renderDropdown();
-            },
-            
-            markAllRead() {
-                this.notifications.forEach(n => n.read = true);
-                this.save();
-                this.renderBadge();
-                this.renderDropdown();
-            },
-            
-            showToast(message, type) {
-                const toast = document.createElement('div');
-                toast.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    left: 16px;
-                    right: 16px;
-                    background: ${type === 'success' ? '#2e7d32' : type === 'error' ? '#f44336' : '#1e88e5'};
-                    color: white;
-                    padding: 14px 20px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                    z-index: 9999;
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    font-size: 15px;
-                    animation: slideDown 0.3s ease;
-                    max-width: 400px;
-                    margin: 0 auto;
-                `;
-                toast.innerHTML = `
-                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                    <span style="flex:1;">${message}</span>
-                `;
-                document.body.appendChild(toast);
-                
-                setTimeout(() => {
-                    toast.style.animation = 'slideUp 0.3s ease';
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
-            },
-            
-            renderBadge() {
-                const badge = document.getElementById('notificationBadge');
-                if (badge) {
-                    const unread = this.notifications.filter(n => !n.read).length;
-                    badge.textContent = unread;
-                    badge.style.display = unread > 0 ? 'flex' : 'none';
-                }
-            },
-            
-            renderDropdown() {
-                const container = document.getElementById('notificationDropdown');
-                if (!container) return;
-                
-                let html = '<div style="padding:16px;border-bottom:1px solid var(--border-color);">';
-                html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
-                html += '<h4 style="margin:0;font-size:16px;">Notifications</h4>';
-                html += '<button onclick="NotificationManager.markAllRead();event.stopPropagation();" style="background:none;border:none;color:var(--primary);font-size:13px;">Mark all read</button>';
-                html += '</div></div>';
-                
-                if (this.notifications.length === 0) {
-                    html += '<div style="padding:32px 16px;text-align:center;color:var(--text-secondary);">No notifications</div>';
-                } else {
-                    this.notifications.slice(0, 5).forEach(n => {
-                        html += `
-                            <div onclick="NotificationManager.markAsRead(${n.id});event.stopPropagation();" style="padding:16px;border-bottom:1px solid var(--border-color);cursor:pointer;${!n.read ? 'background:rgba(30,136,229,0.05);' : ''}">
-                                <div style="display:flex;gap:12px;">
-                                    <i class="fas ${n.type === 'success' ? 'fa-check-circle' : n.type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" 
-                                       style="color:${n.type === 'success' ? '#2e7d32' : n.type === 'error' ? '#f44336' : '#1e88e5'};"></i>
-                                    <div style="flex:1;">
-                                        <div style="font-weight:600;margin-bottom:4px;font-size:14px;">${n.message}</div>
-                                        <div style="font-size:11px;color:var(--text-secondary);">${new Date(n.timestamp).toLocaleDateString()}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-                
-                container.innerHTML = html;
-            }
+            renderDropdown() { const c = document.getElementById('notificationDropdown'); if(!c) return; let html = '<div style="padding:16px;border-bottom:1px solid var(--border-color);"><div style="display:flex;justify-content:space-between;"><h4>Notifications</h4><button onclick="NotificationManager.markAllRead();" style="background:none;border:none;color:var(--primary);">Mark all read</button></div></div>'; if(this.notifications.length===0) html+='<div style="padding:32px;text-align:center;">No notifications</div>'; else this.notifications.slice(0,5).forEach(n=>{ html+=`<div onclick="NotificationManager.markAsRead(${n.id})" style="padding:16px;border-bottom:1px solid var(--border-color);${!n.read?'background:rgba(30,136,229,0.05);':''}"><div><i class="fas ${n.type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${n.message}<div style="font-size:11px;">${new Date(n.timestamp).toLocaleDateString()}</div></div></div>`; }); c.innerHTML = html; }
         };
-
-        // ===== THEME MANAGER =====
-        const ThemeManager = {
-            init() {
-                const theme = localStorage.getItem('theme') || 'light';
-                document.documentElement.setAttribute('data-theme', theme);
-            },
-            
-            toggle() {
-                const current = document.documentElement.getAttribute('data-theme');
-                const newTheme = current === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                this.updateUI();
-                this.closeAllMenus();
-            },
-            
-            updateUI() {
-                const toggle = document.getElementById('themeToggle');
-                if (toggle) {
-                    const theme = document.documentElement.getAttribute('data-theme');
-                    toggle.innerHTML = theme === 'light' 
-                        ? '<i class="fas fa-moon"></i><span>Dark Mode</span>' 
-                        : '<i class="fas fa-sun"></i><span>Light Mode</span>';
-                }
-            },
-            
-            closeAllMenus() {
-                document.querySelectorAll('.menu-dropdown.active, .notification-dropdown.active').forEach(el => {
-                    el.classList.remove('active');
-                });
-            }
+        
+        const ThemeManager = { 
+            init() { const theme = localStorage.getItem('theme')||'light'; document.documentElement.setAttribute('data-theme', theme); }, 
+            toggle() { const curr = document.documentElement.getAttribute('data-theme'); const next = curr==='light'?'dark':'light'; document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next); this.updateUI(); }, 
+            updateUI() { const t = document.getElementById('themeToggle'); if(t) t.innerHTML = document.documentElement.getAttribute('data-theme')==='light'?'<i class="fas fa-moon"></i><span>Dark Mode</span>':'<i class="fas fa-sun"></i><span>Light Mode</span>'; },
+            closeAllMenus() { document.querySelectorAll('.menu-dropdown.active, .notification-dropdown.active').forEach(el=>el.classList.remove('active')); }
         };
-
-        // ===== FIREBASE HELPERS - FIXED FOR ARRAY STRUCTURE =====
-        async function loadMembers() {
-            try {
-                console.log('Loading members from main document array...');
-                
-                const docRef = db.collection('groups').doc('main');
-                const docSnap = await docRef.get();
-                
-                if (docSnap.exists) {
-                    const data = docSnap.data();
-                    members = data.members || [];
-                    console.log(`✅ Loaded ${members.length} members from main document array`);
-                } else {
-                    console.log('⚠️ Main document does not exist');
-                    members = [];
-                }
-                
-                localStorage.setItem('members', JSON.stringify(members));
-                
-            } catch (e) {
-                console.error('❌ Error loading members:', e);
-                
-                const local = localStorage.getItem('members');
-                if (local) {
-                    members = JSON.parse(local);
-                    console.log(`📱 Loaded ${members.length} members from localStorage (offline mode)`);
-                } else {
-                    console.log('ℹ️ No members in localStorage either');
-                    members = [];
-                }
-            }
-        }
-
-        async function saveMembers() {
-            localStorage.setItem('members', JSON.stringify(members));
-            localStorage.setItem('membersLastSync', new Date().toISOString());
-            
-            if (!navigator.onLine) {
-                console.log('📱 Offline - saved to localStorage, queued for sync');
-                queueForSync();
-                return false;
-            }
-            
-            try {
-                console.log('Saving members to main document array...');
-                
-                await db.collection('groups').doc('main').set({
-                    members: members,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-                
-                console.log('✅ Members saved successfully');
-                localStorage.removeItem('syncQueue');
-                return true;
-                
-            } catch (e) {
-                console.error('❌ Error saving members:', e);
-                queueForSync();
-                return false;
-            }
-        }
-
-        function queueForSync() {
-            const queue = JSON.parse(localStorage.getItem('syncQueue') || '[]');
-            queue.push({ members: members, timestamp: new Date().toISOString() });
-            localStorage.setItem('syncQueue', JSON.stringify(queue));
-            console.log('📤 Queued for sync when online');
-        }
-
-        async function syncPendingData() {
-            if (!navigator.onLine) return;
-            const queue = JSON.parse(localStorage.getItem('syncQueue') || '[]');
-            if (queue.length === 0) return;
-            
-            try {
-                await db.collection('groups').doc('main').set({
-                    members: queue[queue.length - 1].members,
-                    lastSync: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-                localStorage.removeItem('syncQueue');
-                console.log('✅ Synced pending data');
-            } catch (e) {
-                console.log('Sync pending failed:', e);
-            }
-        }
-
-        window.addEventListener('online', () => {
-            console.log('🟢 Back online - syncing...');
-            syncPendingData();
-        });
-
-        function fmtDate(iso) {
-            try {
-                return new Date(iso).toLocaleDateString('en-ZM', { 
-                    day: 'numeric', month: 'short', year: 'numeric' 
-                });
-            } catch { 
-                return iso; 
-            }
-        }
-
-        function updateNetworkStatus() {
-            const el = document.getElementById('networkStatus');
-            if (el) {
-                el.textContent = navigator.onLine ? '● Online' : '○ Offline';
-                el.style.background = navigator.onLine ? 'rgba(255,255,255,0.15)' : '#f44336';
-            }
-        }
-
-        function closeAllMenus() {
-            document.querySelectorAll('.menu-dropdown.active, .notification-dropdown.active').forEach(el => {
-                el.classList.remove('active');
-            });
-        }
-
+        
+        async function loadMembers() { try { const doc = await db.collection('groups').doc('main').get(); if(doc.exists) members = doc.data().members || []; else members = []; localStorage.setItem('members', JSON.stringify(members)); } catch(e) { const local = localStorage.getItem('members'); if(local) members = JSON.parse(local); } }
+        async function saveMembers() { localStorage.setItem('members', JSON.stringify(members)); if(!navigator.onLine) return; try { await db.collection('groups').doc('main').set({ members, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); } catch(e) { console.log(e); } }
+        function fmtDate(iso) { try { return new Date(iso).toLocaleDateString('en-ZM'); } catch(e) { return iso; } }
+        function formatCurrency(amt) { return 'K' + (amt||0).toLocaleString(); }
+        function closeAllMenus() { ThemeManager.closeAllMenus(); }
+        
         // ===== LOGIN =====
-        function showAdminLogin() {
-            const form = document.getElementById('loginForm');
-            if (form) {
-                form.innerHTML = `
-                    <input type="text" id="username" value="admin" placeholder="Admin username">
-                    <input type="password" id="password" value="ChiSave" placeholder="Admin password">
-                    <button class="btn" onclick="login('admin')">🔐 ADMIN LOGIN</button>
-                `;
-            }
-        }
-
-        function showMemberLogin() {
-            const form = document.getElementById('loginForm');
-            if (form) {
-                console.log('Showing member login with members:', members);
-                
-                if (!members || members.length === 0) {
-                    form.innerHTML = `
-                        <div style="padding:20px; text-align:center; color:var(--text-secondary);">
-                            <i class="fas fa-spinner fa-spin" style="font-size:24px; margin-bottom:10px;"></i>
-                            <p>Loading members...</p>
-                        </div>
-                    `;
-                    loadMembers().then(() => {
-                        showMemberLogin();
-                    });
-                    return;
-                }
-                
-                form.innerHTML = `
-                    <select id="memberSelect">
-                        <option value="">-- Select Your Name --</option>
-                        ${members.map(m => `<option value="${m.id}">${m.name || 'Unknown'}</option>`).join('')}
-                    </select>
-                    <input type="password" id="memberPass" placeholder="PIN (last 4 digits)">
-                    <button class="btn" onclick="login('member')" style="background:#26a69a;">👤 MEMBER LOGIN</button>
-                `;
-            }
-        }
-
-        function login(type) {
-            if (type === 'admin') {
-                const user = document.getElementById('username')?.value;
-                const pass = document.getElementById('password')?.value;
-                if (user === 'admin' && pass === 'ChiSave') {
-                    currentUser = { type: 'admin', name: 'Admin' };
-                    NotificationManager.add('Welcome back, Admin!', 'success');
-                    screenHistory = ['login', 'admin'];
-                    showAdminDashboard();
-                } else {
-                    alert('Wrong username or password');
-                }
-            } else {
-                const memberId = document.getElementById('memberSelect')?.value;
-                const pass = document.getElementById('memberPass')?.value;
-                if (!memberId) { alert('Select your name'); return; }
-                const member = members.find(m => m.id === memberId);
-                const expectedPin = member.pin || (member.phone || '').slice(-4);
-                if (member && pass === expectedPin) {
-                    currentUser = { type: 'member', name: member.name, id: member.id };
-                    NotificationManager.add(`Welcome back, ${member.name}!`, 'success');
-                    screenHistory = ['login', 'member'];
-                    showMemberDashboard(member.id);
-                } else {
-                    alert('Wrong PIN');
-                }
-            }
-        }
-
-        function logout() {
-            currentUser = null;
-            closeAllMenus();
-            screenHistory = ['login'];
-            showLoginScreen();
-        }
-
+        function showAdminLogin() { document.getElementById('loginForm').innerHTML = `<input type="text" id="username" value="admin" placeholder="Admin username"><input type="password" id="password" value="ChiSave" placeholder="Admin password"><button class="btn" onclick="login('admin')">🔐 ADMIN LOGIN</button>`; }
+        function showMemberLogin() { const form = document.getElementById('loginForm'); if(!members.length) { form.innerHTML = '<div>Loading members...</div>'; loadMembers().then(()=>showMemberLogin()); return; } form.innerHTML = `<select id="memberSelect"><option value="">-- Select Your Name --</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="password" id="memberPass" placeholder="PIN (last 4 digits)"><button class="btn" onclick="login('member')" style="background:#26a69a;">👤 MEMBER LOGIN</button>`; }
+        function login(type) { if(type==='admin') { const u = document.getElementById('username')?.value, p = document.getElementById('password')?.value; if(u==='admin' && p==='ChiSave') { currentUser = { type:'admin', name:'Admin' }; NotificationManager.add('Welcome back, Admin!','success'); screenHistory = ['login','admin']; showAdminDashboard(); } else alert('Wrong username or password'); } else { const mid = document.getElementById('memberSelect')?.value, pass = document.getElementById('memberPass')?.value; if(!mid) { alert('Select your name'); return; } const m = members.find(m=>m.id===mid); const expectedPin = m.pin || (m.phone || '').slice(-4); if(m && pass === expectedPin) { currentUser = { type:'member', name:m.name, id:m.id }; NotificationManager.add(`Welcome back, ${m.name}!`,'success'); screenHistory = ['login','member']; showMemberDashboard(m.id); } else alert('Wrong PIN'); } }
+        function logout() { currentUser = null; closeAllMenus(); screenHistory = ['login']; showLoginScreen(); }
         function showLoginScreen() {
-            screenHistory = ['login'];
+            screenHistory=['login'];
             document.getElementById('app').innerHTML = `
-                <div class="header">
-                    <div class="header-content">
-                        <div class="header-title">
-                            <h1>💰 SAVERS GROUP</h1>
-                            <p>Digital Savings System</p>
-                        </div>
-                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
-                            Loading...
-                        </div>
+                <div class="header" style="animation: fadeInUp 0.5s ease forwards;">
+                    <div class="header-title"><h1>💰 SAVERS GROUP</h1><p>Digital Savings System</p></div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="nav-btn" onclick="ThemeManager.toggle()" title="Toggle Theme" style="background:rgba(255,255,255,0.2);"><i class="fas fa-adjust"></i></div>
+                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">● Online</div>
                     </div>
                 </div>
                 <div style="padding:16px;">
-                    <div class="card" style="max-width:400px;margin:20px auto;">
-                        <h2 style="margin-bottom:20px;text-align:center;">Login</h2>
-                        
+                    <div class="card login-card" style="max-width:400px;margin:20px auto;animation: fadeInUp 0.6s ease forwards;animation-delay:0.2s;opacity:0;">
+                        <div style="text-align:center;margin-bottom:24px;">
+                            <div style="width:80px;height:80px;margin:0 auto 16px;background:linear-gradient(135deg,#1e88e5,#42a5f5);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow: 0 8px 24px rgba(37,99,235,0.3);animation: pulse 2s infinite;">
+                                <i class="fas fa-piggy-bank" style="font-size:36px;color:white;"></i>
+                            </div>
+                            <h2 style="margin-bottom:8px;">Welcome Back</h2>
+                            <p style="color:var(--text-secondary);font-size:14px;">Login to manage your savings</p>
+                        </div>
                         <div style="display:flex;gap:12px;margin-bottom:20px;">
-                            <button class="btn" onclick="showAdminLogin()" id="adminBtn" style="flex:1;background:var(--primary);">👑 Admin</button>
-                            <button class="btn" onclick="showMemberLogin()" id="memberBtn" style="flex:1;background:var(--primary-light);">👤 Member</button>
+                            <button class="btn" onclick="showAdminLogin()" style="flex:1;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;">👑 Admin</button>
+                            <button class="btn" onclick="showMemberLogin()" style="flex:1;background:#26a69a;animation: fadeInUp 0.5s ease forwards;animation-delay:0.4s;opacity:0;">👤 Member</button>
                         </div>
-                        <div id="loginForm">
-                            <input type="text" id="username" value="admin" placeholder="Admin username">
-                            <input type="password" id="password" value="ChiSave" placeholder="Admin password">
-                            <button class="btn" onclick="login('admin')">🔐 ADMIN LOGIN</button>
-                        </div>
-                        <div style="text-align:center;margin-top:30px;color:var(--text-secondary);font-size:12px;">
-                            Created by Tha for Chibombo Savers Group
+                        <div id="loginForm"></div>
+                        <div style="text-align:center;margin-top:30px;font-size:12px;color:var(--text-secondary);">
+                            <i class="fas fa-heart" style="color:#e91e63;"></i> Created for Chibombo Savers Group
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
             showAdminLogin();
-            updateNetworkStatus();
         }
-
-        // ===== ADMIN DASHBOARD =====
+        
+        // ===== ADMIN DASHBOARD (WITH YOUR ORIGINAL COLORED METRICS) =====
         function showAdminDashboard() {
-            const totalSavings = members.reduce((sum, m) => sum + (m.savings || 0), 0);
-            const totalLoans = members.reduce((sum, m) => sum + (m.loanPrincipal || 0), 0);
-            const active = members.filter(m => m.membershipPaid && m.socialPaid).length;
-            const pendingFees = members.filter(m => !m.membershipPaid || !m.socialPaid).length;
+            const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0);
+            const totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0);
+            const active = members.filter(m=>m.membershipPaid && m.socialPaid).length;
+            const pendingFees = members.filter(m=>!m.membershipPaid || !m.socialPaid).length;
             
-            screenHistory = ['admin'];
-            
+            screenHistory=['admin'];
             document.getElementById('app').innerHTML = `
                 <div class="header">
-                    <div class="header-content">
-                        <div class="header-left">
-                            <div class="nav-btn" id="backBtn" onclick="goBack()" style="display:none;">
-                                <i class="fas fa-arrow-left"></i>
-                            </div>
-                            <div class="header-title">
-                                <h1>💰 SAVERS GROUP</h1>
-                                <p>Admin Dashboard</p>
-                            </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" id="backBtn" onclick="goBack()" style="display:none;"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 SAVERS GROUP</h1><p>Admin Dashboard</p></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">● Online</div>
+                        <div class="nav-btn" onclick="toggleNotifications(event)" title="Notifications" style="position:relative;background:rgba(255,255,255,0.2);"><i class="fas fa-bell"></i><span id="notificationBadgeTop" class="notification-badge" style="display:none;">0</span></div>
+                        <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
+                        <div class="menu-toggle" onclick="toggleAdminMenu(event)"><i class="fas fa-ellipsis-v"></i></div>
+                        <div id="adminMenu" class="menu-dropdown">
+                            <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();" id="themeToggle"><i class="fas fa-moon"></i><span>Dark Mode</span></div>
+                            <div class="menu-item" onclick="toggleNotifications(event);"><i class="fas fa-bell"></i><span>Notifications</span></div>
+                            <div class="menu-item" onclick="showHistoryPage();closeAllMenus();"><i class="fas fa-history"></i><span>View History</span></div>
+                            <div class="menu-item" onclick="logout();"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
                         </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
-                                ${navigator.onLine ? '<span class="status-dot active"></span>Online' : '<span class="status-dot warning"></span>Offline'}
-                            </div>
-                            
-                            <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);">
-                                <i class="fas fa-door-open"></i>
-                            </div>
-                            
-                            <div class="menu-toggle" onclick="toggleAdminMenu(event)">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </div>
-                            
-                            <div id="adminMenu" class="menu-dropdown">
-                                <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();">
-                                    <i class="fas ${document.documentElement.getAttribute('data-theme') === 'light' ? 'fa-moon' : 'fa-sun'}"></i>
-                                    <span>${document.documentElement.getAttribute('data-theme') === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
-                                </div>
-                                <div class="menu-item" onclick="toggleNotifications(event);">
-                                    <i class="fas fa-bell"></i>
-                                    <span>Notifications</span>
-                                    <span id="notificationBadge" class="notification-badge" style="display:none;position:relative;top:0;right:0;margin-left:auto;">0</span>
-                                </div>
-                                <div class="menu-item" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Logout</span>
-                                </div>
-                            </div>
-                            
-                            <div id="notificationDropdown" class="notification-dropdown"></div>
-                        </div>
+                        <div id="notificationDropdown" class="notification-dropdown"></div>
                     </div>
                 </div>
-                
                 <div class="metrics-grid">
-                    <div class="metric-card fancy-card" style="margin:8px;">
-                        <div class="metric-icon" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Total Members</div>
-                            <div id="metricMembers" class="metric-value" style="color:#1e88e5;">${members.length}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
-                                <span class="status-dot active"></span>${active} active
-                            </div>
-                        </div>
-                    </div>
-                    <div class="metric-card fancy-card" style="margin:8px;">
-                        <div class="metric-icon" style="background:linear-gradient(135deg,#43a047,#66bb6a);">
-                            <i class="fas fa-piggy-bank"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Total Savings</div>
-                            <div id="metricSavings" class="metric-value" style="color:#43a047;">K${totalSavings.toLocaleString()}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
-                                <i class="fas fa-arrow-up" style="color:#43a047;"></i> +K${(totalSavings * 0.05).toLocaleString()} this month
-                            </div>
-                        </div>
-                    </div>
-                    <div class="metric-card fancy-card" style="margin:8px;">
-                        <div class="metric-icon" style="background:linear-gradient(135deg,#e53935,#ef5350);">
-                            <i class="fas fa-hand-holding-usd"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Total Loans</div>
-                            <div id="metricLoans" class="metric-value" style="color:#e53935;">K${totalLoans.toLocaleString()}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
-                                <i class="fas fa-percentage" style="color:#e53935;"></i> 10% interest
-                            </div>
-                        </div>
-                    </div>
-                    <div class="metric-card fancy-card" style="margin:8px;">
-                        <div class="metric-icon" style="background:linear-gradient(135deg,#ffa726,#ffb74d);">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Pending Fees</div>
-                            <div id="metricActive" class="metric-value" style="color:#ffa726;">${pendingFees}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">
-                                <span class="status-dot warning"></span>Needs attention
-                            </div>
-                        </div>
-                    </div>
+                    <div class="metric-card fancy-card"><div class="metric-icon" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);"><i class="fas fa-users"></i></div><div class="metric-content"><div class="metric-label">Total Members</div><div class="metric-value" style="color:#1e88e5;">${members.length}</div><div style="font-size:11px;"><span class="status-dot active"></span>${active} active</div></div></div>
+                    <div class="metric-card fancy-card"><div class="metric-icon" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-piggy-bank"></i></div><div class="metric-content"><div class="metric-label">Total Savings</div><div class="metric-value" style="color:#43a047;">K${totalSavings.toLocaleString()}</div><div style="font-size:11px;"><i class="fas fa-arrow-up"></i> +K${(totalSavings*0.05).toLocaleString()} this month</div></div></div>
+                    <div class="metric-card fancy-card"><div class="metric-icon" style="background:linear-gradient(135deg,#e53935,#ef5350);"><i class="fas fa-hand-holding-usd"></i></div><div class="metric-content"><div class="metric-label">Total Loans</div><div class="metric-value" style="color:#e53935;">K${totalLoans.toLocaleString()}</div><div style="font-size:11px;"><i class="fas fa-percentage"></i> 10% interest</div></div></div>
+                    <div class="metric-card fancy-card"><div class="metric-icon" style="background:linear-gradient(135deg,#ffa726,#ffb74d);"><i class="fas fa-clock"></i></div><div class="metric-content"><div class="metric-label">Pending Fees</div><div class="metric-value" style="color:#ffa726;">${pendingFees}</div><div style="font-size:11px;"><span class="status-dot warning"></span>Needs attention</div></div></div>
                 </div>
-                
                 <div style="padding:16px;">
-                    <h3 style="margin-bottom:16px;color:var(--text-primary);font-size:16px;">
-                        <i class="fas fa-bolt" style="color:#ffa726;"></i> Quick Actions
-                    </h3>
-                    <div class="action-grid">
-                        <div class="action-btn" onclick="showAddMember()">
-                            <i class="fas fa-user-plus"></i>
-                            <span>Add Member</span>
-                        </div>
-                        <div class="action-btn" onclick="showAddSavings()">
-                            <i class="fas fa-piggy-bank"></i>
-                            <span>Add Savings</span>
-                        </div>
-                        <div class="action-btn" onclick="showLoanManagement()">
-                            <i class="fas fa-hand-holding-usd"></i>
-                            <span>Manage Loans</span>
-                        </div>
-                        <div class="action-btn" onclick="showAllMembers()">
-                            <i class="fas fa-users"></i>
-                            <span>View Members</span>
-                        </div>
-                        <div class="action-btn" onclick="showCollectFees()">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Collect Fees</span>
-                        </div>
-                        <div class="action-btn" onclick="showShareAccount()">
-                            <i class="fas fa-chart-pie"></i>
-                            <span>Share Account</span>
-                        </div>
-                    </div>
+                    <h3 style="display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;margin-bottom:12px;"><i class="fas fa-bolt" style="color:#ffa726;"></i> Quick Actions</h3>
                 </div>
-                
-                <div class="fancy-card" style="margin:16px;">
-                    <h3 style="margin-bottom:16px;">
-                        <i class="fas fa-chart-line" style="color:var(--primary);"></i> Group Summary
-                    </h3>
+                <div class="action-grid">
+                    <div class="action-btn" onclick="showAddMember()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.1s; opacity: 0;"><i class="fas fa-user-plus"></i><span>Add Member</span></div>
+                    <div class="action-btn" onclick="showAddSavings()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.15s; opacity: 0;"><i class="fas fa-piggy-bank"></i><span>Add Savings</span></div>
+                    <div class="action-btn" onclick="showLoanManagement()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.2s; opacity: 0;"><i class="fas fa-hand-holding-usd"></i><span>Manage Loans</span></div>
+                    <div class="action-btn" onclick="showAllMembers()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.25s; opacity: 0;"><i class="fas fa-users"></i><span>View Members</span></div>
+                    <div class="action-btn" onclick="showCollectFees()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.3s; opacity: 0;"><i class="fas fa-check-circle"></i><span>Collect Fees</span></div>
+                    <div class="action-btn" onclick="showShareAccount()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.35s; opacity: 0;"><i class="fas fa-chart-pie"></i><span>Share Account</span></div>
+                    <div class="action-btn" onclick="showHistoryPage()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.4s; opacity: 0;"><i class="fas fa-history"></i><span>History</span></div>
+                    <div class="action-btn" onclick="showImportMembersCSV()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.45s; opacity: 0;"><i class="fas fa-file-import"></i><span>Import Members</span></div>
+                    <div class="action-btn" onclick="showImportTransactionsCSV()" style="animation: fadeInUp 0.5s ease forwards; animation-delay: 0.5s; opacity: 0;"><i class="fas fa-exchange-alt"></i><span>Import History</span></div>
+                </div>
+                <div class="fancy-card card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.5s;opacity:0;">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-chart-line"></i> Group Summary</h3>
                     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
-                        <div style="padding:16px;background:rgba(67,160,71,0.1);border-radius:12px;text-align:center;">
-                            <div style="font-size:24px;font-weight:700;color:#43a047;">K${(totalSavings - totalLoans).toLocaleString()}</div>
-                            <div style="font-size:12px;color:var(--text-secondary);">Net Savings</div>
+                        <div style="padding:20px;background:linear-gradient(135deg,rgba(67,160,71,0.15),rgba(67,160,71,0.05));border-radius:12px;text-align:center;border:1px solid rgba(67,160,71,0.2);">
+                            <div style="font-size:28px;font-weight:700;color:#43a047;">K${(totalSavings-totalLoans).toLocaleString()}</div>
+                            <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Net Savings</div>
                         </div>
-                        <div style="padding:16px;background:rgba(30,136,229,0.1);border-radius:12px;text-align:center;">
-                            <div style="font-size:24px;font-weight:700;color:#1e88e5;">${active}/${members.length}</div>
-                            <div style="font-size:12px;color:var(--text-secondary);">Active Members</div>
+                        <div style="padding:20px;background:linear-gradient(135deg,rgba(30,136,229,0.15),rgba(30,136,229,0.05));border-radius:12px;text-align:center;border:1px solid rgba(30,136,229,0.2);">
+                            <div style="font-size:28px;font-weight:700;color:#1e88e5;">${active}/${members.length}</div>
+                            <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Active Members</div>
                         </div>
                     </div>
                 </div>
-                
-                <div id="contentArea" style="padding:0 16px;"></div>
-            `;
-            
-            NotificationManager.renderBadge();
-            NotificationManager.renderDropdown();
-            ThemeManager.updateUI();
-        }
-
-        // ===== TOGGLE MENUS =====
-        function toggleAdminMenu(e) {
-            e.stopPropagation();
-            closeAllMenus();
-            const menu = document.getElementById('adminMenu');
-            if (menu) menu.classList.toggle('active');
+                <div id="contentArea"></div>`;
+            NotificationManager.renderBadge(); ThemeManager.updateUI();
         }
         
-        function toggleMemberMenu(e) {
-            e.stopPropagation();
-            closeAllMenus();
-            const menu = document.getElementById('memberMenu');
-            if (menu) menu.classList.toggle('active');
-        }
-        
-        function toggleNotifications(e) {
-            e.stopPropagation();
-            closeAllMenus();
-            const dropdown = document.getElementById('notificationDropdown');
-            if (dropdown) {
-                dropdown.classList.toggle('active');
-                NotificationManager.renderDropdown();
-            }
-        }
-
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.menu-dropdown') && !e.target.closest('.menu-toggle') && !e.target.closest('.notification-dropdown')) {
-                closeAllMenus();
-            }
-        });
-
-        // ===== ADD MEMBER =====
-        function showAddMember() {
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:16px;"><i class="fas fa-user-plus"></i> Add New Member</h3>
-                    <input type="text" id="newName" placeholder="Full Name">
-                    <input type="tel" id="newPhone" placeholder="Phone Number">
-                    <input type="date" id="newCreatedDate" placeholder="Registration Date">
-                    <input type="number" id="newSavings" value="200" min="200" step="200" placeholder="Initial Savings">
-                    <small style="color:var(--text-secondary);display:block;margin-bottom:16px;">Minimum K200, multiples of 200</small>
-                    
-                    <div style="background:#fff3e0;padding:16px;border-radius:12px;margin-bottom:20px;">
-                        <h4 style="margin:0 0 8px;font-size:16px;">One-Time Fees: K150</h4>
-                        <p style="margin:4px 0;font-size:14px;">• Membership: K50</p>
-                        <p style="margin:4px 0;font-size:14px;">• Social Fund: K100</p>
-                    </div>
-                    
-                    <div style="display:flex;gap:12px;">
-                        <button class="btn" onclick="addMember()" style="flex:1;">💾 Save Member</button>
-                        <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function addMember() {
-            const name = document.getElementById('newName')?.value.trim();
-            const phone = document.getElementById('newPhone')?.value.trim();
-            const createdDate = document.getElementById('newCreatedDate')?.value;
-            const savings = parseInt(document.getElementById('newSavings')?.value) || 200;
-            
-            if (!name) { alert('Enter name'); return; }
-            if (!phone || phone.length < 4) { alert('Enter valid phone'); return; }
-            if (savings < 200 || savings % 200 !== 0) { alert('Must be K200+ in multiples of 200'); return; }
-            
-            const registrationDate = createdDate ? new Date(createdDate).toISOString() : new Date().toISOString();
-
-            const newMember = {
-                id: Date.now().toString(),
-                name, phone,
-                createdDate: registrationDate,
-                savings, loanPrincipal: 0,
-                membershipPaid: false, socialPaid: false,
-                pin: phone.slice(-4),
-                transactions: [{
-                    type: 'savings', amount: savings,
-                    date: registrationDate,
-                    note: 'Initial savings'
-                }]
-            };
-            
-            members.push(newMember);
-            await saveMembers();
-            NotificationManager.add('Member added successfully!', 'success');
-            goBack();
-        }
-
-        // ===== VIEW ALL MEMBERS =====
-        function showAllMembers() {
-            screenHistory.push('View Members');
-            updateNavButtons();
-            let html = `<h3 style="margin-bottom:16px;padding:0 16px;">All Members (${members.length})</h3>`;
-            html += `<div style="padding:0 16px;">`;
-            
-            members.forEach(member => {
-                const initials = member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-                const colors = ['#1e88e5', '#e91e63', '#9c27b0', '#ff9800', '#4caf50', '#f44336'];
-                const color = colors[member.name.length % colors.length];
-                
-                html += `
-                    <div class="member-row">
-                        <div class="avatar" style="background:${color};">${initials}</div>
-                        <div class="member-info">
-                            <div class="member-name">${member.name}</div>
-                            <div class="member-details">
-                                <span>K${(member.savings || 0).toLocaleString()}</span>
-                                <span>Loan: K${((member.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</span>
-                            </div>
-                        </div>
-                        <button class="btn-sm" onclick="viewMember('${member.id}')" style="padding:8px 12px;">View</button>
-                    </div>
-                `;
-            });
-            
-            html += `</div>`;
-            document.getElementById('contentArea').innerHTML = html;
-        }
-
-        // ===== VIEW MEMBER DETAILS =====
-        function viewMember(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            screenHistory.push(`Member: ${member.name.split(' ')[0]}`);
-            updateNavButtons();
-            
-            const txs = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
-            
-            let txHtml = '<h4 style="margin:20px 0 12px;">Recent Transactions</h4>';
-            if (txs.length === 0) {
-                txHtml += '<p style="color:var(--text-secondary);text-align:center;padding:20px;">No transactions</p>';
-            } else {
-                txs.slice(0, 5).forEach(t => {
-                    const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
-                                t.type === 'loan' ? 'fa-hand-holding-usd' : 
-                                t.type === 'repayment' ? 'fa-undo' : 
-                                t.type === 'admin-edit' ? 'fa-edit' : 'fa-check-circle';
-                    const color = t.type === 'savings' ? '#2e7d32' : 
-                                 t.type === 'loan' ? '#f44336' : 
-                                 t.type === 'repayment' ? '#ff9800' : 
-                                 t.type === 'admin-edit' ? '#ff9800' : '#9c27b0';
-                    
-                    txHtml += `
-                        <div class="transaction-item">
-                            <div class="transaction-icon" style="background:${color}20;color:${color};">
-                                <i class="fas ${icon}"></i>
-                            </div>
-                            <div style="flex:1;min-width:0;">
-                                <div style="display:flex;justify-content:space-between;">
-                                    <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
-                                    <span style="font-weight:700;color:${color};">${t.amount ? 'K' + t.amount.toLocaleString() : ''}</span>
-                                </div>
-                                <div style="color:var(--text-secondary);font-size:12px;margin-top:4px;">
-                                    ${fmtDate(t.date)} • ${t.note || ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-                        <div class="avatar" style="width:64px;height:64px;font-size:24px;background:${['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'][member.name.length % 6]};">
-                            ${member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                        </div>
-                        <div>
-                            <h3 style="margin:0;font-size:20px;">${member.name}</h3>
-                            <p style="color:var(--text-secondary);margin:4px 0 0;"><i class="fas fa-phone"></i> ${member.phone || 'N/A'}</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-                        <div style="background:var(--card-bg);padding:16px;border-radius:12px;border:1px solid var(--border-color);">
-                            <div style="color:var(--text-secondary);font-size:13px;">Savings</div>
-                            <div style="font-size:1.4rem;font-weight:700;color:#1e88e5;">K${(member.savings||0).toLocaleString()}</div>
-                        </div>
-                        <div style="background:var(--card-bg);padding:16px;border-radius:12px;border:1px solid var(--border-color);">
-                            <div style="color:var(--text-secondary);font-size:13px;">Loan</div>
-                            <div style="font-size:1.4rem;font-weight:700;color:#f44336;">K${((member.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div>
-                        </div>
-                    </div>
-                    
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
-                        <button class="btn-sm" onclick="addSavingsFor('${member.id}')">💰 Add Savings</button>
-                        <button class="btn-sm" onclick="addLoanFor('${member.id}')">🏦 Add Loan</button>
-                        ${!member.membershipPaid ? `<button class="btn-sm" onclick="collectFee('${member.id}', 'membership')" style="background:#2e7d32;">✅ Membership</button>` : ''}
-                        ${!member.socialPaid ? `<button class="btn-sm" onclick="collectFee('${member.id}', 'social')" style="background:#2e7d32;">✅ Social</button>` : ''}
-                        <button class="btn-sm" onclick="showEditMember('${member.id}')" style="background:#ff9800;">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn-sm" onclick="goBack()" style="background:#666;">↩️ Back</button>
-                    </div>
-                    
-                    ${txHtml}
-                </div>
-            `;
-        }
-
-        // ===== EDIT MEMBER - ADMIN ONLY =====
+        // ===== EDIT MEMBER (FULLY RESTORED WITH ENHANCED UI) =====
         function showEditMember(memberId) {
-            if (!currentUser || currentUser.type !== 'admin') {
-                alert('Admin access required');
-                return;
-            }
-            
+            if (!currentUser || currentUser.type !== 'admin') { alert('Admin access required'); return; }
             const member = members.find(m => m.id === memberId);
             if (!member) return;
-            
+            const avatarColors = ['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
+            const avatarColor = avatarColors[member.name.length % avatarColors.length];
             document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:20px;"><i class="fas fa-edit"></i> Edit Member</h3>
-                    
-                    <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
-                        <div class="avatar" style="width:64px; height:64px; font-size:24px; background:${['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'][member.name.length % 6]};">
-                            ${member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                        </div>
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="viewMember('${memberId}')"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 Edit Member</h1></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+                        <div class="avatar" style="width:64px;height:64px;font-size:24px;background:linear-gradient(135deg,${avatarColor},${avatarColor}dd);box-shadow: 0 4px 12px ${avatarColor}40;">${member.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
                         <div>
-                            <h4 style="margin:0;">${member.name}</h4>
-                            <p style="color:var(--text-secondary); margin:4px 0 0;">ID: ${member.id.slice(-6)}</p>
+                            <h4 style="margin-bottom:4px;">${member.name}</h4>
+                            <p style="font-size:12px;color:var(--text-secondary);">ID: ${member.id.slice(-6)}</p>
                         </div>
                     </div>
-                    
                     <input type="text" id="editName" value="${member.name}" placeholder="Full Name">
                     <input type="tel" id="editPhone" value="${member.phone || ''}" placeholder="Phone Number">
-                    <input type="date" id="editCreatedDate" value="${member.createdDate ? new Date(member.createdDate).toISOString().split('T')[0] : ''}" placeholder="Registration Date">
-                    <input type="text" id="editPin" value="${member.pin || ''}" placeholder="PIN (4+ digits)">
-                    <input type="number" id="editSavings" value="${member.savings || 0}" step="0.01" placeholder="Savings Amount">
+                    <input type="date" id="editCreatedDate" value="${member.createdDate ? new Date(member.createdDate).toISOString().split('T')[0] : ''}">
+                    <input type="text" id="editPin" value="${member.pin || ''}" placeholder="PIN">
+                    <input type="number" id="editSavings" value="${member.savings || 0}" step="0.01" placeholder="Savings">
                     <input type="number" id="editLoan" value="${member.loanPrincipal || 0}" step="0.01" placeholder="Loan Principal">
-                    
-                    <div style="display:flex; gap:16px; margin:16px 0;">
-                        <label style="display:flex; align-items:center; gap:8px;">
-                            <input type="checkbox" id="editMembership" ${member.membershipPaid ? 'checked' : ''}> Membership Paid
-                        </label>
-                        <label style="display:flex; align-items:center; gap:8px;">
-                            <input type="checkbox" id="editSocial" ${member.socialPaid ? 'checked' : ''}> Social Paid
-                        </label>
+                    <div style="display:flex;gap:16px;margin:16px 0;flex-wrap:wrap;">
+                        <label style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(46,125,50,0.1);border-radius:8px;cursor:pointer;"><input type="checkbox" id="editMembership" ${member.membershipPaid ? 'checked' : ''} style="width:auto;margin:0;"> Membership Paid</label>
+                        <label style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,152,0,0.1);border-radius:8px;cursor:pointer;"><input type="checkbox" id="editSocial" ${member.socialPaid ? 'checked' : ''} style="width:auto;margin:0;"> Social Paid</label>
                     </div>
-                    
-                    <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-top:20px;">
-                        <button class="btn" onclick="saveEditedMember('${member.id}')" style="background:var(--primary);">💾 Save</button>
-                        <button class="btn" onclick="resetMemberPin('${member.id}')" style="background:#ff9800;">🔐 Reset PIN</button>
-                        <button class="btn" onclick="deleteMember('${member.id}')" style="background:#dc2626;">🗑️ Delete</button>
-                        <button class="btn" onclick="viewMember('${member.id}')" style="background:#666;">↩️ Cancel</button>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+                        <button class="btn" onclick="saveEditedMember('${member.id}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn" onclick="resetMemberPin('${member.id}')" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><i class="fas fa-key"></i> Reset PIN</button>
+                        <button class="btn" onclick="deleteMember('${member.id}')" style="background:linear-gradient(135deg,#dc2626,#ef4444);"><i class="fas fa-trash"></i> Delete</button>
+                        <button class="btn" onclick="viewMember('${member.id}')" style="background:#666;"><i class="fas fa-arrow-left"></i> Cancel</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
-
-        // ===== SAVE EDITED MEMBER =====
+        
         async function saveEditedMember(memberId) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
-            
             const name = document.getElementById('editName')?.value.trim();
             const phone = document.getElementById('editPhone')?.value.trim();
             const createdDate = document.getElementById('editCreatedDate')?.value;
@@ -1722,697 +425,256 @@ select option {
             const loan = parseFloat(document.getElementById('editLoan')?.value) || 0;
             const membershipPaid = document.getElementById('editMembership')?.checked || false;
             const socialPaid = document.getElementById('editSocial')?.checked || false;
-            
             if (!name) { alert('Name cannot be empty'); return; }
-            
-            const changes = [];
-            if (member.name !== name) changes.push(`Name: ${member.name} → ${name}`);
-            if (member.createdDate !== (createdDate ? new Date(createdDate).toISOString() : member.createdDate)) changes.push(`Created Date: ${fmtDate(member.createdDate)} → ${createdDate}`);
-            if (member.savings !== savings) changes.push(`Savings: K${member.savings} → K${savings}`);
-            if (member.loanPrincipal !== loan) changes.push(`Loan: K${member.loanPrincipal} → K${loan}`);
-
-            const updatedCreatedDate = createdDate ? new Date(createdDate).toISOString() : member.createdDate;
-            Object.assign(member, { name, phone, createdDate: updatedCreatedDate, pin, savings, loanPrincipal: loan, membershipPaid, socialPaid });
-            
+            Object.assign(member, { name, phone, createdDate: createdDate ? new Date(createdDate).toISOString() : member.createdDate, pin, savings, loanPrincipal: loan, membershipPaid, socialPaid });
             member.transactions = member.transactions || [];
-            member.transactions.push({
-                type: 'admin-edit',
-                amount: 0,
-                date: new Date().toISOString(),
-                note: `Admin edited: ${changes.join(', ')}`
-            });
-            
+            member.transactions.push({ type: 'admin-edit', amount: 0, date: new Date().toISOString(), note: 'Admin edited member' });
             await saveMembers();
             NotificationManager.add('Member updated successfully', 'success');
             viewMember(member.id);
         }
-
-        // ===== RESET MEMBER PIN (ADMIN) =====
+        
         async function resetMemberPin(memberId) {
-            if (!currentUser || currentUser.type !== 'admin') {
-                alert('Admin access required');
-                return;
-            }
-            
             const member = members.find(m => m.id === memberId);
             if (!member) return;
-            
             if (confirm(`Reset PIN for ${member.name} to last 4 digits of phone?`)) {
-                const newPin = (member.phone || '').slice(-4) || '0000';
-                member.pin = newPin;
-                
-                member.transactions = member.transactions || [];
-                member.transactions.push({
-                    type: 'admin-edit',
-                    amount: 0,
-                    date: new Date().toISOString(),
-                    note: `Admin reset PIN`
-                });
-                
+                member.pin = (member.phone || '').slice(-4) || '0000';
                 await saveMembers();
-                NotificationManager.add(`PIN reset to ${newPin}`, 'success');
+                NotificationManager.add(`PIN reset to ${member.pin}`, 'success');
                 viewMember(member.id);
             }
         }
-
-        // ===== DELETE MEMBER (ADMIN) =====
+        
         async function deleteMember(memberId) {
-            if (!currentUser || currentUser.type !== 'admin') {
-                alert('Admin access required');
-                return;
-            }
-
             const member = members.find(m => m.id === memberId);
             if (!member) return;
-
-            if (confirm(`Are you sure you want to delete ${member.name}? This action cannot be undone.`)) {
+            if (confirm(`Delete ${member.name}? This cannot be undone.`)) {
                 const index = members.indexOf(member);
-                if (index > -1) {
-                    members.splice(index, 1);
-                    await saveMembers();
-                    NotificationManager.add('Member deleted successfully', 'success');
-                    showAllMembers();
-                }
+                if (index > -1) { members.splice(index, 1); await saveMembers(); NotificationManager.add('Member deleted', 'success'); showAllMembers(); }
             }
         }
-
-        // ===== MEMBER SELF-SERVICE PIN RESET =====
-        async function memberResetPin(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            const newPin = prompt('Enter new 4-digit PIN:', member.pin || member.phone?.slice(-4) || '0000');
-            if (!newPin) return;
-            
-            if (newPin.length < 4) {
-                alert('PIN must be at least 4 digits');
-                return;
-            }
-            
-            member.pin = newPin;
-            
-            member.transactions = member.transactions || [];
-            member.transactions.push({
-                type: 'pin-change',
-                amount: 0,
-                date: new Date().toISOString(),
-                note: 'Member changed PIN'
-            });
-            
-            await saveMembers();
-            NotificationManager.add('PIN updated successfully', 'success');
-            showMemberDashboard(member.id);
-        }
-
-        // ===== ADD SAVINGS =====
-        function showAddSavings() {
-            let html = `<h3 style="margin-bottom:16px;"><i class="fas fa-piggy-bank"></i> Add Savings</h3>`;
-            html += `<select id="savingsMember">`;
-            members.forEach(m => html += `<option value="${m.id}">${m.name} (K${(m.savings||0).toLocaleString()})</option>`);
-            html += `</select>`;
-            html += `<input type="number" id="savingsAmount" value="200" min="200" step="200" placeholder="Amount">`;
-            html += `<input type="date" id="savingsDate">`;
-            html += `<div style="display:flex;gap:12px;margin-top:16px;">`;
-            html += `<button class="btn" onclick="processSavings()" style="flex:1;">✅ Add</button>`;
-            html += `<button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>`;
-            html += `</div>`;
-
-            document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
-
-            setTimeout(() => {
-                const dateInput = document.getElementById('savingsDate');
-                if (dateInput && !dateInput.value) {
-                    dateInput.value = new Date().toISOString().split('T')[0];
-                }
-            }, 100);
-        }
-
-        function addSavingsFor(memberId) {
-            showAddSavings();
-            setTimeout(() => {
-                const select = document.getElementById('savingsMember');
-                if (select) select.value = memberId;
-            }, 100);
-        }
-
-        async function processSavings() {
-            const memberId = document.getElementById('savingsMember')?.value;
-            const member = members.find(m => m.id === memberId);
-            const amount = parseInt(document.getElementById('savingsAmount')?.value) || 200;
-            
-            if (!member) { alert('Select member'); return; }
-            if (amount < 200 || amount % 200 !== 0) { alert('Must be K200+ in multiples of 200'); return; }
-            
-            const interest = (member.savings || 0) * RULES.INTEREST;
-            member.savings = (member.savings || 0) + amount + interest;
-            
-            const customDate = document.getElementById('savingsDate')?.value 
-                ? new Date(document.getElementById('savingsDate').value).toISOString()
-                : new Date().toISOString();
-            
-            member.transactions = member.transactions || [];
-            member.transactions.push({ 
-                type: 'savings', amount, interest, 
-                date: customDate, note: 'Savings deposit' 
-            });
-
-            await saveMembers();
-            NotificationManager.add(`K${amount} savings added for ${member.name}`, 'success');
-            viewMember(member.id);
-        }
-
-        // ===== LOAN MANAGEMENT =====
-        function showLoanManagement() {
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:16px;"><i class="fas fa-hand-holding-usd"></i> Loan Management</h3>
-                    <select id="loanMember">
-                        ${members.map(m => `<option value="${m.id}">${m.name} (Loan: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()})</option>`).join('')}
-                    </select>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
-                        <button class="btn" onclick="showContractLoan()">➕ Contract Loan</button>
-                        <button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showRepayLoan() {
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:16px;"><i class="fas fa-undo"></i> Repay Loan</h3>
-                    <select id="repayMember">
-                        ${members.map(m => `<option value="${m.id}">${m.name} (Loan: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()})</option>`).join('')}
-                    </select>
-                    <input type="number" id="repayAmount" value="0" min="0" step="100" placeholder="Amount to repay">
-                    <input type="date" id="repayDate" placeholder="Repayment Date">
-                    <div style="display:flex;gap:12px;margin-top:20px;">
-                        <button class="btn" onclick="repayLoan()" style="flex:1;">✅ Repay</button>
-                        <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function repayLoan() {
-            const memberId = document.getElementById('repayMember')?.value;
-            const amount = parseFloat(document.getElementById('repayAmount')?.value) || 0;
-            const repayDate = document.getElementById('repayDate')?.value;
-            const member = members.find(m => m.id === memberId);
-
-            if (!member) { alert('Select member'); return; }
-            if (amount <= 0) { alert('Enter amount > 0'); return; }
-
-            const transactionDate = repayDate ? new Date(repayDate).toISOString() : new Date().toISOString();
-
-            member.loanPrincipal = Math.max(0, (member.loanPrincipal || 0) - amount);
-            member.transactions = member.transactions || [];
-            member.transactions.push({
-                type: 'repayment', amount,
-                date: transactionDate,
-                note: 'Loan repayment'
-            });
-            
-            await saveMembers();
-            NotificationManager.add(`K${amount} repayment from ${member.name}`, 'success');
-            
-            if ((member.loanPrincipal || 0) === 0) {
-                member.membershipPaid = true;
-                member.socialPaid = true;
-                await saveMembers();
-                alert(`✅ Loan cleared — fees auto-cleared.`);
-            }
-            
-            showLoanManagement();
-        }
-
-        function addLoanFor(memberId) {
-            showLoanManagement();
-            setTimeout(() => {
-                const select = document.getElementById('loanMember');
-                if (select) { select.value = memberId; showContractLoan(); }
-            }, 100);
-        }
-
-        function showContractLoan() {
-            const memberId = document.getElementById('loanMember')?.value;
-            if (!memberId) { alert('Select a member'); return; }
-            
-            selectedLoanMemberId = memberId;
-            const member = members.find(m => m.id === memberId);
-            
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:16px;">Contract Loan for ${member.name}</h3>
-                    <input type="number" id="loanAmount" value="1000" min="100" step="100" placeholder="Loan Amount">
-                    <input type="date" id="loanDate" placeholder="Loan Date">
-                    <div style="background:#fff3e0;padding:16px;border-radius:12px;margin:20px 0;">
-                        <p style="margin:4px 0;"><strong>10% Interest:</strong> K<span id="loanInterest">100</span></p>
-                        <p style="margin:4px 0;"><strong>Total:</strong> K<span id="loanTotal">1100</span></p>
-                    </div>
-                    <div style="display:flex;gap:12px;">
-                        <button class="btn" onclick="contractLoan()" style="flex:1;">✅ Contract</button>
-                        <button class="btn" onclick="goBack()" style="flex:1;background:#666;">↩️ Back</button>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('loanAmount').oninput = function() {
-                const amount = parseFloat(this.value) || 0;
-                const interest = amount * RULES.INTEREST;
-                document.getElementById('loanInterest').textContent = interest.toFixed(2);
-                document.getElementById('loanTotal').textContent = (amount + interest).toFixed(2);
-            };
-
-            setTimeout(() => {
-                const dateInput = document.getElementById('loanDate');
-                if (dateInput && !dateInput.value) {
-                    dateInput.value = new Date().toISOString().split('T')[0];
-                }
-            }, 100);
-        }
-
-        async function contractLoan() {
-            const memberId = selectedLoanMemberId;
-            if (!memberId) { alert('No member selected'); return; }
-
-            const member = members.find(m => m.id === memberId);
-            const amount = parseInt(document.getElementById('loanAmount')?.value) || 0;
-            const loanDate = document.getElementById('loanDate')?.value;
-
-            if (amount < 100) { alert('Minimum loan is K100'); return; }
-
-            const transactionDate = loanDate ? new Date(loanDate).toISOString() : new Date().toISOString();
-
-            member.loanPrincipal = (member.loanPrincipal || 0) + amount;
-            member.transactions = member.transactions || [];
-            member.transactions.push({
-                type: 'loan', amount,
-                date: transactionDate,
-                note: `Loan contracted (10% interest)`
-            });
-            
-            await saveMembers();
-            NotificationManager.add(`K${amount} loan for ${member.name}`, 'success');
-            selectedLoanMemberId = null;
-            showLoanManagement();
-        }
-
-        // ===== COLLECT FEES =====
-        function showCollectFees() {
-            document.getElementById('contentArea').innerHTML = `
-                <div class="card">
-                    <h3 style="margin-bottom:16px;"><i class="fas fa-check-circle"></i> Collect Fees</h3>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                        <button class="btn" onclick="showCollectMembership()" style="background:#2e7d32;">
-                            <i class="fas fa-id-card"></i> Membership (K50)
-                        </button>
-                        <button class="btn" onclick="showCollectSocial()" style="background:#2e7d32;">
-                            <i class="fas fa-users"></i> Social (K100)
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showCollectMembership() {
-            const unpaid = members.filter(m => !m.membershipPaid);
-            let html = `<h3 style="margin-bottom:16px;">Collect Membership Fees (K50)</h3>`;
-            html += `<input type="date" id="membershipFeeDate" placeholder="Fee Date">`;
-
-            if (unpaid.length === 0) {
-                html += `<p style="text-align:center;padding:20px;">✅ All members have paid!</p>`;
-            } else {
-                unpaid.forEach(member => {
-                    html += `
-                        <div class="member-row">
-                            <div class="member-info">
-                                <div class="member-name">${member.name}</div>
-                            </div>
-                            <button class="btn-sm" onclick="collectFee('${member.id}', 'membership')" style="background:#2e7d32;">✅ Pay</button>
-                        </div>
-                    `;
-                });
-            }
-            
-            document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
-        }
-
-        function showCollectSocial() {
-            const unpaid = members.filter(m => !m.socialPaid);
-            let html = `<h3 style="margin-bottom:16px;">Collect Social Fund (K100)</h3>`;
-            html += `<input type="date" id="socialFeeDate" placeholder="Fee Date">`;
-
-            if (unpaid.length === 0) {
-                html += `<p style="text-align:center;padding:20px;">✅ All members have paid!</p>`;
-            } else {
-                unpaid.forEach(member => {
-                    html += `
-                        <div class="member-row">
-                            <div class="member-info">
-                                <div class="member-name">${member.name}</div>
-                            </div>
-                            <button class="btn-sm" onclick="collectFee('${member.id}', 'social')" style="background:#2e7d32;">✅ Pay</button>
-                        </div>
-                    `;
-                });
-            }
-            
-            document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
-        }
-
-        async function collectFee(memberId, type) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-
-            const feeDateInput = type === 'membership' ? 'membershipFeeDate' : 'socialFeeDate';
-            const feeDate = document.getElementById(feeDateInput)?.value;
-            const transactionDate = feeDate ? new Date(feeDate).toISOString() : new Date().toISOString();
-
-            if (type === 'membership') {
-                member.membershipPaid = true;
-                member.transactions = member.transactions || [];
-                member.transactions.push({
-                    type: 'fee', amount: 50,
-                    date: transactionDate,
-                    note: 'Membership fee'
-                });
-                NotificationManager.add(`K50 membership from ${member.name}`, 'success');
-            } else {
-                member.socialPaid = true;
-                member.transactions = member.transactions || [];
-                member.transactions.push({
-                    type: 'fee', amount: 100,
-                    date: transactionDate,
-                    note: 'Social fund'
-                });
-                NotificationManager.add(`K100 social from ${member.name}`, 'success');
-            }
-            
-            await saveMembers();
-            showCollectFees();
-        }
-
-        // ===== SHARE ACCOUNT =====
-        function showShareAccount() {
-            const totalSavings = members.reduce((sum, m) => sum + (m.savings || 0), 0);
-            const totalLoans = members.reduce((sum, m) => sum + ((m.loanPrincipal || 0) * (1 + RULES.INTEREST)), 0);
-            const netValue = totalSavings - totalLoans;
-            const sharePool = netValue * 0.10;
-            
+        
+        // ===== OTHER CORE FUNCTIONS =====
+        function showAddMember() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add New Member</h3><input id="newName" placeholder="Full Name"><input id="newPhone" placeholder="Phone Number"><input type="number" id="newSavings" value="200" min="200" step="200"><small>Minimum K200, multiples of 200</small><div class="btn" onclick="addMember()">💾 Save Member</div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
+        async function addMember() { const name = document.getElementById('newName')?.value.trim(), phone = document.getElementById('newPhone')?.value.trim(), savings = parseInt(document.getElementById('newSavings')?.value)||200; if(!name||!phone) return alert('Enter name and phone'); if(savings<200||savings%200!==0) return alert('Must be K200+ in multiples of 200'); members.push({ id:Date.now().toString(), name, phone, savings, loanPrincipal:0, membershipPaid:false, socialPaid:false, pin:phone.slice(-4), createdDate:new Date().toISOString(), transactions:[{type:'savings',amount:savings,date:new Date().toISOString(),note:'Initial savings'}] }); await saveMembers(); NotificationManager.add('Member added!','success'); goBack(); }
+        function showAllMembers() { 
             let html = `
-                <h3 style="margin-bottom:16px;"><i class="fas fa-chart-pie"></i> Share Account (10%)</h3>
-                <div style="background:#e8f5e9;padding:16px;border-radius:12px;margin-bottom:20px;">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                        <div>
-                            <span style="color:var(--text-secondary);font-size:13px;">Group Savings</span>
-                            <div style="font-size:1.2rem;font-weight:700;color:#1e88e5;">K${totalSavings.toLocaleString()}</div>
-                        </div>
-                        <div>
-                            <span style="color:var(--text-secondary);font-size:13px;">Group Loans</span>
-                            <div style="font-size:1.2rem;font-weight:700;color:#f44336;">K${totalLoans.toLocaleString()}</div>
-                        </div>
-                        <div>
-                            <span style="color:var(--text-secondary);font-size:13px;">Net Value</span>
-                            <div style="font-size:1.2rem;font-weight:700;color:#2e7d32;">K${netValue.toLocaleString()}</div>
-                        </div>
-                        <div>
-                            <span style="color:var(--text-secondary);font-size:13px;">10% Share Pool</span>
-                            <div style="font-size:1.2rem;font-weight:700;color:#ff9800;">K${sharePool.toFixed(2)}</div>
-                        </div>
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 All Members</h1><p>${members.length} members</p></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="nav-btn" onclick="showAddMember()" title="Add Member" style="background:rgba(67,160,71,0.8);"><i class="fas fa-plus"></i></div>
+                        <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
                     </div>
                 </div>
-            `;
-            
-            members.forEach(member => {
-                const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
-                const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
-                const memberNet = memberSavingsIncl - memberLoanIncl;
-                const takeHome = netValue !== 0 ? (sharePool * (memberNet / netValue)) : 0;
-                
-                html += `
-                    <div class="member-row">
-                        <div class="member-info">
-                            <div class="member-name">${member.name}</div>
-                            <div class="member-details">
-                                <span>Net: K${memberNet.toLocaleString()}</span>
-                            </div>
+                <div style="padding:16px;">`;
+            const colors=['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
+            members.forEach((m, index) => {
+                const color = colors[m.name.length % colors.length];
+                html+=`<div class="member-row" style="animation: fadeInUp 0.4s ease forwards; animation-delay: ${index * 0.05}s; opacity: 0;">
+                    <div class="avatar" style="background:linear-gradient(135deg,${color},${color}dd);box-shadow: 0 2px 8px ${color}40;">${m.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
+                    <div class="member-info">
+                        <div class="member-name">${m.name}</div>
+                        <div class="member-details">
+                            <span style="color:#43a047;font-weight:600;">K${(m.savings||0).toLocaleString()}</span>
+                            <span style="color:#f44336;">Loan: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</span>
+                            <span class="${m.membershipPaid?'status-paid':'status-due'}" style="font-size:11px;padding:4px 8px;">${m.membershipPaid?'Membership ✓':'Membership ✗'}</span>
+                            <span class="${m.socialPaid?'status-paid':'status-due'}" style="font-size:11px;padding:4px 8px;">${m.socialPaid?'Social ✓':'Social ✗'}</span>
                         </div>
-                        <div style="font-weight:700;color:#1e88e5;font-size:16px;">K${takeHome.toFixed(2)}</div>
                     </div>
-                `;
-            });
-            
-            document.getElementById('contentArea').innerHTML = `<div class="card">${html}</div>`;
+                    <button class="btn-sm" onclick="viewMember('${m.id}')" style="background:var(--primary);">View</button>
+                </div>`; 
+            }); 
+            html += `</div><div style="padding:0 16px 16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button></div>`;
+            document.getElementById('contentArea').innerHTML = html; 
         }
-
-        // ===== MEMBER DASHBOARD (FIXED VERSION) =====
-        function showMemberDashboard(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            const loanInterestDue = (member.loanPrincipal || 0) * RULES.INTEREST;
-            const memberSavingsIncl = (member.savings || 0) * (1 + RULES.INTEREST);
-            const memberLoanIncl = (member.loanPrincipal || 0) * (1 + RULES.INTEREST);
-            const memberNet = memberSavingsIncl - memberLoanIncl;
-            
-            const transactions = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
-            
-            if (screenHistory[screenHistory.length - 1] !== 'member') {
-                screenHistory.push('member');
-                updateNavButtons();
-            }
-            
-            let txHtml = '';
-            transactions.forEach(t => {
-                const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
-                            t.type === 'loan' ? 'fa-hand-holding-usd' : 
-                            t.type === 'repayment' ? 'fa-undo' : 
-                            t.type === 'pin-change' ? 'fa-key' : 'fa-check-circle';
-                const color = t.type === 'savings' ? '#2e7d32' : 
-                             t.type === 'loan' ? '#f44336' : 
-                             t.type === 'repayment' ? '#ff9800' : 
-                             t.type === 'pin-change' ? '#ff9800' : '#9c27b0';
-                
-                txHtml += `
-                    <div class="transaction-item">
-                        <div class="transaction-icon" style="background:${color}20;color:${color};">
-                            <i class="fas ${icon}"></i>
+        function viewMember(mid) { 
+            const m = members.find(m=>m.id===mid); 
+            if(!m) return; 
+            screenHistory.push(`Member: ${m.name.split(' ')[0]}`); 
+            updateNavButtons(); 
+            const txs = (m.transactions||[]).sort((a,b)=>new Date(b.date)-new Date(a.date)); 
+            let txHtml = '<h4><i class="fas fa-history"></i> Recent Transactions</h4>'; 
+            txs.slice(0,5).forEach(t=>{ txHtml+=`<div class="transaction-item" style="animation: slideInRight 0.4s ease forwards; opacity: 0;"><div class="transaction-icon" style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:${t.type==='savings'?'rgba(67,160,71,0.1)':t.type==='loan'?'rgba(244,67,54,0.1)':t.type==='repayment'?'rgba(30,136,229,0.1)':'rgba(255,152,0,0.1)'};"><i class="fas ${t.type==='savings'?'fa-piggy-bank':t.type==='loan'?'fa-hand-holding-usd':t.type==='repayment'?'fa-arrow-circle-left':'fa-id-card'}" style="color:${t.type==='savings'?'#43a047':t.type==='loan'?'#f44336':t.type==='repayment'?'#1e88e5':'#ff9800'};"></i></div><div><div style="font-weight:600;">${t.type.toUpperCase()}</div><div style="color:var(--primary);font-size:1.1rem;font-weight:700;">K${(t.amount||0).toLocaleString()}</div><div style="font-size:12px;color:var(--text-secondary);">${fmtDate(t.date)}</div>${t.note?`<div style="font-size:11px;color:var(--text-secondary);">${t.note}</div>`:''}</div></div>`; }); 
+            const avatarColors = ['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
+            const avatarColor = avatarColors[m.name.length % avatarColors.length];
+            document.getElementById('contentArea').innerHTML = `
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 SAVERS GROUP</h1><p>Member Account</p></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
+                        <div class="menu-toggle" onclick="toggleViewMemberMenu(event)"><i class="fas fa-ellipsis-v"></i></div>
+                        <div id="viewMemberMenu" class="menu-dropdown">
+                            <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();" id="themeToggleVM"><i class="fas fa-moon"></i><span>Dark Mode</span></div>
+                            <div class="menu-item" onclick="toggleNotifications(event);"><i class="fas fa-bell"></i><span>Notifications</span><span id="notificationBadge" class="notification-badge" style="display:none;">0</span></div>
+                            <div class="menu-item" onclick="logout();"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
                         </div>
-                        <div style="flex:1;min-width:0;">
-                            <div style="display:flex;justify-content:space-between;">
-                                <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
-                                <span style="font-weight:700;color:${color};">${t.amount ? 'K' + t.amount.toLocaleString() : ''}</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;margin-top:4px;">
-                                <span style="color:var(--text-secondary);font-size:12px;">${fmtDate(t.date)}</span>
-                                ${t.interest ? `<span style="color:${color};font-size:12px;">+K${t.interest.toFixed(2)}</span>` : ''}
-                            </div>
-                            ${t.note ? `<div style="color:var(--text-secondary);font-size:11px;margin-top:4px;">${t.note}</div>` : ''}
+                        <div id="notificationDropdown" class="notification-dropdown"></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+                        <div class="avatar" style="width:72px;height:72px;font-size:28px;background:linear-gradient(135deg,${avatarColor},${avatarColor}dd);box-shadow: 0 4px 12px ${avatarColor}40;">${m.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
+                        <div><h3 style="margin-bottom:4px;">${m.name}</h3><p style="color:var(--text-secondary);"><i class="fas fa-phone"></i> ${m.phone}</p><p style="font-size:12px;color:var(--text-secondary);">ID: ${m.id.slice(-6)}</p></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+                        <div style="padding:16px;background:linear-gradient(135deg,rgba(67,160,71,0.1),rgba(67,160,71,0.05));border-radius:12px;text-align:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.1s;opacity:0;">
+                            <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Savings</div>
+                            <div style="font-size:1.6rem;font-weight:700;color:#43a047;">K${(m.savings||0).toLocaleString()}</div>
+                        </div>
+                        <div style="padding:16px;background:linear-gradient(135deg,rgba(244,67,54,0.1),rgba(244,67,54,0.05));border-radius:12px;text-align:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.2s;opacity:0;">
+                            <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Loan (10%)</div>
+                            <div style="font-size:1.6rem;font-weight:700;color:#f44336;">K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div>
                         </div>
                     </div>
-                `;
-            });
-            
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+                        <button class="btn-sm" onclick="addSavingsFor('${mid}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-piggy-bank"></i> Add Savings</button>
+                        <button class="btn-sm" onclick="addLoanFor('${mid}')" style="background:linear-gradient(135deg,#f44336,#ef5350);"><i class="fas fa-hand-holding-usd"></i> Add Loan</button>
+                        <button class="btn-sm" onclick="showEditMember('${mid}')" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><i class="fas fa-edit"></i> Edit</button>
+                    </div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <div class="${m.membershipPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;"><i class="fas fa-id-card"></i> Membership ${m.membershipPaid?'✓ Paid':'✗ Due'}</div>
+                        <div class="${m.socialPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;"><i class="fas fa-users"></i> Social ${m.socialPaid?'✓ Paid':'✗ Due'}</div>
+                    </div>
+                </div>
+                <div class="card" style="margin:0 16px 16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;">
+                    ${txHtml}
+                </div>
+                <div style="padding:0 16px 16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button></div>
+            `;
+            NotificationManager.renderBadge();
+            ThemeManager.updateUI();
+            window.toggleViewMemberMenu = function(e) { e.stopPropagation(); closeAllMenus(); const m=document.getElementById('viewMemberMenu'); if(m) m.classList.toggle('active'); };
+        }
+        function showAddSavings() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add Savings</h3><select id="savingsMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="savingsAmount" value="200" step="200"><div class="btn" onclick="processSavings()">✅ Add</div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
+        function addSavingsFor(mid) { showAddSavings(); setTimeout(()=>{ const s=document.getElementById('savingsMember'); if(s) s.value=mid; },100); }
+        async function processSavings() { const mid = document.getElementById('savingsMember')?.value, amt = parseInt(document.getElementById('savingsAmount')?.value); const m = members.find(m=>m.id===mid); if(m && amt>=200 && amt%200===0) { m.savings = (m.savings||0)+amt; m.transactions = m.transactions||[]; m.transactions.push({type:'savings',amount:amt,date:new Date().toISOString(),note:'Savings deposit'}); await saveMembers(); NotificationManager.add(`K${amt} added for ${m.name}`,'success'); viewMember(m.id); } else alert('Must be K200+ in multiples of 200'); }
+        function showLoanManagement() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Loan Management</h3><select id="loanMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="showContractLoan()">➕ Contract Loan</button><button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button></div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
+        function showContractLoan() { const mid = document.getElementById('loanMember')?.value; if(!mid) return; selectedLoanMemberId=mid; const m = members.find(m=>m.id===mid); document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Contract Loan for ${m.name}</h3><input type="number" id="loanAmount" value="1000" step="100"><div style="background:#fff3e0;padding:16px;border-radius:12px;margin:20px 0;"><p>10% Interest: K<span id="loanInterest">100</span></p><p>Total: K<span id="loanTotal">1100</span></p></div><div style="display:flex;gap:12px;"><button class="btn" onclick="contractLoan()">✅ Contract</button><button class="btn" onclick="goBack()">↩️ Back</button></div></div>`; document.getElementById('loanAmount').oninput = function() { const amt = parseFloat(this.value)||0; document.getElementById('loanInterest').textContent = (amt*RULES.INTEREST).toFixed(2); document.getElementById('loanTotal').textContent = (amt*(1+RULES.INTEREST)).toFixed(2); }; }
+        async function contractLoan() { const amt = parseInt(document.getElementById('loanAmount')?.value); const m = members.find(m=>m.id===selectedLoanMemberId); if(m && amt>=100) { m.loanPrincipal = (m.loanPrincipal||0)+amt; m.transactions = m.transactions||[]; m.transactions.push({type:'loan',amount:amt,date:new Date().toISOString(),note:'Loan contracted'}); await saveMembers(); NotificationManager.add(`K${amt} loan for ${m.name}`,'success'); showLoanManagement(); } else alert('Minimum loan is K100'); }
+        function showRepayLoan() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Repay Loan</h3><select id="repayMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="repayAmount" placeholder="Amount"><div style="display:flex;gap:12px;"><button class="btn" onclick="repayLoan()">✅ Repay</button><button class="btn" onclick="goBack()">↩️ Back</button></div></div>`; }
+        async function repayLoan() { const mid = document.getElementById('repayMember')?.value, amt = parseFloat(document.getElementById('repayAmount')?.value); const m = members.find(m=>m.id===mid); if(m && amt>0) { m.loanPrincipal = Math.max(0,(m.loanPrincipal||0)-amt); m.transactions = m.transactions||[]; m.transactions.push({type:'repayment',amount:amt,date:new Date().toISOString(),note:'Loan repayment'}); await saveMembers(); NotificationManager.add(`K${amt} repayment from ${m.name}`,'success'); showLoanManagement(); } else alert('Enter amount > 0'); }
+        function addLoanFor(mid) { showLoanManagement(); setTimeout(()=>{ const s=document.getElementById('loanMember'); if(s) s.value=mid; showContractLoan(); },100); }
+        function showCollectFees() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Collect Fees</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="showCollectMembership()" style="background:#2e7d32;">Membership (K50)</button><button class="btn" onclick="showCollectSocial()" style="background:#2e7d32;">Social (K100)</button></div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
+        function showCollectMembership() { let html = `<div class="card"><h3>Collect Membership Fees (K50)</h3>`; members.filter(m=>!m.membershipPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','membership')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
+        function showCollectSocial() { let html = `<div class="card"><h3>Collect Social Fund (K100)</h3>`; members.filter(m=>!m.socialPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','social')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
+        async function collectFee(mid, type) { const m = members.find(m=>m.id===mid); if(!m) return; if(type==='membership') { m.membershipPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:50,date:new Date().toISOString(),note:'Membership fee'}); NotificationManager.add(`K50 membership from ${m.name}`,'success'); } else { m.socialPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:100,date:new Date().toISOString(),note:'Social fund'}); NotificationManager.add(`K100 social from ${m.name}`,'success'); } await saveMembers(); showCollectFees(); }
+        function showShareAccount() { const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0), totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0), net = totalSavings-totalLoans, sharePool = net*0.1; let html = `<div class="card"><h3>Share Account (10%)</h3><div style="background:#e8f5e9;padding:16px;border-radius:12px;margin-bottom:20px;"><div>Group Savings: K${totalSavings.toLocaleString()}</div><div>Group Loans: K${totalLoans.toLocaleString()}</div><div>Net Value: K${net.toLocaleString()}</div><div>10% Share Pool: K${sharePool.toFixed(2)}</div></div>`; members.forEach(m=>{ const memberNet = ((m.savings||0)*(1+RULES.INTEREST))-((m.loanPrincipal||0)*(1+RULES.INTEREST)); const takeHome = net!==0 ? (sharePool*(memberNet/net)) : 0; html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div><div>Net: K${memberNet.toLocaleString()}</div></div><div style="font-weight:700;">K${takeHome.toFixed(2)}</div></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
+        
+        // ===== MEMBER DASHBOARD =====
+        function showMemberDashboard(memberId) {
+            const member = members.find(m=>m.id===memberId); if(!member) return;
+            const memberNet = ((member.savings||0)*(1+RULES.INTEREST))-((member.loanPrincipal||0)*(1+RULES.INTEREST));
+            screenHistory.push('member'); updateNavButtons();
+            const avatarColors = ['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
+            const avatarColor = avatarColors[member.name.length % avatarColors.length];
             document.getElementById('app').innerHTML = `
                 <div class="header">
-                    <div class="header-content">
-                        <div class="header-left">
-                            <div class="nav-btn" id="backBtn" onclick="goBack()" style="display:none;">
-                                <i class="fas fa-arrow-left"></i>
-                            </div>
-                            <div class="header-title">
-                                <h1>💰 SAVERS GROUP</h1>
-                                <p>${member.name}</p>
-                            </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" id="backBtn" onclick="goBack()" style="display:none;"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1>💰 SAVERS GROUP</h1><p>${member.name}</p></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="nav-btn" onclick="toggleNotifications(event)" title="Notifications" style="position:relative;background:rgba(255,255,255,0.2);"><i class="fas fa-bell"></i><span id="notificationBadgeTop" class="notification-badge" style="display:none;">0</span></div>
+                        <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
+                        <div class="menu-toggle" onclick="toggleMemberMenu(event)"><i class="fas fa-ellipsis-v"></i></div>
+                        <div id="memberMenu" class="menu-dropdown">
+                            <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();" id="themeToggleMem"><i class="fas fa-moon"></i><span>Dark Mode</span></div>
+                            <div class="menu-item" onclick="memberResetPin('${member.id}');closeAllMenus();"><i class="fas fa-key"></i><span>Change PIN</span></div>
+                            <div class="menu-item" onclick="showHistoryPage();closeAllMenus();"><i class="fas fa-history"></i><span>My History</span></div>
+                            <div class="menu-item" onclick="logout();"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
                         </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">
-                                ${navigator.onLine ? '● Online' : '○ Offline'}
-                            </div>
-                            
-                            <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);">
-                                <i class="fas fa-door-open"></i>
-                            </div>
-                            
-                            <div class="menu-toggle" onclick="toggleMemberMenu(event)">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </div>
-                            
-                            <div id="memberMenu" class="menu-dropdown">
-                                <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();">
-                                    <i class="fas ${document.documentElement.getAttribute('data-theme') === 'light' ? 'fa-moon' : 'fa-sun'}"></i>
-                                    <span>${document.documentElement.getAttribute('data-theme') === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
-                                </div>
-                                <div class="menu-item" onclick="memberResetPin('${member.id}');closeAllMenus();">
-                                    <i class="fas fa-key"></i>
-                                    <span>Change PIN</span>
-                                </div>
-                                <div class="menu-item" onclick="logout();">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Logout</span>
-                                </div>
-                            </div>
+                        <div id="notificationDropdown" class="notification-dropdown"></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+                        <div class="avatar" style="width:72px;height:72px;font-size:28px;background:linear-gradient(135deg,${avatarColor},${avatarColor}dd);box-shadow: 0 4px 12px ${avatarColor}40;">${member.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
+                        <div><h3 style="margin-bottom:4px;">${member.name}</h3><p style="color:var(--text-secondary);"><i class="fas fa-phone"></i> ${member.phone}</p></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+                        <div class="metric-card" style="animation-delay:0.1s;opacity:0;background:linear-gradient(135deg,rgba(67,160,71,0.1),rgba(67,160,71,0.05));border:none;">
+                            <div class="metric-icon" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-piggy-bank"></i></div>
+                            <div class="metric-content"><div class="metric-label">Savings</div><div class="metric-value" style="color:#43a047;">K${(member.savings||0).toLocaleString()}</div><div style="font-size:11px;">+10%: K${((member.savings||0)*RULES.INTEREST).toFixed(2)}</div></div>
+                        </div>
+                        <div class="metric-card" style="animation-delay:0.2s;opacity:0;background:linear-gradient(135deg,rgba(244,67,54,0.1),rgba(244,67,54,0.05));border:none;">
+                            <div class="metric-icon" style="background:linear-gradient(135deg,#f44336,#ef5350);"><i class="fas fa-hand-holding-usd"></i></div>
+                            <div class="metric-content"><div class="metric-label">Loan</div><div class="metric-value" style="color:#f44336;">K${((member.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div><div style="font-size:11px;">Due: K${((member.loanPrincipal||0)*RULES.INTEREST).toFixed(2)}</div></div>
+                        </div>
+                        <div class="metric-card" style="animation-delay:0.3s;opacity:0;background:linear-gradient(135deg,rgba(46,125,50,0.1),rgba(46,125,50,0.05));border:none;">
+                            <div class="metric-icon" style="background:linear-gradient(135deg,#2e7d32,#4caf50);"><i class="fas fa-calculator"></i></div>
+                            <div class="metric-content"><div class="metric-label">Net Position</div><div class="metric-value" style="color:#2e7d32;">K${memberNet.toLocaleString()}</div></div>
+                        </div>
+                        <div class="metric-card" style="animation-delay:0.4s;opacity:0;background:linear-gradient(135deg,rgba(255,152,0,0.1),rgba(255,152,0,0.05));border:none;">
+                            <div class="metric-icon" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><i class="fas fa-gift"></i></div>
+                            <div class="metric-content"><div class="metric-label">Share Out</div><div class="metric-value" style="color:#ff9800;">K${(memberNet*0.1).toFixed(2)}</div></div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(30,136,229,0.1);">
-                            <i class="fas fa-piggy-bank" style="color:#1e88e5;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Savings</div>
-                            <div class="metric-value" style="color:#1e88e5;font-size:1.2rem;">K${(member.savings||0).toLocaleString()}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);">+10%: K${((member.savings||0)*RULES.INTEREST).toFixed(2)}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(244,67,54,0.1);">
-                            <i class="fas fa-hand-holding-usd" style="color:#f44336;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Loan</div>
-                            <div class="metric-value" style="color:#f44336;font-size:1.2rem;">K${((member.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div>
-                            <div style="font-size:11px;color:var(--text-secondary);">Due: K${loanInterestDue.toFixed(2)}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(46,125,50,0.1);">
-                            <i class="fas fa-calculator" style="color:#2e7d32;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Net Position</div>
-                            <div class="metric-value" style="color:#2e7d32;font-size:1.2rem;">K${memberNet.toLocaleString()}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-icon" style="background:rgba(255,152,0,0.1);">
-                            <i class="fas fa-gift" style="color:#ff9800;"></i>
-                        </div>
-                        <div class="metric-content">
-                            <div class="metric-label">Share Out</div>
-                            <div class="metric-value" style="color:#ff9800;font-size:1.2rem;">K${(memberNet*0.1).toFixed(2)}</div>
-                        </div>
-                    </div>
-                </div>
-                
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px;">
-                    <div class="${member.membershipPaid ? 'status-paid' : 'status-due'}" style="justify-content:center;">
-                        <i class="fas fa-id-card"></i>
-                        <span>Membership ${member.membershipPaid ? 'Paid' : 'Due'}</span>
-                    </div>
-                    <div class="${member.socialPaid ? 'status-paid' : 'status-due'}" style="justify-content:center;">
-                        <i class="fas fa-users"></i>
-                        <span>Social ${member.socialPaid ? 'Paid' : 'Due'}</span>
-                    </div>
+                    <div class="${member.membershipPaid?'status-paid':'status-due'}" style="justify-content:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.5s;opacity:0;"><i class="fas fa-id-card"></i> Membership ${member.membershipPaid?'✓ Paid':'✗ Due'}</div>
+                    <div class="${member.socialPaid?'status-paid':'status-due'}" style="justify-content:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.6s;opacity:0;"><i class="fas fa-users"></i> Social ${member.socialPaid?'✓ Paid':'✗ Due'}</div>
                 </div>
-                
-                <div class="card" style="margin-top:0;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                        <h3 style="margin:0;font-size:18px;"><i class="fas fa-history"></i> Transactions</h3>
-                        <select id="txFilter" onchange="filterMemberTxs('${member.id}')" style="width:120px;padding:8px;margin:0;font-size:14px;">
-                            <option value="all">All</option>
-                            <option value="savings">Savings</option>
-                            <option value="loan">Loans</option>
-                            <option value="repayment">Repayments</option>
-                            <option value="fee">Fees</option>
-                        </select>
-                    </div>
-                    
-                    <div id="memberTxList" style="max-height:400px;overflow-y:auto;">
-                        ${txHtml || '<p style="text-align:center;padding:20px;color:var(--text-secondary);">No transactions yet</p>'}
-                    </div>
-                    
-                    <div style="margin-top:20px;padding:16px;background:rgba(30,136,229,0.05);border-radius:12px;text-align:center;">
-                        <i class="fas fa-shield-alt" style="color:var(--primary);"></i>
-                        <p style="margin:8px 0 0;font-size:12px;color:var(--text-secondary);">
-                            View-only history. Contact admin for corrections.
-                        </p>
-                    </div>
-                </div>
-            `;
-            
-            ThemeManager.updateUI();
-            updateNetworkStatus();
-        }
-
-        // ===== FILTER MEMBER TRANSACTIONS =====
-        function filterMemberTxs(memberId) {
-            const member = members.find(m => m.id === memberId);
-            if (!member) return;
-            
-            const filter = document.getElementById('txFilter')?.value || 'all';
-            const transactions = (member.transactions || []).sort((a,b) => new Date(b.date) - new Date(a.date));
-            const filtered = filter === 'all' ? transactions : transactions.filter(t => t.type === filter);
-            
-            let html = '';
-            filtered.forEach(t => {
-                const icon = t.type === 'savings' ? 'fa-piggy-bank' : 
-                            t.type === 'loan' ? 'fa-hand-holding-usd' : 
-                            t.type === 'repayment' ? 'fa-undo' : 
-                            t.type === 'pin-change' ? 'fa-key' : 'fa-check-circle';
-                const color = t.type === 'savings' ? '#2e7d32' : 
-                             t.type === 'loan' ? '#f44336' : 
-                             t.type === 'repayment' ? '#ff9800' : 
-                             t.type === 'pin-change' ? '#ff9800' : '#9c27b0';
-                
-                html += `
-                    <div class="transaction-item">
-                        <div class="transaction-icon" style="background:${color}20;color:${color};">
-                            <i class="fas ${icon}"></i>
-                        </div>
-                        <div style="flex:1;min-width:0;">
-                            <div style="display:flex;justify-content:space-between;">
-                                <span style="font-weight:600;font-size:14px;">${t.type.toUpperCase()}</span>
-                                <span style="font-weight:700;color:${color};">${t.amount ? 'K' + t.amount.toLocaleString() : ''}</span>
+                <div class="card" style="margin:0 16px 16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.7s;opacity:0;">
+                    <h3><i class="fas fa-history"></i> Recent Transactions</h3>
+                    <div id="memberTxList">${(member.transactions||[]).slice().reverse().map(t=>`
+                        <div class="transaction-item" style="animation: slideInRight 0.4s ease forwards; opacity: 0;">
+                            <div class="transaction-icon" style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:${t.type==='savings'?'rgba(67,160,71,0.1)':t.type==='loan'?'rgba(244,67,54,0.1)':t.type==='repayment'?'rgba(30,136,229,0.1)':'rgba(255,152,0,0.1)'};">
+                                <i class="fas ${t.type==='savings'?'fa-piggy-bank':t.type==='loan'?'fa-hand-holding-usd':t.type==='repayment'?'fa-arrow-circle-left':'fa-id-card'}" style="color:${t.type==='savings'?'#43a047':t.type==='loan'?'#f44336':t.type==='repayment'?'#1e88e5':'#ff9800'};"></i>
                             </div>
-                            <div style="display:flex;justify-content:space-between;margin-top:4px;">
-                                <span style="color:var(--text-secondary);font-size:12px;">${fmtDate(t.date)}</span>
-                                ${t.interest ? `<span style="color:${color};font-size:12px;">+K${t.interest.toFixed(2)}</span>` : ''}
+                            <div>
+                                <div style="font-weight:600;">${t.type.toUpperCase()}</div>
+                                <div style="color:var(--primary);font-size:1.1rem;font-weight:700;">K${(t.amount||0).toLocaleString()}</div>
+                                <div style="font-size:12px;color:var(--text-secondary);">${fmtDate(t.date)}</div>
+                                ${t.note?`<div style="font-size:11px;color:var(--text-secondary);">${t.note}</div>`:''}
                             </div>
                         </div>
+                    `).join('')||'<p style="text-align:center;color:var(--text-secondary);padding:20px;">No transactions yet</p>'}
                     </div>
-                `;
-            });
-            
-            document.getElementById('memberTxList').innerHTML = html || '<p style="text-align:center;padding:20px;color:var(--text-secondary);">No transactions found</p>';
+                </div>
+                <div style="padding:0 16px 16px;">
+                    <button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Login</button>
+                </div>`;
+            NotificationManager.renderBadge(); ThemeManager.updateUI();
         }
-
-        // ===== INIT =====
-        (async () => {
-            NotificationManager.init();
-            ThemeManager.init();
-            await loadMembers();
-            updateNetworkStatus();
-            showLoginScreen();
-            
-            if ('serviceWorker' in navigator) {
-                try {
-                    const reg = await navigator.serviceWorker.register('/sw.js');
-                    console.log('SW registered:', reg.scope);
-                } catch (e) {
-                    console.log('SW registration failed:', e);
-                }
-            }
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideDown {
-                    from { transform: translateY(-100%); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
-                }
-                @keyframes slideUp {
-                    from { transform: translateY(0); opacity: 1; }
-                    to { transform: translateY(-100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        })();
+        
+        async function memberResetPin(mid) { const m = members.find(m=>m.id===mid); if(m) { const newPin = prompt('Enter new 4-digit PIN:', m.pin||m.phone?.slice(-4)); if(newPin && newPin.length>=4) { m.pin=newPin; await saveMembers(); NotificationManager.add('PIN updated','success'); showMemberDashboard(mid); } } }
+        
+        // ===== HISTORY & IMPORT (NEW) =====
+        function showHistoryPage() {
+            screenHistory.push('history'); updateNavButtons();
+            let transactions = getAllTransactions(currentUser?.type==='member'?currentUser.id:null);
+            document.getElementById('contentArea').innerHTML = `<div class="card"><h3><i class="fas fa-history"></i> Transaction History</h3><div style="display:flex;gap:10px;margin-bottom:20px;"><button class="btn-sm" onclick="exportHistoryCSV('current')">📄 Export CSV</button><button class="btn-sm" onclick="exportHistoryPDF()">📑 Print</button></div><div class="filter-panel" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">${currentUser?.type==='admin'?`<select id="filterMember"><option value="all">All Members</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select>`:''}<select id="filterType"><option value="all">All Types</option><option value="savings">Savings</option><option value="loan">Loan</option><option value="repayment">Repayment</option><option value="fee">Fee</option></select><input type="date" id="startDate"><input type="date" id="endDate"><button class="btn-sm" onclick="applyHistoryFilters()">Apply</button><button class="btn-sm" onclick="resetHistoryFilters()">Reset</button></div><div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody id="historyBody"></tbody></table></div><div id="pagination" style="display:flex;justify-content:center;gap:8px;margin-top:16px;"></div><div class="btn" onclick="goBack()">Back</div></div>`;
+            window.currentHistoryData = transactions; window.historyPageNum=1; renderHistoryTable(transactions);
+        }
+        function getAllTransactions(memberId=null) { let all=[]; const target = memberId?members.filter(m=>m.id===memberId):members; for(const m of target) (m.transactions||[]).forEach(t=>all.push({...t,memberId:m.id,memberName:m.name})); return all.sort((a,b)=>new Date(b.date)-new Date(a.date)); }
+        function applyHistoryFilters() { let txs = getAllTransactions(currentUser?.type==='member'?currentUser.id:null); const member = document.getElementById('filterMember')?.value, type = document.getElementById('filterType')?.value, start = document.getElementById('startDate')?.value, end = document.getElementById('endDate')?.value; if(member && member!=='all') txs = txs.filter(t=>t.memberId===member); if(type && type!=='all') txs = txs.filter(t=>t.type===type); if(start) txs = txs.filter(t=>t.date>=start); if(end) txs = txs.filter(t=>t.date<=end); window.currentHistoryData=txs; window.historyPageNum=1; renderHistoryTable(txs); }
+        function resetHistoryFilters() { const fm=document.getElementById('filterMember'); if(fm) fm.value='all'; const ft=document.getElementById('filterType'); if(ft) ft.value='all'; const sd=document.getElementById('startDate'); if(sd) sd.value=''; const ed=document.getElementById('endDate'); if(ed) ed.value=''; applyHistoryFilters(); }
+        function renderHistoryTable(txs) { const tbody = document.getElementById('historyBody'); if(!tbody) return; const perPage=15, start=(window.historyPageNum-1)*perPage, pageItems=txs.slice(start,start+perPage); if(!pageItems.length) { tbody.innerHTML='<tr><td colspan="5">No transactions</td></tr>'; return; } tbody.innerHTML=''; for(const t of pageItems) tbody.innerHTML+=`<tr><td style="padding:8px;">${fmtDate(t.date)}</td><td>${t.memberName}</td><td>${t.type}</td><td>K${(t.amount||0).toLocaleString()}</td><td>${t.note||''}</td></tr>`; const totalPages=Math.ceil(txs.length/perPage), pag=document.getElementById('pagination'); if(pag) { pag.innerHTML=''; for(let i=1;i<=Math.min(totalPages,5);i++) pag.innerHTML+=`<button class="btn-sm" onclick="window.historyPageNum=${i};renderHistoryTable(window.currentHistoryData);">${i}</button>`; } }
+        function exportHistoryCSV(type) { let data = type==='current'?window.currentHistoryData:getAllTransactions(currentUser?.type==='member'?currentUser.id:null); let csv="Date,Member,Type,Amount,Note\n"; for(const t of data) csv+=`${fmtDate(t.date)},${t.memberName},${t.type},${t.amount||0},${t.note||''}\n`; const blob=new Blob([csv],{type:'text/csv'}), a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`history-${new Date().toISOString().split('T')[0]}.csv`; a.click(); NotificationManager.add('Export complete','success'); }
+        function exportHistoryPDF() { window.print(); }
+        function showImportMembersCSV() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Import Members (CSV)</h3><p>Columns: Name, Phone, JoinDate, InitialSavings, MembershipPaid, SocialPaid</p><input type="file" id="memberCsvFile" accept=".csv"><div id="memberImportPreview"></div><button class="btn" onclick="confirmMemberImport()">Import Members</button><button class="btn" onclick="goBack()">Cancel</button></div>`; document.getElementById('memberCsvFile').addEventListener('change', handleMemberCSV); }
+        let memberImportData=[]; function handleMemberCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); memberImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]) memberImportData.push({name:vals[0],phone:vals[1],joinDate:vals[2]||new Date().toISOString().split('T')[0],savings:parseFloat(vals[3])||200,membershipPaid:vals[4]?.toLowerCase()==='yes',socialPaid:vals[5]?.toLowerCase()==='yes'}); } document.getElementById('memberImportPreview').innerHTML=`<p>${memberImportData.length} members ready to import</p><pre>${JSON.stringify(memberImportData.slice(0,3),null,2)}</pre>`; }; reader.readAsText(file); }
+        async function confirmMemberImport() { let newCount=0, updateCount=0; for(const d of memberImportData) { const existing = members.find(m=>m.phone===d.phone); if(existing) { existing.name=d.name; existing.savings=d.savings; existing.membershipPaid=d.membershipPaid; existing.socialPaid=d.socialPaid; existing.createdDate=new Date(d.joinDate).toISOString(); updateCount++; } else { members.push({ id:Date.now().toString()+Math.random().toString(36).substr(2,4), name:d.name, phone:d.phone, createdDate:new Date(d.joinDate).toISOString(), savings:d.savings, loanPrincipal:0, membershipPaid:d.membershipPaid, socialPaid:d.socialPaid, pin:d.phone.slice(-4), transactions:[{type:'savings',amount:d.savings,date:new Date(d.joinDate).toISOString(),note:'CSV import'}] }); newCount++; } } await saveMembers(); NotificationManager.add(`✅ ${newCount} new, ${updateCount} updated`,'success'); goBack(); }
+        function showImportTransactionsCSV() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Import Transactions</h3><p>Columns: MemberName, Type, Amount, Date, Note</p><input type="file" id="txCsvFile" accept=".csv"><div id="txImportPreview"></div><button class="btn" onclick="confirmTransactionImport()">Import Transactions</button><button class="btn" onclick="goBack()">Cancel</button></div>`; document.getElementById('txCsvFile').addEventListener('change', handleTransactionCSV); }
+        let transactionImportData=[]; function handleTransactionCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); transactionImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]&&vals[1]) transactionImportData.push({memberName:vals[0],type:vals[1].toLowerCase(),amount:parseFloat(vals[2])||0,date:vals[3]||new Date().toISOString().split('T')[0],note:vals[4]||''}); } document.getElementById('txImportPreview').innerHTML=`<p>${transactionImportData.length} transactions ready</p>`; }; reader.readAsText(file); }
+        async function confirmTransactionImport() { let success=0; for(const d of transactionImportData) { const member = members.find(m=>m.name.toLowerCase()===d.memberName.toLowerCase()); if(!member) continue; if(d.type==='savings') { member.savings=(member.savings||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'savings',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } else if(d.type==='loan') { member.loanPrincipal=(member.loanPrincipal||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'loan',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } else if(d.type==='repayment') { member.loanPrincipal=Math.max(0,(member.loanPrincipal||0)-d.amount); member.transactions=member.transactions||[]; member.transactions.push({type:'repayment',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } } await saveMembers(); NotificationManager.add(`Imported ${success} transactions`,'success'); goBack(); }
+        
+        // ===== MENU TOGGLES =====
+        function toggleAdminMenu(e) { e.stopPropagation(); closeAllMenus(); const m=document.getElementById('adminMenu'); if(m) m.classList.toggle('active'); }
+        function toggleMemberMenu(e) { e.stopPropagation(); closeAllMenus(); const m=document.getElementById('memberMenu'); if(m) m.classList.toggle('active'); }
+        function toggleNotifications(e) { e.stopPropagation(); closeAllMenus(); const d=document.getElementById('notificationDropdown'); if(d) { d.classList.toggle('active'); NotificationManager.renderDropdown(); } }
+        document.addEventListener('click',()=>closeAllMenus());
+        
+        // Make all functions global
+        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications;
+        
+        (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); showLoginScreen(); })();
     </script>
 </body>
 </html>
