@@ -301,7 +301,7 @@
                         </div>
                         <div id="loginForm"></div>
                         <div style="text-align:center;margin-top:30px;font-size:12px;color:var(--text-secondary);">
-                            <i class="fas fa-heart" style="color:#e91e63;"></i> Created by Tha for Chibombo Savers Group
+                            <i class="fas fa-heart" style="color:#e91e63;"></i> Created for Chibombo Savers Group
                         </div>
                     </div>
                 </div>`;
@@ -537,6 +537,10 @@
                         <button class="btn-sm" onclick="addLoanFor('${mid}')" style="background:linear-gradient(135deg,#f44336,#ef5350);"><i class="fas fa-hand-holding-usd"></i> Add Loan</button>
                         <button class="btn-sm" onclick="showEditMember('${mid}')" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><i class="fas fa-edit"></i> Edit</button>
                     </div>
+                    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+                        <button class="btn-sm" onclick="exportMemberStatement('${mid}')" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);"><i class="fas fa-file-pdf"></i> Statement</button>
+                        <button class="btn-sm" onclick="exportMemberCSV('${mid}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-file-csv"></i> CSV</button>
+                    </div>
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
                         <div class="${m.membershipPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;"><i class="fas fa-id-card"></i> Membership ${m.membershipPaid?'✓ Paid':'✗ Due'}</div>
                         <div class="${m.socialPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;"><i class="fas fa-users"></i> Social ${m.socialPaid?'✓ Paid':'✗ Due'}</div>
@@ -564,7 +568,120 @@
         function showCollectMembership() { let html = `<div class="card"><h3>Collect Membership Fees (K50)</h3>`; members.filter(m=>!m.membershipPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','membership')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
         function showCollectSocial() { let html = `<div class="card"><h3>Collect Social Fund (K100)</h3>`; members.filter(m=>!m.socialPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','social')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
         async function collectFee(mid, type) { const m = members.find(m=>m.id===mid); if(!m) return; if(type==='membership') { m.membershipPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:50,date:new Date().toISOString(),note:'Membership fee'}); NotificationManager.add(`K50 membership from ${m.name}`,'success'); } else { m.socialPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:100,date:new Date().toISOString(),note:'Social fund'}); NotificationManager.add(`K100 social from ${m.name}`,'success'); } await saveMembers(); showCollectFees(); }
-        function showShareAccount() { const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0), totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0), net = totalSavings-totalLoans, sharePool = net*0.1; let html = `<div class="card"><h3>Share Account (10%)</h3><div style="background:#e8f5e9;padding:16px;border-radius:12px;margin-bottom:20px;"><div>Group Savings: K${totalSavings.toLocaleString()}</div><div>Group Loans: K${totalLoans.toLocaleString()}</div><div>Net Value: K${net.toLocaleString()}</div><div>10% Share Pool: K${sharePool.toFixed(2)}</div></div>`; members.forEach(m=>{ const memberNet = ((m.savings||0)*(1+RULES.INTEREST))-((m.loanPrincipal||0)*(1+RULES.INTEREST)); const takeHome = net!==0 ? (sharePool*(memberNet/net)) : 0; html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div><div>Net: K${memberNet.toLocaleString()}</div></div><div style="font-weight:700;">K${takeHome.toFixed(2)}</div></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
+        function showShareAccount() { 
+            const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0), totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0), net = totalSavings-totalLoans, sharePool = net*0.1; 
+            let html = `
+                <div class="header">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
+                        <div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;text-shadow: 0 0 12px rgba(255,215,0,0.6);"></i> Share Account</h1></div>
+                    </div>
+                </div>
+                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
+                    <h3><i class="fas fa-chart-pie"></i> Share Account (10%)</h3>
+                    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+                        <button class="btn-sm" onclick="exportShareAccountCSV()" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        <button class="btn-sm" onclick="exportShareAccountPDF()"><i class="fas fa-print"></i> Print</button>
+                    </div>
+                    <div style="background:linear-gradient(135deg,rgba(67,160,71,0.1),rgba(67,160,71,0.05));padding:20px;border-radius:12px;margin-bottom:20px;border:1px solid rgba(67,160,71,0.2);">
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;text-align:center;">
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Group Savings</div><div style="font-size:20px;font-weight:700;color:#43a047;">K${totalSavings.toLocaleString()}</div></div>
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Group Loans</div><div style="font-size:20px;font-weight:700;color:#f44336;">K${totalLoans.toLocaleString()}</div></div>
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Net Value</div><div style="font-size:20px;font-weight:700;color:#1e88e5;">K${net.toLocaleString()}</div></div>
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">10% Share Pool</div><div style="font-size:20px;font-weight:700;color:#ff9800;">K${sharePool.toFixed(2)}</div></div>
+                        </div>
+                    </div>
+                    <h4 style="margin-bottom:12px;">Member Share Out Details</h4>`; 
+            members.forEach((m, idx)=>{ const memberNet = ((m.savings||0)*(1+RULES.INTEREST))-((m.loanPrincipal||0)*(1+RULES.INTEREST)); const takeHome = net!==0 ? (sharePool*(memberNet/net)) : 0; html+=`<div class="member-row" style="animation: slideInRight 0.4s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;"><div class="member-info"><div class="member-name">${m.name}</div><div style="font-size:12px;color:var(--text-secondary);">Net: K${memberNet.toLocaleString()}</div></div><div style="font-weight:700;color:#ff9800;">K${takeHome.toFixed(2)}</div></div>`; }); 
+            html+=`<div style="margin-top:16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button></div></div>`; 
+            document.getElementById('contentArea').innerHTML = html; 
+        }
+        
+        function exportShareAccountCSV() {
+            const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0), totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0), net = totalSavings-totalLoans, sharePool = net*0.1;
+            let csv = "Member Name,Net Position,Share Out Amount\n";
+            members.forEach(m=>{
+                const memberNet = ((m.savings||0)*(1+RULES.INTEREST))-((m.loanPrincipal||0)*(1+RULES.INTEREST));
+                const takeHome = net!==0 ? (sharePool*(memberNet/net)) : 0;
+                csv += `${m.name},${memberNet.toFixed(2)},${takeHome.toFixed(2)}\n`;
+            });
+            csv += `\nSummary\nGroup Savings,${totalSavings}\nGroup Loans,${totalLoans}\nNet Value,${net}\nShare Pool (10%),${sharePool.toFixed(2)}`;
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `share_account_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            NotificationManager.add('Share account exported!', 'success');
+        }
+        
+        function exportShareAccountPDF() { window.print(); }
+        
+        function exportMemberStatement(mid) {
+            const m = members.find(m=>m.id===mid);
+            if(!m) return;
+            const printWindow = window.open('', '_blank');
+            const txs = (m.transactions||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            const memberNet = ((m.savings||0)*(1+RULES.INTEREST))-((m.loanPrincipal||0)*(1+RULES.INTEREST));
+            let txRows = '';
+            txs.forEach(t=>{
+                txRows += `<tr><td>${fmtDate(t.date)}</td><td>${t.type.toUpperCase()}</td><td style="text-align:right;">K${(t.amount||0).toLocaleString()}</td><td>${t.note||''}</td></tr>`;
+            });
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html><head><title>Statement - ${m.name}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                    h1 { color: #1e88e5; border-bottom: 2px solid #1e88e5; padding-bottom: 10px; }
+                    .header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+                    .summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+                    .summary-item { background: #f5f5f5; padding: 15px; border-radius: 8px; }
+                    .summary-item label { display: block; font-size: 12px; color: #666; }
+                    .summary-item value { font-size: 20px; font-weight: bold; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+                    th { background: #1e88e5; color: white; }
+                    tr:nth-child(even) { background: #f9f9f9; }
+                    .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                    @media print { body { padding: 0; } }
+                </style></head>
+                <body>
+                    <h1>💰 SAVERS GROUP - Member Statement</h1>
+                    <div class="header">
+                        <div><h2>${m.name}</h2><p>Phone: ${m.phone}</p><p>Member ID: ${m.id.slice(-6)}</p></div>
+                        <div><p>Date: ${new Date().toLocaleDateString()}</p></div>
+                    </div>
+                    <div class="summary">
+                        <div class="summary-item"><label>Total Savings</label><value style="color:#43a047;">K${(m.savings||0).toLocaleString()}</value></div>
+                        <div class="summary-item"><label>Loan (with 10% interest)</label><value style="color:#f44336;">K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</value></div>
+                        <div class="summary-item"><label>Membership Status</label><value>${m.membershipPaid ? 'PAID' : 'DUE'}</value></div>
+                        <div class="summary-item"><label>Social Status</label><value>${m.socialPaid ? 'PAID' : 'DUE'}</value></div>
+                    </div>
+                    <h3>Transaction History</h3>
+                    <table><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody>${txRows||'<tr><td colspan="4">No transactions</td></tr>'}</tbody></table>
+                    <div class="footer"><p>Generated by Chibombo Savers Group App</p><p>Net Position: K${memberNet.toLocaleString()}</p></div>
+                </body></html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+            NotificationManager.add('Statement opened for printing', 'success');
+        }
+        
+        function exportMemberCSV(mid) {
+            const m = members.find(m=>m.id===mid);
+            if(!m) return;
+            const txs = (m.transactions||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            let csv = `Member Statement - ${m.name}\nPhone,${m.phone}\nMember ID,${m.id.slice(-6)}\n\nTransaction History\nDate,Type,Amount,Note\n`;
+            txs.forEach(t=>{
+                csv += `${t.date},${t.type},${t.amount||0},${t.note||''}\n`;
+            });
+            csv += `\nSummary\nSavings,${m.savings||0}\nLoan Principal,${m.loanPrincipal||0}\nLoan with Interest,${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toFixed(2)}\nMembership,${m.membershipPaid?'Paid':'Due'}\nSocial,${m.socialPaid?'Paid':'Due'}`;
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `statement_${m.name.replace(/\s+/g,'_')}_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            NotificationManager.add('Member statement exported!', 'success');
+        }
         
         // ===== MEMBER DASHBOARD =====
         function showMemberDashboard(memberId) {
@@ -761,7 +878,7 @@
         document.addEventListener('click',()=>closeAllMenus());
         
         // Make all functions global
-        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications;
+        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV;
         
         (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); showLoginScreen(); })();
     </script>
