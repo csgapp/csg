@@ -469,11 +469,13 @@
                         <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
                     </div>
                 </div>
-                <div style="padding:16px;">`;
+                <div style="padding:16px;">
+                    <input type="text" id="memberSearch" placeholder="🔍 Search members by name..." onkeyup="filterMembers()" style="margin-bottom:16px;">
+                    <div id="membersList">`;
             const colors=['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
             members.forEach((m, index) => {
                 const color = colors[m.name.length % colors.length];
-                html+=`<div class="member-row" style="animation: fadeInUp 0.4s ease forwards; animation-delay: ${index * 0.05}s; opacity: 0;">
+                html+=`<div class="member-row member-item" data-name="${m.name.toLowerCase()}" style="animation: fadeInUp 0.4s ease forwards; animation-delay: ${index * 0.05}s; opacity: 0;">
                     <div class="avatar" style="background:linear-gradient(135deg,${color},${color}dd);box-shadow: 0 2px 8px ${color}40;">${m.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
                     <div class="member-info">
                         <div class="member-name">${m.name}</div>
@@ -487,8 +489,17 @@
                     <button class="btn-sm" onclick="viewMember('${m.id}')" style="background:var(--primary);">View</button>
                 </div>`; 
             }); 
-            html += `</div><div style="padding:0 16px 16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button></div>`;
+            html += `</div></div><div style="padding:0 16px 16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button></div>`;
             document.getElementById('contentArea').innerHTML = html; 
+        }
+        
+        function filterMembers() {
+            const search = document.getElementById('memberSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.member-item');
+            items.forEach(item => {
+                const name = item.getAttribute('data-name');
+                item.style.display = name.includes(search) ? 'flex' : 'none';
+            });
         }
         function viewMember(mid) { 
             const m = members.find(m=>m.id===mid); 
@@ -739,6 +750,10 @@
                 </div>
                 <div class="card" style="margin:0 16px 16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.7s;opacity:0;">
                     <h3><i class="fas fa-history"></i> Recent Transactions</h3>
+                    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+                        <button class="btn-sm" onclick="exportMemberStatement('${memberId}')" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);"><i class="fas fa-file-pdf"></i> Statement</button>
+                        <button class="btn-sm" onclick="exportMemberCSV('${memberId}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-file-csv"></i> CSV</button>
+                    </div>
                     <div id="memberTxList">${(member.transactions||[]).slice().reverse().map(t=>`
                         <div class="transaction-item" style="animation: slideInRight 0.4s ease forwards; opacity: 0;">
                             <div class="transaction-icon" style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:${t.type==='savings'?'rgba(67,160,71,0.1)':t.type==='loan'?'rgba(244,67,54,0.1)':t.type==='repayment'?'rgba(30,136,229,0.1)':'rgba(255,152,0,0.1)'};">
