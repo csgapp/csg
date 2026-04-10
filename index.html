@@ -265,7 +265,37 @@
             closeAllMenus() { document.querySelectorAll('.menu-dropdown.active, .notification-dropdown.active').forEach(el=>el.classList.remove('active')); }
         };
         
-        async function loadMembers() { try { const doc = await db.collection('groups').doc('main').get(); if(doc.exists) members = doc.data().members || []; else members = []; localStorage.setItem('members', JSON.stringify(members)); } catch(e) { const local = localStorage.getItem('members'); if(local) members = JSON.parse(local); } }
+        async function loadMembers() { 
+            try { 
+                const docRef = db.collection('groups').doc('main');
+                const doc = await docRef.get(); 
+                if(doc.exists) { 
+                    members = doc.data().members || []; 
+                } else {
+                    // Create the document if it doesn't exist
+                    await docRef.set({ members: [], createdAt: new Date().toISOString() });
+                    members = [];
+                }
+                localStorage.setItem('members', JSON.stringify(members)); 
+            } catch(e) { 
+                console.log('Firebase error, using localStorage:', e);
+                const local = localStorage.getItem('members'); 
+                if(local) members = JSON.parse(local); 
+            } 
+        }
+        
+        async function ensureFirebaseSetup() {
+            try {
+                const docRef = db.collection('groups').doc('main');
+                const doc = await docRef.get();
+                if(!doc.exists) {
+                    await docRef.set({ members: [], createdAt: new Date().toISOString() });
+                    console.log('Firebase collection created');
+                }
+            } catch(e) {
+                console.log('Could not setup Firebase:', e);
+            }
+        }
         async function saveMembers() { localStorage.setItem('members', JSON.stringify(members)); if(!navigator.onLine) return; try { await db.collection('groups').doc('main').set({ members, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); } catch(e) { console.log(e); } }
         function fmtDate(iso) { try { return new Date(iso).toLocaleDateString('en-ZM'); } catch(e) { return iso; } }
         function formatCurrency(amt) { return 'K' + (amt||0).toLocaleString(); }
@@ -927,7 +957,7 @@
         // Make all functions global
         window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV;
         
-        (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); showLoginScreen(); })();
+        (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); await ensureFirebaseSetup(); showLoginScreen(); })();
     </script>
 </body>
 </html>
