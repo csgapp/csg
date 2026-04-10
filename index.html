@@ -850,7 +850,25 @@
             NotificationManager.add('Template downloaded!', 'success');
         }
         let memberImportData=[]; function handleMemberCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); memberImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]) memberImportData.push({name:vals[0],phone:vals[1],joinDate:vals[2]||new Date().toISOString().split('T')[0],savings:parseFloat(vals[3])||200,membershipPaid:vals[4]?.toLowerCase()==='yes',socialPaid:vals[5]?.toLowerCase()==='yes'}); } document.getElementById('memberImportPreview').innerHTML=`<p>${memberImportData.length} members ready to import</p><pre>${JSON.stringify(memberImportData.slice(0,3),null,2)}</pre>`; }; reader.readAsText(file); }
-        async function confirmMemberImport() { let newCount=0, updateCount=0; for(const d of memberImportData) { const existing = members.find(m=>m.phone===d.phone); if(existing) { existing.name=d.name; existing.savings=d.savings; existing.membershipPaid=d.membershipPaid; existing.socialPaid=d.socialPaid; existing.createdDate=new Date(d.joinDate).toISOString(); updateCount++; } else { members.push({ id:Date.now().toString()+Math.random().toString(36).substr(2,4), name:d.name, phone:d.phone, createdDate:new Date(d.joinDate).toISOString(), savings:d.savings, loanPrincipal:0, membershipPaid:d.membershipPaid, socialPaid:d.socialPaid, pin:d.phone.slice(-4), transactions:[{type:'savings',amount:d.savings,date:new Date(d.joinDate).toISOString(),note:'CSV import'}] }); newCount++; } } await saveMembers(); NotificationManager.add(`✅ ${newCount} new, ${updateCount} updated`,'success'); goBack(); }
+        async function confirmMemberImport() { 
+            let newCount=0, updateCount=0; 
+            for(const d of memberImportData) { 
+                const joinDate = d.joinDate && d.joinDate.trim() ? new Date(d.joinDate) : new Date();
+                const dateStr = isNaN(joinDate.getTime()) ? new Date().toISOString() : joinDate.toISOString();
+                const existing = members.find(m=>m.phone===d.phone); 
+                if(existing) { 
+                    existing.name=d.name; existing.savings=d.savings; existing.membershipPaid=d.membershipPaid; existing.socialPaid=d.socialPaid; 
+                    existing.createdDate=dateStr; 
+                    updateCount++; 
+                } else { 
+                    members.push({ id:Date.now().toString()+Math.random().toString(36).substr(2,4), name:d.name, phone:d.phone, createdDate:dateStr, savings:d.savings, loanPrincipal:0, membershipPaid:d.membershipPaid, socialPaid:d.socialPaid, pin:d.phone.slice(-4), transactions:[{type:'savings',amount:d.savings,date:dateStr,note:'CSV import'}] }); 
+                    newCount++; 
+                } 
+            } 
+            await saveMembers(); 
+            NotificationManager.add(`✅ ${newCount} new, ${updateCount} updated`,'success'); 
+            goBack(); 
+        }
         function showImportTransactionsCSV() { document.getElementById('contentArea').innerHTML = `
                 <div class="header">
                     <div style="display:flex;align-items:center;gap:12px;">
@@ -884,7 +902,21 @@
             NotificationManager.add('Template downloaded!', 'success');
         }
         let transactionImportData=[]; function handleTransactionCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); transactionImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]&&vals[1]) transactionImportData.push({memberName:vals[0],type:vals[1].toLowerCase(),amount:parseFloat(vals[2])||0,date:vals[3]||new Date().toISOString().split('T')[0],note:vals[4]||''}); } document.getElementById('txImportPreview').innerHTML=`<p>${transactionImportData.length} transactions ready</p>`; }; reader.readAsText(file); }
-        async function confirmTransactionImport() { let success=0; for(const d of transactionImportData) { const member = members.find(m=>m.name.toLowerCase()===d.memberName.toLowerCase()); if(!member) continue; if(d.type==='savings') { member.savings=(member.savings||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'savings',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } else if(d.type==='loan') { member.loanPrincipal=(member.loanPrincipal||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'loan',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } else if(d.type==='repayment') { member.loanPrincipal=Math.max(0,(member.loanPrincipal||0)-d.amount); member.transactions=member.transactions||[]; member.transactions.push({type:'repayment',amount:d.amount,date:new Date(d.date).toISOString(),note:d.note||'CSV import'}); success++; } } await saveMembers(); NotificationManager.add(`Imported ${success} transactions`,'success'); goBack(); }
+        async function confirmTransactionImport() { 
+            let success=0; 
+            for(const d of transactionImportData) { 
+                const member = members.find(m=>m.name.toLowerCase()===d.memberName.toLowerCase()); 
+                if(!member) continue; 
+                const txDate = d.date && d.date.trim() ? new Date(d.date) : new Date();
+                const dateStr = isNaN(txDate.getTime()) ? new Date().toISOString() : txDate.toISOString();
+                if(d.type==='savings') { member.savings=(member.savings||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'savings',amount:d.amount,date:dateStr,note:d.note||'CSV import'}); success++; } 
+                else if(d.type==='loan') { member.loanPrincipal=(member.loanPrincipal||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'loan',amount:d.amount,date:dateStr,note:d.note||'CSV import'}); success++; } 
+                else if(d.type==='repayment') { member.loanPrincipal=Math.max(0,(member.loanPrincipal||0)-d.amount); member.transactions=member.transactions||[]; member.transactions.push({type:'repayment',amount:d.amount,date:dateStr,note:d.note||'CSV import'}); success++; } 
+            } 
+            await saveMembers(); 
+            NotificationManager.add(`Imported ${success} transactions`,'success'); 
+            goBack(); 
+        }
         
         // ===== MENU TOGGLES =====
         function toggleAdminMenu(e) { e.stopPropagation(); closeAllMenus(); const m=document.getElementById('adminMenu'); if(m) m.classList.toggle('active'); }
