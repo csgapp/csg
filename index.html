@@ -1293,10 +1293,103 @@
         function toggleNotifications(e) { e.stopPropagation(); closeAllMenus(); const d=document.getElementById('notificationDropdown'); if(d) { d.classList.toggle('active'); NotificationManager.renderDropdown(); } }
         document.addEventListener('click',()=>closeAllMenus());
         
-        // Make all functions global
-        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV; window.showMemberSavingsTab = showMemberSavingsTab; window.showMemberLoansTab = showMemberLoansTab; window.showRepayLoanFromMember = showRepayLoanFromMember; window.processRepaymentFromMember = processRepaymentFromMember;
+        // ===== BULK IMPORT FUNCTIONS =====
+        function showBulkSavingsImport() {
+            document.getElementById('contentArea').innerHTML = '<div class="header"><div style="display:flex;align-items:center;gap:12px;"><div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div><div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;"></i> Bulk Add Savings</h1></div></div></div><div class="card fancy-card" style="margin:16px;"><h3><i class="fas fa-piggy-bank"></i> Bulk Add Savings</h3><p>Format: MemberPhone,Amount,Date,Note</p><button class="btn" onclick="downloadBulkSavingsTemplate()" style="background:#26a69a;margin-bottom:16px;">Download Template</button><input type="file" id="bulkSavingsFile" accept=".csv" style="margin-bottom:12px;"><div id="bulkSavingsPreview"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="confirmBulkSavingsImport()" style="background:#43a047;">Import</button><button class="btn" onclick="goBack()" style="background:#666;">Cancel</button></div></div>';
+            document.getElementById('bulkSavingsFile').addEventListener('change', handleBulkSavingsCSV);
+        }
+        let bulkSavingsData = [];
+        function handleBulkSavingsCSV(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const lines = ev.target.result.split('\n');
+                bulkSavingsData = [];
+                for(let i=1; i<lines.length; i++) {
+                    const vals = lines[i].split(',').map(v=>v.trim());
+                    if(vals[0] && vals[1]) {
+                        bulkSavingsData.push({phone: vals[0], amount: parseFloat(vals[1]), date: vals[2] || new Date().toISOString().split('T')[0], note: vals[3] || 'Bulk import'});
+                    }
+                }
+                document.getElementById('bulkSavingsPreview').innerHTML = '<p>' + bulkSavingsData.length + ' entries ready</p>';
+            };
+            reader.readAsText(file);
+        }
+        async function confirmBulkSavingsImport() {
+            let success = 0;
+            for(const d of bulkSavingsData) {
+                const member = members.find(m => m.phone === d.phone);
+                if(member) {
+                    member.savings = (member.savings || 0) + d.amount;
+                    member.transactions = member.transactions || [];
+                    member.transactions.push({type: 'savings', amount: d.amount, date: new Date(d.date).toISOString(), note: d.note});
+                    success++;
+                }
+            }
+            await saveMembers();
+            NotificationManager.add('Added savings for ' + success + ' members', 'success');
+            goBack();
+        }
+        function downloadBulkSavingsTemplate() {
+            const csv = "MemberPhone,Amount,Date,Note\n260971234567,200,2024-01-15,Monthly savings";
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'bulk_savings_template.csv';
+            a.click();
+        }
         
-        (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); await ensureFirebaseSetup(); showLoginScreen(); })();
+        function showBulkLoansImport() {
+            document.getElementById('contentArea').innerHTML = '<div class="header"><div style="display:flex;align-items:center;gap:12px;"><div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div><div class="header-title"><h1><i class="fas fa-hand-holding-usd"></i> Bulk Add Loans</h1></div></div></div><div class="card fancy-card" style="margin:16px;"><h3><i class="fas fa-hand-holding-usd"></i> Bulk Add Loans</h3><p>Format: MemberPhone,Amount,Date,Note</p><button class="btn" onclick="downloadBulkLoansTemplate()" style="background:#26a69a;margin-bottom:16px;">Download Template</button><input type="file" id="bulkLoansFile" accept=".csv" style="margin-bottom:12px;"><div id="bulkLoansPreview"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="confirmBulkLoansImport()" style="background:#f44336;">Import</button><button class="btn" onclick="goBack()" style="background:#666;">Cancel</button></div></div>';
+            document.getElementById('bulkLoansFile').addEventListener('change', handleBulkLoansCSV);
+        }
+        let bulkLoansData = [];
+        function handleBulkLoansCSV(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const lines = ev.target.result.split('\n');
+                bulkLoansData = [];
+                for(let i=1; i<lines.length; i++) {
+                    const vals = lines[i].split(',').map(v=>v.trim());
+                    if(vals[0] && vals[1]) {
+                        bulkLoansData.push({phone: vals[0], amount: parseFloat(vals[1]), date: vals[2] || new Date().toISOString().split('T')[0], note: vals[3] || 'Bulk loan import'});
+                    }
+                }
+                document.getElementById('bulkLoansPreview').innerHTML = '<p>' + bulkLoansData.length + ' entries ready</p>';
+            };
+            reader.readAsText(file);
+        }
+        async function confirmBulkLoansImport() {
+            let success = 0;
+            for(const d of bulkLoansData) {
+                const member = members.find(m => m.phone === d.phone);
+                if(member) {
+                    member.loanPrincipal = (member.loanPrincipal || 0) + d.amount;
+                    member.transactions = member.transactions || [];
+                    member.transactions.push({type: 'loan', amount: d.amount, date: new Date(d.date).toISOString(), note: d.note});
+                    success++;
+                }
+            }
+            await saveMembers();
+            NotificationManager.add('Added loans for ' + success + ' members', 'success');
+            goBack();
+        }
+        function downloadBulkLoansTemplate() {
+            const csv = "MemberPhone,Amount,Date,Note\n260971234567,1000,2024-01-15,Business loan";
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'bulk_loans_template.csv';
+            a.click();
+        }
+        
+        // Make all functions global
+        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV; window.showMemberSavingsTab = showMemberSavingsTab; window.showMemberLoansTab = showMemberLoansTab; window.showRepayLoanFromMember = showRepayLoanFromMember; window.processRepaymentFromMember = processRepaymentFromMember; window.showBulkSavingsImport = showBulkSavingsImport; window.showBulkLoansImport = showBulkLoansImport; window.confirmBulkSavingsImport = confirmBulkSavingsImport; window.confirmBulkLoansImport = confirmBulkLoansImport;
+        
+        (async () => { NotificationManager.init(); ThemeManager.init(); await ensureFirebaseStructure(); showLoginScreen(); })();
     </script>
 </body>
 </html> 
