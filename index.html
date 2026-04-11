@@ -1218,7 +1218,7 @@
             a.click();
             NotificationManager.add('Template downloaded!', 'success');
         }
-        let memberImportData=[]; function handleMemberCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); memberImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]) memberImportData.push({name:vals[0],phone:vals[1],joinDate:vals[2]||new Date().toISOString().split('T')[0],savings:parseFloat(vals[3])||200,membershipPaid:vals[4]?.toLowerCase()==='yes',socialPaid:vals[5]?.toLowerCase()==='yes'}); } document.getElementById('memberImportPreview').innerHTML=`<p>${memberImportData.length} members ready to import</p><pre>${JSON.stringify(memberImportData.slice(0,3),null,2)}</pre>`; }; reader.readAsText(file); }
+        let memberImportData=[]; function handleMemberCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); memberImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]) { let joinDate = vals[2] || new Date().toISOString().split('T')[0]; // Handle various date formats if(joinDate.includes('/')) { const parts = joinDate.split('/'); if(parts.length===3) joinDate = `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`; } } memberImportData.push({name:vals[0],phone:vals[1],joinDate:joinDate,savings:parseFloat(vals[3])||200,membershipPaid:vals[4]?.toLowerCase()==='yes',socialPaid:vals[5]?.toLowerCase()==='yes'}); } document.getElementById('memberImportPreview').innerHTML=`<p>${memberImportData.length} members ready to import</p><pre>${JSON.stringify(memberImportData.slice(0,3),null,2)}</pre>`; }; reader.readAsText(file); }
         async function confirmMemberImport() { 
             let newCount=0, updateCount=0; 
             for(const d of memberImportData) { 
@@ -1299,4 +1299,4 @@
         (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); await ensureFirebaseSetup(); showLoginScreen(); })();
     </script>
 </body>
-</html> 
+</html>
