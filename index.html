@@ -258,7 +258,89 @@
         }
         
         let members = [], currentUser = null, selectedLoanMemberId = null, screenHistory = [];
-        const RULES = { MIN_SAVINGS: 200, MEMBERSHIP_FEE: 50, SOCIAL_FUND: 100, INTEREST: 0.10 };
+        const RULES = { 
+            MIN_SAVINGS: 200, 
+            MEMBERSHIP_FEE: 50, 
+            SOCIAL_FUND: 100, 
+            INTEREST: 0.10,
+            CALCULATION_TYPE: 'ledger' // 'simple' or 'ledger' - ledger matches Excel format
+        };
+        
+        // ===== DETAILED LEDGER CALCULATIONS (matches Excel) =====
+        function calculateLedgerSavings(member) {
+            const txs = member.transactions || [];
+            let cumulativeSavings = member.initialSavings || 0;
+            let cumulativeInterest = 0;
+            const ledger = [];
+            
+            // Sort transactions by date
+            const sortedTxs = txs.filter(t => t.type === 'savings' || t.type === 'savings-interest').sort((a,b) => new Date(a.date) - new Date(b.date));
+            
+            sortedTxs.forEach(tx => {
+                if (tx.type === 'savings') {
+                    const interest = cumulativeSavings * RULES.INTEREST;
+                    cumulativeInterest += interest;
+                    cumulativeSavings += tx.amount + interest;
+                    ledger.push({
+                        date: tx.date,
+                        monthlySavings: tx.amount,
+                        cumulativeSavings: cumulativeSavings,
+                        interest: interest,
+                        totalWithInterest: cumulativeSavings + cumulativeInterest
+                    });
+                }
+            });
+            
+            return { cumulativeSavings, cumulativeInterest, totalValue: cumulativeSavings + cumulativeInterest, ledger };
+        }
+        
+        function calculateLedgerLoans(member) {
+            const txs = member.transactions || [];
+            let principle = member.loanPrincipal || 0;
+            let balance = principle;
+            const ledger = [];
+            
+            const sortedTxs = txs.filter(t => t.type === 'loan' || t.type === 'repayment').sort((a,b) => new Date(a.date) - new Date(b.date));
+            
+            sortedTxs.forEach(tx => {
+                const interest = principle * RULES.INTEREST;
+                if (tx.type === 'loan') {
+                    principle = tx.amount;
+                    balance = principle;
+                    ledger.push({
+                        date: tx.date,
+                        principle: tx.amount,
+                        interest: interest,
+                        totalLoan: principle + interest,
+                        payment: 0,
+                        loanBalance: balance,
+                        topUp: tx.amount
+                    });
+                } else if (tx.type === 'repayment') {
+                    balance = Math.max(0, balance - tx.payment);
+                    ledger.push({
+                        date: tx.date,
+                        principle: principle,
+                        interest: interest,
+                        totalLoan: principle + interest,
+                        payment: tx.amount,
+                        loanBalance: balance,
+                        topUp: 0
+                    });
+                }
+            });
+            
+            const totalInterest = principle * RULES.INTEREST;
+            return { principle, totalWithInterest: principle + totalInterest, interest: totalInterest, balance, ledger };
+        }
+        
+        function calculateNetPosition(member) {
+            const savings = calculateLedgerSavings(member);
+            const loans = calculateLedgerLoans(member);
+            const netPosition = savings.totalValue - loans.totalWithInterest;
+            const shareOut = netPosition * 0.10;
+            return { netPosition, shareOut, savings, loans };
+        }
         
         function navigateTo(screenFn, screenName) { screenHistory.push(screenName); updateNavButtons(); screenFn(); }
         function goBack() { if (screenHistory.length > 1) { screenHistory.pop(); updateNavButtons(); const prev = screenHistory[screenHistory.length-1]; if (prev === 'admin' && currentUser?.type === 'admin') showAdminDashboard(); else if (prev === 'member' && currentUser?.type === 'member') showMemberDashboard(currentUser.id); else logout(); } else logout(); }
@@ -563,65 +645,276 @@
             if(!m) return; 
             screenHistory.push(`Member: ${m.name.split(' ')[0]}`); 
             updateNavButtons(); 
-            const txs = (m.transactions||[]).sort((a,b)=>new Date(b.date)-new Date(a.date)); 
-            let txHtml = '<h4><i class="fas fa-history"></i> Recent Transactions</h4>'; 
-            txs.slice(0,5).forEach(t=>{ txHtml+=`<div class="transaction-item" style="animation: slideInRight 0.4s ease forwards; opacity: 0;"><div class="transaction-icon" style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:${t.type==='savings'?'rgba(67,160,71,0.1)':t.type==='loan'?'rgba(244,67,54,0.1)':t.type==='repayment'?'rgba(30,136,229,0.1)':'rgba(255,152,0,0.1)'};"><i class="fas ${t.type==='savings'?'fa-piggy-bank':t.type==='loan'?'fa-hand-holding-usd':t.type==='repayment'?'fa-arrow-circle-left':'fa-id-card'}" style="color:${t.type==='savings'?'#43a047':t.type==='loan'?'#f44336':t.type==='repayment'?'#1e88e5':'#ff9800'};"></i></div><div><div style="font-weight:600;">${t.type.toUpperCase()}</div><div style="color:var(--primary);font-size:1.1rem;font-weight:700;">K${(t.amount||0).toLocaleString()}</div><div style="font-size:12px;color:var(--text-secondary);">${fmtDate(t.date)}</div>${t.note?`<div style="font-size:11px;color:var(--text-secondary);">${t.note}</div>`:''}</div></div>`; }); 
+            
+            const calc = calculateNetPosition(m);
             const avatarColors = ['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
             const avatarColor = avatarColors[m.name.length % avatarColors.length];
+            
+            // Build savings ledger table
+            let savingsLedgerHtml = '';
+            if(calc.savings.ledger && calc.savings.ledger.length > 0) {
+                calc.savings.ledger.forEach((row, idx) => {
+                    savingsLedgerHtml += `<tr style="animation: fadeInUp 0.3s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;">
+                        <td style="padding:10px;border-bottom:1px solid #eee;">${fmtDate(row.date)}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#43a047;">K${row.monthlySavings.toLocaleString()}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;">K${row.cumulativeSavings.toLocaleString()}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#ff9800;">K${row.interest.toLocaleString()}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;">K${row.totalWithInterest.toLocaleString()}</td>
+                    </tr>`;
+                });
+            } else {
+                savingsLedgerHtml = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#666;">No savings transactions yet</td></tr>';
+            }
+            
+            // Build loan ledger table
+            let loanLedgerHtml = '';
+            if(calc.loans.ledger && calc.loans.ledger.length > 0) {
+                calc.loans.ledger.forEach((row, idx) => {
+                    loanLedgerHtml += `<tr style="animation: fadeInUp 0.3s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;">
+                        <td style="padding:10px;border-bottom:1px solid #eee;">${fmtDate(row.date)}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;">K${row.principle.toLocaleString()}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#f44336;">K${row.interest.toLocaleString()}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;">K${row.totalLoan.toLocaleString()}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#1e88e5;">K${row.payment || '-'}</td>
+                        <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;color:${row.loanBalance > 0 ? '#f44336' : '#43a047'};">K${row.loanBalance.toLocaleString()}</td>
+                    </tr>`;
+                });
+            } else {
+                loanLedgerHtml = '<tr><td colspan="6" style="text-align:center;padding:20px;color:#666;">No loan transactions yet</td></tr>';
+            }
+            
             document.getElementById('contentArea').innerHTML = `
                 <div class="header">
                     <div style="display:flex;align-items:center;gap:12px;">
                         <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
-                        <div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;text-shadow: 0 0 12px rgba(255,215,0,0.6);"></i> SAVERS GROUP</h1><p>Member Account</p></div>
+                        <div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;text-shadow: 0 0 12px rgba(255,215,0,0.6);"></i> ${m.name}</h1></div>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
-                        <div class="menu-toggle" onclick="toggleViewMemberMenu(event)"><i class="fas fa-ellipsis-v"></i></div>
-                        <div id="viewMemberMenu" class="menu-dropdown">
-                            <div class="menu-item" onclick="ThemeManager.toggle();closeAllMenus();" id="themeToggleVM"><i class="fas fa-moon"></i><span>Dark Mode</span></div>
-                            <div class="menu-item" onclick="toggleNotifications(event);"><i class="fas fa-bell"></i><span>Notifications</span><span id="notificationBadge" class="notification-badge" style="display:none;">0</span></div>
-                            <div class="menu-item" onclick="logout();"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
-                        </div>
-                        <div id="notificationDropdown" class="notification-dropdown"></div>
                     </div>
                 </div>
-                <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-                        <div class="avatar" style="width:72px;height:72px;font-size:28px;background:linear-gradient(135deg,${avatarColor},${avatarColor}dd);box-shadow: 0 4px 12px ${avatarColor}40;">${m.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
-                        <div><h3 style="margin-bottom:4px;">${m.name}</h3><p style="color:var(--text-secondary);"><i class="fas fa-phone"></i> ${m.phone}</p><p style="font-size:12px;color:var(--text-secondary);">ID: ${m.id.slice(-6)}</p></div>
-                    </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-                        <div style="padding:16px;background:linear-gradient(135deg,rgba(67,160,71,0.1),rgba(67,160,71,0.05));border-radius:12px;text-align:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.1s;opacity:0;">
-                            <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Savings</div>
-                            <div style="font-size:1.6rem;font-weight:700;color:#43a047;">K${(m.savings||0).toLocaleString()}</div>
-                        </div>
-                        <div style="padding:16px;background:linear-gradient(135deg,rgba(244,67,54,0.1),rgba(244,67,54,0.05));border-radius:12px;text-align:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.2s;opacity:0;">
-                            <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Loan (10%)</div>
-                            <div style="font-size:1.6rem;font-weight:700;color:#f44336;">K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</div>
+                
+                <!-- Member Summary Cards -->
+                <div style="padding:16px;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+                        <div class="avatar" style="width:64px;height:64px;font-size:24px;background:linear-gradient(135deg,${avatarColor},${avatarColor}dd);">${m.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
+                        <div>
+                            <h3 style="margin:0;">${m.name}</h3>
+                            <p style="margin:0;color:var(--text-secondary);font-size:13px;">${m.phone}</p>
                         </div>
                     </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
-                        <button class="btn-sm" onclick="addSavingsFor('${mid}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-piggy-bank"></i> Add Savings</button>
-                        <button class="btn-sm" onclick="addLoanFor('${mid}')" style="background:linear-gradient(135deg,#f44336,#ef5350);"><i class="fas fa-hand-holding-usd"></i> Add Loan</button>
+                    
+                    <!-- Net Position Card -->
+                    <div class="card fancy-card" style="margin:0 0 16px 0;background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.05));border:1px solid rgba(37,99,235,0.2);">
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;text-align:center;">
+                            <div>
+                                <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Net Position</div>
+                                <div style="font-size:24px;font-weight:700;color:${calc.netPosition >= 0 ? '#43a047' : '#f44336'};">K${calc.netPosition.toLocaleString()}</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Share Out (10%)</div>
+                                <div style="font-size:24px;font-weight:700;color:#ff9800;">K${calc.shareOut.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+                        <button class="btn-sm" onclick="showMemberSavingsTab('${mid}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-piggy-bank"></i> Savings</button>
+                        <button class="btn-sm" onclick="showMemberLoansTab('${mid}')" style="background:linear-gradient(135deg,#f44336,#ef5350);"><i class="fas fa-hand-holding-usd"></i> Loans</button>
+                        <button class="btn-sm" onclick="addSavingsFor('${mid}')"><i class="fas fa-plus"></i> Add Savings</button>
+                        <button class="btn-sm" onclick="addLoanFor('${mid}')"><i class="fas fa-plus"></i> Add Loan</button>
                         <button class="btn-sm" onclick="showEditMember('${mid}')" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><i class="fas fa-edit"></i> Edit</button>
                     </div>
-                    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-                        <button class="btn-sm" onclick="exportMemberStatement('${mid}')" style="background:linear-gradient(135deg,#1e88e5,#42a5f5);"><i class="fas fa-file-pdf"></i> Statement</button>
-                        <button class="btn-sm" onclick="exportMemberCSV('${mid}')" style="background:linear-gradient(135deg,#43a047,#66bb6a);"><i class="fas fa-file-csv"></i> CSV</button>
-                    </div>
+                    
+                    <!-- Status -->
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                        <div class="${m.membershipPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;"><i class="fas fa-id-card"></i> Membership ${m.membershipPaid?'✓ Paid':'✗ Due'}</div>
-                        <div class="${m.socialPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;"><i class="fas fa-users"></i> Social ${m.socialPaid?'✓ Paid':'✗ Due'}</div>
+                        <div class="${m.membershipPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;">Membership ${m.membershipPaid?'✓':'✗'}</div>
+                        <div class="${m.socialPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;">Social ${m.socialPaid?'✓':'✗'}</div>
                     </div>
                 </div>
-                <div class="card" style="margin:0 16px 16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;">
-                    ${txHtml}
+                
+                <!-- Savings & Loans Summary Cards -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px;">
+                    <div class="card" style="margin:0;text-align:center;">
+                        <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;">Total Savings</div>
+                        <div style="font-size:20px;font-weight:700;color:#43a047;">K${calc.savings.totalValue.toLocaleString()}</div>
+                        <div style="font-size:11px;color:var(--text-secondary);">Interest: K${calc.savings.cumulativeInterest.toLocaleString()}</div>
+                    </div>
+                    <div class="card" style="margin:0;text-align:center;">
+                        <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;">Total Loan</div>
+                        <div style="font-size:20px;font-weight:700;color:#f44336;">K${calc.loans.totalWithInterest.toLocaleString()}</div>
+                        <div style="font-size:11px;color:var(--text-secondary);">Balance: K${calc.loans.balance.toLocaleString()}</div>
+                    </div>
                 </div>
-                <div style="padding:0 16px 16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button></div>
+                
+                <div id="memberDetailContent">
+                    <div class="card" style="margin:0 16px 16px;">
+                        <h4><i class="fas fa-history"></i> Recent Transactions</h4>
+                        <div id="memberTxList">
+                            ${((m.transactions||[]).slice().reverse().slice(0,10).map(t=>`
+                                <div class="transaction-item">
+                                    <div style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:${t.type==='savings'?'rgba(67,160,71,0.1)':t.type==='loan'?'rgba(244,67,54,0.1)':t.type==='repayment'?'rgba(30,136,229,0.1)':'rgba(255,152,0,0.1)'};">
+                                        <i class="fas ${t.type==='savings'?'fa-piggy-bank':t.type==='loan'?'fa-hand-holding-usd':t.type==='repayment'?'fa-arrow-circle-left':'fa-id-card'}" style="color:${t.type==='savings'?'#43a047':t.type==='loan'?'#f44336':t.type==='repayment'?'#1e88e5':'#ff9800'};"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight:600;">${t.type.toUpperCase()}</div>
+                                        <div style="color:var(--primary);font-weight:700;">K${(t.amount||0).toLocaleString()}</div>
+                                        <div style="font-size:12px;color:var(--text-secondary);">${fmtDate(t.date)}</div>
+                                    </div>
+                                </div>
+                            `).join('')||'<p style="text-align:center;color:#666;padding:20px;">No transactions</p>')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding:0 16px 16px;">
+                    <button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+                </div>
             `;
-            NotificationManager.renderBadge();
             ThemeManager.updateUI();
-            window.toggleViewMemberMenu = function(e) { e.stopPropagation(); closeAllMenus(); const m=document.getElementById('viewMemberMenu'); if(m) m.classList.toggle('active'); };
+        }
+        
+        function showMemberSavingsTab(mid) {
+            const m = members.find(m=>m.id===mid);
+            if(!m) return;
+            const calc = calculateLedgerSavings(m);
+            
+            let ledgerHtml = '';
+            calc.ledger.forEach((row, idx) => {
+                ledgerHtml += `<tr style="animation: fadeInUp 0.3s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;">
+                    <td style="padding:10px;border-bottom:1px solid #eee;">${fmtDate(row.date)}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#43a047;">K${row.monthlySavings.toLocaleString()}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;">K${row.cumulativeSavings.toLocaleString()}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#ff9800;">K${row.interest.toLocaleString()}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;">K${row.totalWithInterest.toLocaleString()}</td>
+                </tr>`;
+            });
+            
+            document.getElementById('memberDetailContent').innerHTML = `
+                <div class="card fancy-card" style="margin:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3><i class="fas fa-piggy-bank" style="color:#43a047;"></i> Savings Ledger</h3>
+                        <button class="btn-sm" onclick="addSavingsFor('${mid}')" style="background:#43a047;">+ Add Savings</button>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;text-align:center;">
+                        <div style="padding:12px;background:rgba(67,160,71,0.1);border-radius:8px;">
+                            <div style="font-size:11px;color:#666;">Total Savings</div>
+                            <div style="font-size:18px;font-weight:bold;color:#43a047;">K${calc.cumulativeSavings.toLocaleString()}</div>
+                        </div>
+                        <div style="padding:12px;background:rgba(255,152,0,0.1);border-radius:8px;">
+                            <div style="font-size:11px;color:#666;">Total Interest</div>
+                            <div style="font-size:18px;font-weight:bold;color:#ff9800;">K${calc.cumulativeInterest.toLocaleString()}</div>
+                        </div>
+                        <div style="padding:12px;background:rgba(37,99,235,0.1);border-radius:8px;">
+                            <div style="font-size:11px;color:#666;">With Interest</div>
+                            <div style="font-size:18px;font-weight:bold;color:#1e88e5;">K${calc.totalValue.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="background:#1e88e5;color:white;">
+                                    <th style="padding:10px;text-align:left;">Date</th>
+                                    <th style="padding:10px;text-align:right;">Monthly</th>
+                                    <th style="padding:10px;text-align:right;">Cumulative</th>
+                                    <th style="padding:10px;text-align:right;">Interest</th>
+                                    <th style="padding:10px;text-align:right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>${ledgerHtml || '<tr><td colspan="5" style="text-align:center;padding:20px;">No savings yet</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showMemberLoansTab(mid) {
+            const m = members.find(m=>m.id===mid);
+            if(!m) return;
+            const calc = calculateLedgerLoans(m);
+            
+            let ledgerHtml = '';
+            calc.ledger.forEach((row, idx) => {
+                ledgerHtml += `<tr style="animation: fadeInUp 0.3s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;">
+                    <td style="padding:10px;border-bottom:1px solid #eee;">${fmtDate(row.date)}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;">K${row.principle.toLocaleString()}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#f44336;">K${row.interest.toLocaleString()}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;">K${row.totalLoan.toLocaleString()}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;color:#1e88e5;">K${row.payment || '-'}</td>
+                    <td style="padding:10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;color:${row.loanBalance > 0 ? '#f44336' : '#43a047'};">K${row.loanBalance.toLocaleString()}</td>
+                </tr>`;
+            });
+            
+            document.getElementById('memberDetailContent').innerHTML = `
+                <div class="card fancy-card" style="margin:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3><i class="fas fa-hand-holding-usd" style="color:#f44336;"></i> Loan Ledger</h3>
+                        <div>
+                            <button class="btn-sm" onclick="addLoanFor('${mid}')" style="background:#f44336;margin-right:8px;">+ New Loan</button>
+                            <button class="btn-sm" onclick="showRepayLoanFromMember('${mid}')" style="background:#1e88e5;">+ Payment</button>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;text-align:center;">
+                        <div style="padding:12px;background:rgba(244,67,54,0.1);border-radius:8px;">
+                            <div style="font-size:11px;color:#666;">Principle</div>
+                            <div style="font-size:18px;font-weight:bold;color:#f44336;">K${calc.principle.toLocaleString()}</div>
+                        </div>
+                        <div style="padding:12px;background:rgba(255,152,0,0.1);border-radius:8px;">
+                            <div style="font-size:11px;color:#666;">Interest</div>
+                            <div style="font-size:18px;font-weight:bold;color:#ff9800;">K${calc.interest.toLocaleString()}</div>
+                        </div>
+                        <div style="padding:12px;background:rgba(37,99,235,0.1);border-radius:8px;">
+                            <div style="font-size:11px;color:#666;">Balance</div>
+                            <div style="font-size:18px;font-weight:bold;color:#1e88e5;">K${calc.balance.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="background:#f44336;color:white;">
+                                    <th style="padding:10px;text-align:left;">Date</th>
+                                    <th style="padding:10px;text-align:right;">Principle</th>
+                                    <th style="padding:10px;text-align:right;">Interest</th>
+                                    <th style="padding:10px;text-align:right;">Total</th>
+                                    <th style="padding:10px;text-align:right;">Paid</th>
+                                    <th style="padding:10px;text-align:right;">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>${ledgerHtml || '<tr><td colspan="6" style="text-align:center;padding:20px;">No loans yet</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showRepayLoanFromMember(mid) {
+            const m = members.find(m=>m.id===mid);
+            if(!m) return;
+            document.getElementById('memberDetailContent').innerHTML = `
+                <div class="card" style="margin:16px;">
+                    <h3>Record Loan Payment</h3>
+                    <p style="color:var(--text-secondary);">Current Balance: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</p>
+                    <input type="number" id="repayAmountMember" placeholder="Enter payment amount" style="margin-bottom:16px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <button class="btn" onclick="processRepaymentFromMember('${mid}')" style="background:#43a047;">✅ Record Payment</button>
+                        <button class="btn" onclick="viewMember('${mid}')" style="background:#666;">Cancel</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        async function processRepaymentFromMember(mid) {
+            const m = members.find(m=>m.id===mid);
+            const amt = parseFloat(document.getElementById('repayAmountMember')?.value);
+            if(m && amt > 0) {
+                m.loanPrincipal = Math.max(0, (m.loanPrincipal||0) - amt);
+                m.transactions = m.transactions||[];
+                m.transactions.push({type:'repayment',payment:amt,amount:amt,date:new Date().toISOString(),note:'Loan payment'});
+                await saveMembers();
+                NotificationManager.add(`K${amt} payment recorded for ${m.name}`, 'success');
+                showMemberLoansTab(mid);
+            }
         }
         function showAddSavings() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add Savings</h3><select id="savingsMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="savingsAmount" value="200" step="200"><div class="btn" onclick="processSavings()">✅ Add</div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
         function addSavingsFor(mid) { showAddSavings(); setTimeout(()=>{ const s=document.getElementById('savingsMember'); if(s) s.value=mid; },100); }
@@ -637,7 +930,16 @@
         function showCollectSocial() { let html = `<div class="card"><h3>Collect Social Fund (K100)</h3>`; members.filter(m=>!m.socialPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','social')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
         async function collectFee(mid, type) { const m = members.find(m=>m.id===mid); if(!m) return; if(type==='membership') { m.membershipPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:50,date:new Date().toISOString(),note:'Membership fee'}); NotificationManager.add(`K50 membership from ${m.name}`,'success'); } else { m.socialPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:100,date:new Date().toISOString(),note:'Social fund'}); NotificationManager.add(`K100 social from ${m.name}`,'success'); } await saveMembers(); showCollectFees(); }
         function showShareAccount() { 
-            const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0), totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0), net = totalSavings-totalLoans, sharePool = net*0.1; 
+            // Use ledger calculations
+            let groupSavings = 0, groupLoans = 0, groupNet = 0;
+            members.forEach(m => {
+                const calc = calculateNetPosition(m);
+                groupSavings += calc.savings.totalValue;
+                groupLoans += calc.loans.totalWithInterest;
+            });
+            groupNet = groupSavings - groupLoans;
+            const sharePool = groupNet * 0.1;
+            
             let html = `
                 <div class="header">
                     <div style="display:flex;align-items:center;gap:12px;">
@@ -653,14 +955,24 @@
                     </div>
                     <div style="background:linear-gradient(135deg,rgba(67,160,71,0.1),rgba(67,160,71,0.05));padding:20px;border-radius:12px;margin-bottom:20px;border:1px solid rgba(67,160,71,0.2);">
                         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;text-align:center;">
-                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Group Savings</div><div style="font-size:20px;font-weight:700;color:#43a047;">K${totalSavings.toLocaleString()}</div></div>
-                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Group Loans</div><div style="font-size:20px;font-weight:700;color:#f44336;">K${totalLoans.toLocaleString()}</div></div>
-                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Net Value</div><div style="font-size:20px;font-weight:700;color:#1e88e5;">K${net.toLocaleString()}</div></div>
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Group Savings</div><div style="font-size:20px;font-weight:700;color:#43a047;">K${groupSavings.toLocaleString()}</div></div>
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Group Loans</div><div style="font-size:20px;font-weight:700;color:#f44336;">K${groupLoans.toLocaleString()}</div></div>
+                            <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Net Value</div><div style="font-size:20px;font-weight:700;color:#1e88e5;">K${groupNet.toLocaleString()}</div></div>
                             <div><div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">10% Share Pool</div><div style="font-size:20px;font-weight:700;color:#ff9800;">K${sharePool.toFixed(2)}</div></div>
                         </div>
                     </div>
                     <h4 style="margin-bottom:12px;">Member Share Out Details</h4>`; 
-            members.forEach((m, idx)=>{ const memberNet = ((m.savings||0)*(1+RULES.INTEREST))-((m.loanPrincipal||0)*(1+RULES.INTEREST)); const takeHome = net!==0 ? (sharePool*(memberNet/net)) : 0; html+=`<div class="member-row" style="animation: slideInRight 0.4s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;"><div class="member-info"><div class="member-name">${m.name}</div><div style="font-size:12px;color:var(--text-secondary);">Net: K${memberNet.toLocaleString()}</div></div><div style="font-weight:700;color:#ff9800;">K${takeHome.toFixed(2)}</div></div>`; }); 
+            members.forEach((m, idx)=>{ 
+                const calc = calculateNetPosition(m);
+                const takeHome = groupNet !== 0 ? (sharePool * (calc.netPosition / groupNet)) : 0;
+                html+=`<div class="member-row" style="animation: slideInRight 0.4s ease forwards; animation-delay: ${idx*0.05}s; opacity: 0;cursor:pointer;" onclick="viewMember('${m.id}')">
+                    <div class="member-info">
+                        <div class="member-name">${m.name}</div>
+                        <div style="font-size:12px;color:var(--text-secondary);">Net: K${calc.netPosition.toLocaleString()}</div>
+                    </div>
+                    <div style="font-weight:700;color:#ff9800;">K${takeHome.toFixed(2)}</div>
+                </div>`; 
+            }); 
             html+=`<div style="margin-top:16px;"><button class="btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button></div></div>`; 
             document.getElementById('contentArea').innerHTML = html; 
         }
@@ -982,7 +1294,7 @@
         document.addEventListener('click',()=>closeAllMenus());
         
         // Make all functions global
-        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV;
+        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV; window.showMemberSavingsTab = showMemberSavingsTab; window.showMemberLoansTab = showMemberLoansTab; window.showRepayLoanFromMember = showRepayLoanFromMember; window.processRepaymentFromMember = processRepaymentFromMember;
         
         (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); await ensureFirebaseSetup(); showLoginScreen(); })();
     </script>
