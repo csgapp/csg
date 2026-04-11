@@ -240,19 +240,19 @@
                 const docSnap = await mainDocRef.get();
                 
                 if (!docSnap.exists) {
-                    console.log('📁 Creating Firebase collections...');
+                    console.log('ðŸ“ Creating Firebase collections...');
                     await mainDocRef.set({
                         members: [],
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    console.log('✅ Firebase collection "groups/main" created successfully!');
+                    console.log('âœ… Firebase collection "groups/main" created successfully!');
                 } else {
-                    console.log('✅ Firebase collection already exists');
+                    console.log('âœ… Firebase collection already exists');
                 }
                 return true;
             } catch (e) {
-                console.error('❌ Error creating Firebase collection:', e);
+                console.error('âŒ Error creating Firebase collection:', e);
                 return false;
             }
         }
@@ -381,7 +381,7 @@
                 if(doc.exists) { 
                     const data = doc.data();
                     members = data.members || []; 
-                    console.log(`✅ Loaded ${members.length} members from Firebase`);
+                    console.log(`âœ… Loaded ${members.length} members from Firebase`);
                 } else {
                     members = [];
                 }
@@ -399,8 +399,8 @@
         function closeAllMenus() { ThemeManager.closeAllMenus(); }
         
         // ===== LOGIN =====
-        function showAdminLogin() { document.getElementById('loginForm').innerHTML = `<input type="text" id="username" value="admin" placeholder="Admin username"><input type="password" id="password" value="ChiSave" placeholder="Admin password"><button class="btn" onclick="login('admin')">🔐 ADMIN LOGIN</button>`; }
-        function showMemberLogin() { const form = document.getElementById('loginForm'); if(!members.length) { form.innerHTML = '<div>Loading members...</div>'; loadMembers().then(()=>showMemberLogin()); return; } form.innerHTML = `<select id="memberSelect"><option value="">-- Select Your Name --</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="password" id="memberPass" placeholder="PIN (last 4 digits)"><button class="btn" onclick="login('member')" style="background:#26a69a;">👤 MEMBER LOGIN</button>`; }
+        function showAdminLogin() { document.getElementById('loginForm').innerHTML = `<input type="text" id="username" value="admin" placeholder="Admin username"><input type="password" id="password" value="ChiSave" placeholder="Admin password"><button class="btn" onclick="login('admin')">ðŸ” ADMIN LOGIN</button>`; }
+        function showMemberLogin() { const form = document.getElementById('loginForm'); if(!members.length) { form.innerHTML = '<div>Loading members...</div>'; loadMembers().then(()=>showMemberLogin()); return; } form.innerHTML = `<select id="memberSelect"><option value="">-- Select Your Name --</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="password" id="memberPass" placeholder="PIN (last 4 digits)"><button class="btn" onclick="login('member')" style="background:#26a69a;">ðŸ‘¤ MEMBER LOGIN</button>`; }
         function login(type) { if(type==='admin') { const u = document.getElementById('username')?.value, p = document.getElementById('password')?.value; if(u==='admin' && p==='ChiSave') { currentUser = { type:'admin', name:'Admin' }; NotificationManager.add('Welcome back, Admin!','success'); screenHistory = ['login','admin']; showAdminDashboard(); } else alert('Wrong username or password'); } else { const mid = document.getElementById('memberSelect')?.value, pass = document.getElementById('memberPass')?.value; if(!mid) { alert('Select your name'); return; } const m = members.find(m=>m.id===mid); const expectedPin = m.pin || (m.phone || '').slice(-4); if(m && pass === expectedPin) { currentUser = { type:'member', name:m.name, id:m.id }; NotificationManager.add(`Welcome back, ${m.name}!`,'success'); screenHistory = ['login','member']; showMemberDashboard(m.id); } else alert('Wrong PIN'); } }
         function logout() { currentUser = null; closeAllMenus(); screenHistory = ['login']; showLoginScreen(); }
         function showLoginScreen() {
@@ -410,7 +410,7 @@
                     <div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;text-shadow: 0 0 12px rgba(255,215,0,0.6);"></i> SAVERS GROUP</h1><p>Digital Savings System</p></div>
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div class="nav-btn" onclick="ThemeManager.toggle()" title="Toggle Theme" style="background:rgba(255,255,255,0.2);"><i class="fas fa-adjust"></i></div>
-                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">● Online</div>
+                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">â— Online</div>
                     </div>
                 </div>
                 <div style="padding:16px;">
@@ -423,8 +423,8 @@
                             <p style="color:var(--text-secondary);font-size:14px;">Login to manage your savings</p>
                         </div>
                         <div style="display:flex;gap:12px;margin-bottom:20px;">
-                            <button class="btn" onclick="showAdminLogin()" style="flex:1;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;">👑 Admin</button>
-                            <button class="btn" onclick="showMemberLogin()" style="flex:1;background:#26a69a;animation: fadeInUp 0.5s ease forwards;animation-delay:0.4s;opacity:0;">👤 Member</button>
+                            <button class="btn" onclick="showAdminLogin()" style="flex:1;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;">ðŸ‘‘ Admin</button>
+                            <button class="btn" onclick="showMemberLogin()" style="flex:1;background:#26a69a;animation: fadeInUp 0.5s ease forwards;animation-delay:0.4s;opacity:0;">ðŸ‘¤ Member</button>
                         </div>
                         <div id="loginForm"></div>
                         <div style="text-align:center;margin-top:30px;font-size:12px;color:var(--text-secondary);">
@@ -450,7 +450,7 @@
                         <div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;text-shadow: 0 0 12px rgba(255,215,0,0.6);"></i> SAVERS GROUP</h1><p>Admin Dashboard</p></div>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">● Online</div>
+                        <div id="networkStatus" style="background:rgba(255,255,255,0.15);padding:6px 12px;border-radius:20px;font-size:12px;">â— Online</div>
                         <div class="nav-btn" onclick="toggleNotifications(event)" title="Notifications" style="position:relative;background:rgba(255,255,255,0.2);"><i class="fas fa-bell"></i><span id="notificationBadgeTop" class="notification-badge" style="display:none;">0</span></div>
                         <div class="nav-btn" onclick="logout()" title="Logout" style="background:rgba(220,38,38,0.8);"><i class="fas fa-door-open"></i></div>
                         <div class="menu-toggle" onclick="toggleAdminMenu(event)"><i class="fas fa-ellipsis-v"></i></div>
@@ -582,7 +582,7 @@
         }
         
         // ===== OTHER CORE FUNCTIONS =====
-        function showAddMember() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add New Member</h3><input id="newName" placeholder="Full Name"><input id="newPhone" placeholder="Phone Number"><input type="number" id="newSavings" value="200" min="200" step="200"><small>Minimum K200, multiples of 200</small><div class="btn" onclick="addMember()">💾 Save Member</div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
+        function showAddMember() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add New Member</h3><input id="newName" placeholder="Full Name"><input id="newPhone" placeholder="Phone Number"><input type="number" id="newSavings" value="200" min="200" step="200"><small>Minimum K200, multiples of 200</small><div class="btn" onclick="addMember()">ðŸ’¾ Save Member</div><div class="btn" onclick="goBack()">â†©ï¸ Back</div></div>`; }
         async function addMember() { const name = document.getElementById('newName')?.value.trim(), phone = document.getElementById('newPhone')?.value.trim(), savings = parseInt(document.getElementById('newSavings')?.value)||200; if(!name||!phone) return alert('Enter name and phone'); if(savings<200||savings%200!==0) return alert('Must be K200+ in multiples of 200'); members.push({ id:Date.now().toString(), name, phone, savings, loanPrincipal:0, membershipPaid:false, socialPaid:false, pin:phone.slice(-4), createdDate:new Date().toISOString(), transactions:[{type:'savings',amount:savings,date:new Date().toISOString(),note:'Initial savings'}] }); await saveMembers(); NotificationManager.add('Member added!','success'); goBack(); }
         function showAllMembers() { 
             let html = `
@@ -597,7 +597,7 @@
                     </div>
                 </div>
                 <div style="padding:16px;">
-                    <input type="text" id="memberSearch" placeholder="🔍 Search members by name..." onkeyup="filterMembers()" style="margin-bottom:16px;">
+                    <input type="text" id="memberSearch" placeholder="ðŸ” Search members by name..." onkeyup="filterMembers()" style="margin-bottom:16px;">
                     <div id="membersList">`;
             const colors=['#1e88e5','#e91e63','#9c27b0','#ff9800','#4caf50','#f44336'];
             members.forEach((m, index) => {
@@ -609,8 +609,8 @@
                         <div class="member-details">
                             <span style="color:#43a047;font-weight:600;">K${(m.savings||0).toLocaleString()}</span>
                             <span style="color:#f44336;">Loan: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</span>
-                            <span class="${m.membershipPaid?'status-paid':'status-due'}" style="font-size:11px;padding:4px 8px;">${m.membershipPaid?'Membership ✓':'Membership ✗'}</span>
-                            <span class="${m.socialPaid?'status-paid':'status-due'}" style="font-size:11px;padding:4px 8px;">${m.socialPaid?'Social ✓':'Social ✗'}</span>
+                            <span class="${m.membershipPaid?'status-paid':'status-due'}" style="font-size:11px;padding:4px 8px;">${m.membershipPaid?'Membership âœ“':'Membership âœ—'}</span>
+                            <span class="${m.socialPaid?'status-paid':'status-due'}" style="font-size:11px;padding:4px 8px;">${m.socialPaid?'Social âœ“':'Social âœ—'}</span>
                         </div>
                     </div>
                     <button class="btn-sm" onclick="viewMember('${m.id}')" style="background:var(--primary);">View</button>
@@ -717,8 +717,8 @@
                     
                     <!-- Status -->
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                        <div class="${m.membershipPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;">Membership ${m.membershipPaid?'✓':'✗'}</div>
-                        <div class="${m.socialPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;">Social ${m.socialPaid?'✓':'✗'}</div>
+                        <div class="${m.membershipPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;">Membership ${m.membershipPaid?'âœ“':'âœ—'}</div>
+                        <div class="${m.socialPaid?'status-paid':'status-due'}" style="flex:1;justify-content:center;min-width:120px;">Social ${m.socialPaid?'âœ“':'âœ—'}</div>
                     </div>
                 </div>
                 
@@ -885,7 +885,7 @@
                     <p style="color:var(--text-secondary);">Current Balance: K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</p>
                     <input type="number" id="repayAmountMember" placeholder="Enter payment amount" style="margin-bottom:16px;">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                        <button class="btn" onclick="processRepaymentFromMember('${mid}')" style="background:#43a047;">✅ Record Payment</button>
+                        <button class="btn" onclick="processRepaymentFromMember('${mid}')" style="background:#43a047;">âœ… Record Payment</button>
                         <button class="btn" onclick="viewMember('${mid}')" style="background:#666;">Cancel</button>
                     </div>
                 </div>
@@ -904,18 +904,18 @@
                 showMemberLoansTab(mid);
             }
         }
-        function showAddSavings() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add Savings</h3><select id="savingsMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="savingsAmount" value="200" step="200"><div class="btn" onclick="processSavings()">✅ Add</div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
+        function showAddSavings() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Add Savings</h3><select id="savingsMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="savingsAmount" value="200" step="200"><div class="btn" onclick="processSavings()">âœ… Add</div><div class="btn" onclick="goBack()">â†©ï¸ Back</div></div>`; }
         function addSavingsFor(mid) { showAddSavings(); setTimeout(()=>{ const s=document.getElementById('savingsMember'); if(s) s.value=mid; },100); }
         async function processSavings() { const mid = document.getElementById('savingsMember')?.value, amt = parseInt(document.getElementById('savingsAmount')?.value); const m = members.find(m=>m.id===mid); if(m && amt>=200 && amt%200===0) { m.savings = (m.savings||0)+amt; m.transactions = m.transactions||[]; m.transactions.push({type:'savings',amount:amt,date:new Date().toISOString(),note:'Savings deposit'}); await saveMembers(); NotificationManager.add(`K${amt} added for ${m.name}`,'success'); viewMember(m.id); } else alert('Must be K200+ in multiples of 200'); }
-        function showLoanManagement() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Loan Management</h3><select id="loanMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="showContractLoan()">➕ Contract Loan</button><button class="btn" onclick="showRepayLoan()">💳 Repay Loan</button></div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
-        function showContractLoan() { const mid = document.getElementById('loanMember')?.value; if(!mid) return; selectedLoanMemberId=mid; const m = members.find(m=>m.id===mid); document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Contract Loan for ${m.name}</h3><input type="number" id="loanAmount" value="1000" step="100"><div style="background:#fff3e0;padding:16px;border-radius:12px;margin:20px 0;"><p>10% Interest: K<span id="loanInterest">100</span></p><p>Total: K<span id="loanTotal">1100</span></p></div><div style="display:flex;gap:12px;"><button class="btn" onclick="contractLoan()">✅ Contract</button><button class="btn" onclick="goBack()">↩️ Back</button></div></div>`; document.getElementById('loanAmount').oninput = function() { const amt = parseFloat(this.value)||0; document.getElementById('loanInterest').textContent = (amt*RULES.INTEREST).toFixed(2); document.getElementById('loanTotal').textContent = (amt*(1+RULES.INTEREST)).toFixed(2); }; }
+        function showLoanManagement() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Loan Management</h3><select id="loanMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="showContractLoan()">âž• Contract Loan</button><button class="btn" onclick="showRepayLoan()">ðŸ’³ Repay Loan</button></div><div class="btn" onclick="goBack()">â†©ï¸ Back</div></div>`; }
+        function showContractLoan() { const mid = document.getElementById('loanMember')?.value; if(!mid) return; selectedLoanMemberId=mid; const m = members.find(m=>m.id===mid); document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Contract Loan for ${m.name}</h3><input type="number" id="loanAmount" value="1000" step="100"><div style="background:#fff3e0;padding:16px;border-radius:12px;margin:20px 0;"><p>10% Interest: K<span id="loanInterest">100</span></p><p>Total: K<span id="loanTotal">1100</span></p></div><div style="display:flex;gap:12px;"><button class="btn" onclick="contractLoan()">âœ… Contract</button><button class="btn" onclick="goBack()">â†©ï¸ Back</button></div></div>`; document.getElementById('loanAmount').oninput = function() { const amt = parseFloat(this.value)||0; document.getElementById('loanInterest').textContent = (amt*RULES.INTEREST).toFixed(2); document.getElementById('loanTotal').textContent = (amt*(1+RULES.INTEREST)).toFixed(2); }; }
         async function contractLoan() { const amt = parseInt(document.getElementById('loanAmount')?.value); const m = members.find(m=>m.id===selectedLoanMemberId); if(m && amt>=100) { m.loanPrincipal = (m.loanPrincipal||0)+amt; m.transactions = m.transactions||[]; m.transactions.push({type:'loan',amount:amt,date:new Date().toISOString(),note:'Loan contracted'}); await saveMembers(); NotificationManager.add(`K${amt} loan for ${m.name}`,'success'); showLoanManagement(); } else alert('Minimum loan is K100'); }
-        function showRepayLoan() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Repay Loan</h3><select id="repayMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="repayAmount" placeholder="Amount"><div style="display:flex;gap:12px;"><button class="btn" onclick="repayLoan()">✅ Repay</button><button class="btn" onclick="goBack()">↩️ Back</button></div></div>`; }
+        function showRepayLoan() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Repay Loan</h3><select id="repayMember">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="number" id="repayAmount" placeholder="Amount"><div style="display:flex;gap:12px;"><button class="btn" onclick="repayLoan()">âœ… Repay</button><button class="btn" onclick="goBack()">â†©ï¸ Back</button></div></div>`; }
         async function repayLoan() { const mid = document.getElementById('repayMember')?.value, amt = parseFloat(document.getElementById('repayAmount')?.value); const m = members.find(m=>m.id===mid); if(m && amt>0) { m.loanPrincipal = Math.max(0,(m.loanPrincipal||0)-amt); m.transactions = m.transactions||[]; m.transactions.push({type:'repayment',amount:amt,date:new Date().toISOString(),note:'Loan repayment'}); await saveMembers(); NotificationManager.add(`K${amt} repayment from ${m.name}`,'success'); showLoanManagement(); } else alert('Enter amount > 0'); }
         function addLoanFor(mid) { showLoanManagement(); setTimeout(()=>{ const s=document.getElementById('loanMember'); if(s) s.value=mid; showContractLoan(); },100); }
-        function showCollectFees() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Collect Fees</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="showCollectMembership()" style="background:#2e7d32;">Membership (K50)</button><button class="btn" onclick="showCollectSocial()" style="background:#2e7d32;">Social (K100)</button></div><div class="btn" onclick="goBack()">↩️ Back</div></div>`; }
-        function showCollectMembership() { let html = `<div class="card"><h3>Collect Membership Fees (K50)</h3>`; members.filter(m=>!m.membershipPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','membership')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
-        function showCollectSocial() { let html = `<div class="card"><h3>Collect Social Fund (K100)</h3>`; members.filter(m=>!m.socialPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','social')">✅ Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
+        function showCollectFees() { document.getElementById('contentArea').innerHTML = `<div class="card"><h3>Collect Fees</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><button class="btn" onclick="showCollectMembership()" style="background:#2e7d32;">Membership (K50)</button><button class="btn" onclick="showCollectSocial()" style="background:#2e7d32;">Social (K100)</button></div><div class="btn" onclick="goBack()">â†©ï¸ Back</div></div>`; }
+        function showCollectMembership() { let html = `<div class="card"><h3>Collect Membership Fees (K50)</h3>`; members.filter(m=>!m.membershipPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','membership')">âœ… Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
+        function showCollectSocial() { let html = `<div class="card"><h3>Collect Social Fund (K100)</h3>`; members.filter(m=>!m.socialPaid).forEach(m=>{ html+=`<div class="member-row"><div class="member-info"><div class="member-name">${m.name}</div></div><button class="btn-sm" onclick="collectFee('${m.id}','social')">âœ… Pay</button></div>`; }); html+=`<div class="btn" onclick="goBack()">Back</div></div>`; document.getElementById('contentArea').innerHTML = html; }
         async function collectFee(mid, type) { const m = members.find(m=>m.id===mid); if(!m) return; if(type==='membership') { m.membershipPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:50,date:new Date().toISOString(),note:'Membership fee'}); NotificationManager.add(`K50 membership from ${m.name}`,'success'); } else { m.socialPaid=true; m.transactions=m.transactions||[]; m.transactions.push({type:'fee',amount:100,date:new Date().toISOString(),note:'Social fund'}); NotificationManager.add(`K100 social from ${m.name}`,'success'); } await saveMembers(); showCollectFees(); }
         function showShareAccount() { 
             // Use ledger calculations
@@ -1013,7 +1013,7 @@
                     @media print { body { padding: 0; } }
                 </style></head>
                 <body>
-                    <h1>💰 SAVERS GROUP - Member Statement</h1>
+                    <h1>ðŸ’° SAVERS GROUP - Member Statement</h1>
                     <div class="header">
                         <div><h2>${m.name}</h2><p>Phone: ${m.phone}</p><p>Member ID: ${m.id.slice(-6)}</p></div>
                         <div><p>Date: ${new Date().toLocaleDateString()}</p></div>
@@ -1102,8 +1102,8 @@
                     </div>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px;">
-                    <div class="${member.membershipPaid?'status-paid':'status-due'}" style="justify-content:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.5s;opacity:0;"><i class="fas fa-id-card"></i> Membership ${member.membershipPaid?'✓ Paid':'✗ Due'}</div>
-                    <div class="${member.socialPaid?'status-paid':'status-due'}" style="justify-content:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.6s;opacity:0;"><i class="fas fa-users"></i> Social ${member.socialPaid?'✓ Paid':'✗ Due'}</div>
+                    <div class="${member.membershipPaid?'status-paid':'status-due'}" style="justify-content:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.5s;opacity:0;"><i class="fas fa-id-card"></i> Membership ${member.membershipPaid?'âœ“ Paid':'âœ— Due'}</div>
+                    <div class="${member.socialPaid?'status-paid':'status-due'}" style="justify-content:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.6s;opacity:0;"><i class="fas fa-users"></i> Social ${member.socialPaid?'âœ“ Paid':'âœ— Due'}</div>
                 </div>
                 <div class="card" style="margin:0 16px 16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.7s;opacity:0;">
                     <h3><i class="fas fa-history"></i> Recent Transactions</h3>
@@ -1223,7 +1223,7 @@
                 } 
             } 
             await saveMembers(); 
-            NotificationManager.add(`✅ ${newCount} new, ${updateCount} updated`,'success'); 
+            NotificationManager.add(`âœ… ${newCount} new, ${updateCount} updated`,'success'); 
             goBack(); 
         }
         function showImportTransactionsCSV() { document.getElementById('contentArea').innerHTML = `
@@ -1380,4 +1380,4 @@
         (async () => { NotificationManager.init(); ThemeManager.init(); await ensureFirebaseSetup(); showLoginScreen(); })();
     </script>
 </body>
-</html> 
+</html>
