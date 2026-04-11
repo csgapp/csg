@@ -232,6 +232,30 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+                // ===== AUTO-CREATE FIREBASE COLLECTIONS =====
+        async function ensureFirebaseSetup() {
+            try {
+                const mainDocRef = db.collection('groups').doc('main');
+                const docSnap = await mainDocRef.get();
+                
+                if (!docSnap.exists) {
+                    console.log('📁 Creating Firebase collections...');
+                    await mainDocRef.set({
+                        members: [],
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('✅ Firebase collection "groups/main" created successfully!');
+                } else {
+                    console.log('✅ Firebase collection already exists');
+                }
+                return true;
+            } catch (e) {
+                console.error('❌ Error creating Firebase collection:', e);
+                return false;
+            }
+        }
         
         let members = [], currentUser = null, selectedLoanMemberId = null, screenHistory = [];
         const RULES = { MIN_SAVINGS: 200, MEMBERSHIP_FEE: 50, SOCIAL_FUND: 100, INTEREST: 0.10 };
@@ -265,15 +289,18 @@
             closeAllMenus() { document.querySelectorAll('.menu-dropdown.active, .notification-dropdown.active').forEach(el=>el.classList.remove('active')); }
         };
         
-        async function loadMembers() { 
+                async function loadMembers() { 
             try { 
+                // First ensure Firebase structure exists
+                await ensureFirebaseSetup();
+                
                 const docRef = db.collection('groups').doc('main');
                 const doc = await docRef.get(); 
                 if(doc.exists) { 
-                    members = doc.data().members || []; 
+                    const data = doc.data();
+                    members = data.members || []; 
+                    console.log(`✅ Loaded ${members.length} members from Firebase`);
                 } else {
-                    // Create the document if it doesn't exist
-                    await docRef.set({ members: [], createdAt: new Date().toISOString() });
                     members = [];
                 }
                 localStorage.setItem('members', JSON.stringify(members)); 
