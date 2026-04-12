@@ -31,11 +31,76 @@
         }
 
         #app {
-            max-width: 600px;
+            max-width: 100%;
             margin: 0 auto;
             background: #fff;
             min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* Desktop adjustments */
+        @media (min-width: 768px) {
+            #app {
+                max-width: 1200px;
+                box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+            }
+            .admin-dashboard {
+                padding: 30px;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .action-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 767px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .metric-card, .action-btn {
+                padding: 12px !important;
+            }
+            .metric-card div, .action-btn div, .action-btn span {
+                font-size: 11px !important;
+            }
+            .metric-card div:first-child + div div {
+                font-size: 20px !important;
+            }
+        }
+
+        /* Mobile-first styling */
+        @media (max-width: 767px) {
+            #app {
+                max-width: 100%;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         [data-theme="dark"] body {
@@ -262,27 +327,22 @@
         function showLoginScreen() {
             screenHistory=['login'];
             document.getElementById('app').innerHTML = `
-                <div style="padding:20px;text-align:center;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <div><h1 style="color:#1e88e5;"><i class="fas fa-piggy-bank"></i> SAVERS GROUP</h1><p>Digital Savings System</p></div>
-                        <div>
-                            <div onclick="ThemeManager.toggle()" style="cursor:pointer;padding:8px;" title="Toggle Theme"><i class="fas fa-moon"></i></div>
-                            <div id="networkStatus" style="font-size:12px;">● Online</div>
+                <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e88e5 0%,#1565c0 50%,#0d47a1 100%);padding:20px;">
+                    <div style="background:white;border-radius:24px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation: fadeInUp 0.6s ease forwards;">
+                        <div style="text-align:center;margin-bottom:30px;">
+                            <div style="width:80px;height:80px;background:linear-gradient(135deg,#FFD700,#FFA000);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow: 0 8px 20px rgba(255,215,0,0.4);animation: pulse 2s infinite;">
+                                <i class="fas fa-piggy-bank" style="font-size:40px;color:white;"></i>
+                            </div>
+                            <h1 style="color:#1e88e5;font-size:28px;margin-bottom:8px;">SAVERS GROUP</h1>
+                            <p style="color:#666;font-size:14px;">Digital Savings System</p>
                         </div>
-                    </div>
-                    <div style="margin-top:40px;">
-                        <div style="background:linear-gradient(135deg,#1e88e5,#1565c0);color:white;padding:30px;border-radius:20px;margin-bottom:20px;">
-                            <div><i class="fas fa-wallet" style="font-size:48px;"></i></div>
-                            <h2>Savings Back</h2>
-                            <p>Login to manage your savings</p>
-                        </div>
-                        <div style="display:flex;gap:12px;margin-bottom:20px;">
-                            <button onclick="showAdminLogin()" style="flex:1;padding:14px;background:#2e7d32;color:white;border:none;border-radius:12px;font-weight:bold;">👑 Admin</button>
-                            <button onclick="showMemberLogin()" style="flex:1;padding:14px;background:#1e88e5;color:white;border:none;border-radius:12px;font-weight:bold;">👤 Member</button>
+                        <div style="display:flex;gap:12px;margin-bottom:24px;">
+                            <button onclick="showAdminLogin()" style="flex:1;padding:16px;background:linear-gradient(135deg,#2e7d32,#43a047);color:white;border:none;border-radius:12px;font-weight:bold;font-size:15px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(46,125,50,0.3);">👑 Admin</button>
+                            <button onclick="showMemberLogin()" style="flex:1;padding:16px;background:linear-gradient(135deg,#1e88e5,#42a5f5);color:white;border:none;border-radius:12px;font-weight:bold;font-size:15px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(30,136,229,0.3);">👤 Member</button>
                         </div>
                         <div id="loginForm"></div>
-                        <div style="margin-top:40px;font-size:12px;color:#888;">
-                            <i class="fas fa-shield-alt"></i> Created by Tech for Chibombo Savers Group
+                        <div style="margin-top:30px;text-align:center;font-size:12px;color:#888;">
+                            <i class="fas fa-shield-alt"></i> Created for Chibombo Savers Group
                         </div>
                     </div>
                 </div>`;
@@ -298,11 +358,11 @@
         
             screenHistory=['admin'];
             document.getElementById('app').innerHTML = `
-                <div style="padding:16px;background:#fff;border-bottom:1px solid #eee;">
+                <div class="admin-dashboard" style="padding:16px;background:#fff;border-bottom:1px solid #eee;">
                     <div style="display:flex;justify-content:space-between;align-items:center;">
                         <div style="display:flex;align-items:center;gap:12px;">
                             <div id="backBtn" onclick="goBack()" style="cursor:pointer;display:none;"><i class="fas fa-arrow-left"></i></div>
-                            <div><h1 style="font-size:20px;color:#1e88e5;"><i class="fas fa-piggy-bank"></i> SAVERS GROUP</h1><p style="font-size:12px;">Admin Dashboard</p></div>
+                            <div><h1 style="font-size:20px;color:#1e88e5;"><i class="fas fa-piggy-bank" style="color:#FFD700;"></i> SAVERS GROUP</h1><p style="font-size:12px;">Admin Dashboard</p></div>
                         </div>
                         <div style="display:flex;gap:12px;align-items:center;">
                             <div id="networkStatus" style="font-size:12px;">● Online</div>
@@ -319,50 +379,52 @@
                         </div>
                     </div>
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:16px;">
-                    <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:16px;border-radius:16px;">
+                <!-- Admin Metrics Cards -->
+                <div class="metrics-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;">
+                    <div class="metric-card" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.1s;opacity:0;">
                         <div><i class="fas fa-users" style="font-size:24px;"></i></div>
-                        <div><div style="font-size:12px;">Total Members</div><div style="font-size:28px;font-weight:bold;">${members.length}</div><div><span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:20px;">${active} active</span></div></div>
+                        <div><div style="font-size:12px;">Total Members</div><div style="font-size:32px;font-weight:bold;">${members.length}</div><div><span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:20px;font-size:11px;">${active} active</span></div></div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;padding:16px;border-radius:16px;">
+                    <div class="metric-card" style="background:linear-gradient(135deg,#43a047 0%,#66bb6a 100%);color:white;padding:20px;border-radius:16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.2s;opacity:0;">
                         <div><i class="fas fa-chart-line" style="font-size:24px;"></i></div>
-                        <div><div style="font-size:12px;">Total Savings</div><div style="font-size:28px;font-weight:bold;">K${totalSavings.toLocaleString()}</div><div><i class="fas fa-arrow-up"></i> +K${(totalSavings*0.05).toLocaleString()} this month</div></div>
+                        <div><div style="font-size:12px;">Total Savings</div><div style="font-size:32px;font-weight:bold;">K${totalSavings.toLocaleString()}</div><div style="font-size:11px;"><i class="fas fa-arrow-up"></i> +K${(totalSavings*0.05).toLocaleString()} this month</div></div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white;padding:16px;border-radius:16px;">
+                    <div class="metric-card" style="background:linear-gradient(135deg,#f44336 0%,#ef5350 100%);color:white;padding:20px;border-radius:16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;">
                         <div><i class="fas fa-hand-holding-usd" style="font-size:24px;"></i></div>
-                        <div><div style="font-size:12px;">Total Loans</div><div style="font-size:28px;font-weight:bold;">K${totalLoans.toLocaleString()}</div><div><i class="fas fa-percent"></i> 10% interest</div></div>
+                        <div><div style="font-size:12px;">Total Loans + Interest</div><div style="font-size:32px;font-weight:bold;">K${totalLoans.toLocaleString()}</div><div style="font-size:11px;"><i class="fas fa-percent"></i> 10% interest</div></div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);color:white;padding:16px;border-radius:16px;">
+                    <div class="metric-card" style="background:linear-gradient(135deg,#ff9800 0%,#ffb74d 100%);color:white;padding:20px;border-radius:16px;animation: fadeInUp 0.5s ease forwards;animation-delay:0.4s;opacity:0;">
                         <div><i class="fas fa-clock" style="font-size:24px;"></i></div>
-                        <div><div style="font-size:12px;">Pending Fees</div><div style="font-size:28px;font-weight:bold;">${pendingFees}</div><div><span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:20px;">need attention</span></div></div>
+                        <div><div style="font-size:12px;">Pending Fees</div><div style="font-size:32px;font-weight:bold;">${pendingFees}</div><div style="font-size:11px;">need attention</div></div>
                     </div>
                 </div>
+                <!-- Quick Actions -->
                 <div style="padding:0 16px;">
-                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <h3 style="display:flex;align-items:center;gap:8px;"><i class="fas fa-bolt" style="color:#ffa726;"></i> Quick Actions</h3>
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px;">
-                    <div onclick="showAddMember()" style="background:#e3f2fd;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-user-plus" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Add Member</span></div>
-                    <div onclick="showAddSavings()" style="background:#e8f5e9;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-money-bill-wave" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Add Savings</span></div>
-                    <div onclick="showLoanManagement()" style="background:#fff3e0;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-hand-holding-usd" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Manage Loans</span></div>
-                    <div onclick="showAllMembers()" style="background:#fce4ec;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-users" style="font-size:20px;"></i><span style="display:block;font-size:12px;">View Members</span></div>
-                    <div onclick="showCollectFees()" style="background:#f3e5f5;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-receipt" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Collect Fees</span></div>
-                    <div onclick="showShareAccount()" style="background:#e0f2f1;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-chart-pie" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Share Account</span></div>
-                    <div onclick="showHistoryPage()" style="background:#fff8e1;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-history" style="font-size:20px;"></i><span style="display:block;font-size:12px;">History</span></div>
-                    <div onclick="showBulkSavingsImport()" style="background:#e8eaf6;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-file-upload" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Bulk Savings</span></div>
-                    <div onclick="showBulkLoansImport()" style="background:#fbe9e7;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-file-upload" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Bulk Loans</span></div>
-                    <div onclick="showImportMembersCSV()" style="background:#e8eaf6;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-file-import" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Import Members</span></div>
-                    <div onclick="showImportTransactionsCSV()" style="background:#fbe9e7;padding:12px;border-radius:12px;text-align:center;cursor:pointer;"><i class="fas fa-file-upload" style="font-size:20px;"></i><span style="display:block;font-size:12px;">Import History</span></div>
+                <div class="action-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px;">
+                    <div class="action-btn" onclick="showAddMember()" style="background:#e3f2fd;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.1s;opacity:0;"><i class="fas fa-user-plus" style="font-size:24px;color:#1e88e5;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#1e88e5;">Add Member</span></div>
+                    <div class="action-btn" onclick="showAddSavings()" style="background:#e8f5e9;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.15s;opacity:0;"><i class="fas fa-piggy-bank" style="font-size:24px;color:#43a047;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#43a047;">Add Savings</span></div>
+                    <div class="action-btn" onclick="showLoanManagement()" style="background:#fff3e0;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.2s;opacity:0;"><i class="fas fa-hand-holding-usd" style="font-size:24px;color:#f44336;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#f44336;">Manage Loans</span></div>
+                    <div class="action-btn" onclick="showAllMembers()" style="background:#fce4ec;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.25s;opacity:0;"><i class="fas fa-users" style="font-size:24px;color:#e91e63;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#e91e63;">View Members</span></div>
+                    <div class="action-btn" onclick="showCollectFees()" style="background:#f3e5f5;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.3s;opacity:0;"><i class="fas fa-receipt" style="font-size:24px;color:#9c27b0;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#9c27b0;">Collect Fees</span></div>
+                    <div class="action-btn" onclick="showShareAccount()" style="background:#e0f2f1;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.35s;opacity:0;"><i class="fas fa-chart-pie" style="font-size:24px;color:#009688;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#009688;">Share Account</span></div>
+                    <div class="action-btn" onclick="showHistoryPage()" style="background:#fff8e1;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.4s;opacity:0;"><i class="fas fa-history" style="font-size:24px;color:#ffc107;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#ffc107;">History</span></div>
+                    <div class="action-btn" onclick="showBulkSavingsImport()" style="background:#e8eaf6;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.45s;opacity:0;"><i class="fas fa-file-upload" style="font-size:24px;color:#3f51b5;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#3f51b5;">Bulk Savings</span></div>
+                    <div class="action-btn" onclick="showBulkLoansImport()" style="background:#fbe9e7;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.5s;opacity:0;"><i class="fas fa-money-bill-wave" style="font-size:24px;color:#ff5722;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#ff5722;">Bulk Loans</span></div>
+                    <div class="action-btn" onclick="showImportMembersCSV()" style="background:#e1f5fe;padding:16px;border-radius:12px;text-align:center;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation: fadeInUp 0.5s ease forwards;animation-delay:0.55s;opacity:0;"><i class="fas fa-file-import" style="font-size:24px;color:#0288d1;"></i><span style="display:block;font-size:12px;margin-top:8px;color:#0288d1;">Import Members</span></div>
                 </div>
-                <div style="padding:0 16px 16px 16px;">
-                    <h3><i class="fas fa-chart-simple"></i> Group Summary</h3>
+                <!-- Group Summary -->
+                <div style="padding:0 16px 16px;">
+                    <h3 style="display:flex;align-items:center;gap:8px;"><i class="fas fa-chart-simple"></i> Group Summary</h3>
                     <div style="display:flex;gap:12px;margin-top:12px;">
-                        <div style="flex:1;background:#e8f5e9;padding:16px;border-radius:12px;text-align:center;">
-                            <div style="font-size:24px;font-weight:bold;">K${(totalSavings-totalLoans).toLocaleString()}</div>
-                            <div style="font-size:12px;">Net Savings</div>
+                        <div style="flex:1;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);padding:20px;border-radius:12px;text-align:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.6s;opacity:0;">
+                            <div style="font-size:28px;font-weight:bold;color:#2e7d32;">K${(totalSavings-totalLoans).toLocaleString()}</div>
+                            <div style="font-size:13px;color:#2e7d32;">Net Savings</div>
                         </div>
-                        <div style="flex:1;background:#e3f2fd;padding:16px;border-radius:12px;text-align:center;">
-                            <div style="font-size:24px;font-weight:bold;">${active}/${members.length}</div>
-                            <div style="font-size:12px;">Active Members</div>
+                        <div style="flex:1;background:linear-gradient(135deg,#e3f2fd,#bbdefb);padding:20px;border-radius:12px;text-align:center;animation: fadeInUp 0.5s ease forwards;animation-delay:0.7s;opacity:0;">
+                            <div style="font-size:28px;font-weight:bold;color:#1565c0;">${active}/${members.length}</div>
+                            <div style="font-size:13px;color:#1565c0;">Active Members</div>
                         </div>
                     </div>
                 </div>
