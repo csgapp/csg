@@ -71,35 +71,52 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        /* Mobile responsive */
+        /* Mobile responsive - for screens smaller than 768px */
         @media (max-width: 767px) {
+            /* Reset and fit mobile */
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                overflow-x: hidden;
+            }
+            
+            #app {
+                max-width: 100%;
+                width: 100%;
+                box-shadow: none;
+            }
+            
             .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+                padding: 12px !important;
             }
+            
             .action-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+                padding: 12px !important;
             }
+            
+            /* Smaller padding for cards on mobile */
             .metric-card, .action-btn {
                 padding: 12px !important;
             }
+            
             .metric-card div, .action-btn div, .action-btn span {
-                font-size: 11px !important;
+                font-size: 10px !important;
             }
-            .metric-card div:first-child + div div {
-                font-size: 20px !important;
+            
+            .metric-card div:first-child + div div,
+            .metric-card > div > div:nth-child(2) {
+                font-size: 18px !important;
             }
-        }
-
-        /* Mobile-first styling */
-        @media (max-width: 767px) {
-            #app {
-                max-width: 100%;
-            }
-            .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .action-grid {
-                grid-template-columns: repeat(2, 1fr);
+            
+            /* Login form mobile */
+            .login-form input, .login-form select {
+                font-size: 14px !important;
+                padding: 12px !important;
             }
         }
 
@@ -320,28 +337,51 @@
         function closeAllMenus() { ThemeManager.closeAllMenus(); }
         
         // ===== LOGIN =====
-        function showAdminLogin() { document.getElementById('loginForm').innerHTML = `<input type="text" id="username" value="admin" placeholder="Admin username"><input type="password" id="password" value="ChiSave" placeholder="Admin password"><button onclick="login('admin')">🔐 ADMIN LOGIN</button>`; }
-        function showMemberLogin() { const form = document.getElementById('loginForm'); if(!members.length) { form.innerHTML = '<div>Loading members...</div>'; loadMembers().then(()=>showMemberLogin()); return; } form.innerHTML = `<select id="memberSelect"><option value="">-- Select Your Name --</option>${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><input type="password" id="memberPass" placeholder="PIN (last 4 digits)"><button onclick="login('member')">👤 MEMBER LOGIN</button>`; }
+        function showAdminLogin() { 
+            document.getElementById('loginForm').innerHTML = `
+                <div style="margin-bottom:16px;">
+                    <input type="text" id="username" value="admin" placeholder="Admin username" style="width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:15px;transition:border-color 0.3s;">
+                </div>
+                <div style="margin-bottom:16px;">
+                    <input type="password" id="password" value="ChiSave" placeholder="Admin password" style="width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:15px;transition:border-color 0.3s;">
+                </div>
+                <button onclick="login('admin')" style="width:100%;padding:16px;background:linear-gradient(135deg,#2e7d32,#43a047);color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 15px rgba(46,125,50,0.3);transition:transform 0.2s,box-shadow 0.2s;">🔐 ADMIN LOGIN</button>
+            `; 
+        }
+        function showMemberLogin() { 
+            const form = document.getElementById('loginForm'); 
+            if(!members.length) { form.innerHTML = '<div>Loading members...</div>'; loadMembers().then(()=>showMemberLogin()); return; } 
+            form.innerHTML = `
+                <select id="memberSelect" style="width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:15px;margin-bottom:16px;background:white;">
+                    <option value="">-- Select Your Name --</option>
+                    ${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}
+                </select>
+                <div style="margin-bottom:16px;">
+                    <input type="password" id="memberPass" placeholder="PIN (last 4 digits)" style="width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:15px;transition:border-color 0.3s;">
+                </div>
+                <button onclick="login('member')" style="width:100%;padding:16px;background:linear-gradient(135deg,#1e88e5,#42a5f5);color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 15px rgba(30,136,229,0.3);transition:transform 0.2s,box-shadow 0.2s;">👤 MEMBER LOGIN</button>
+            `; 
+        }
         function login(type) { if(type==='admin') { const u = document.getElementById('username')?.value, p = document.getElementById('password')?.value; if(u==='admin' && p==='ChiSave') { currentUser = { type:'admin', name:'Admin' }; NotificationManager.add('Welcome back, Admin!','success'); screenHistory = ['login','admin']; showAdminDashboard(); } else alert('Wrong username or password'); } else { const mid = document.getElementById('memberSelect')?.value, pass = document.getElementById('memberPass')?.value; if(!mid) { alert('Select your name'); return; } const m = members.find(m=>m.id===mid); const expectedPin = m.pin || (m.phone || '').slice(-4); if(m && pass === expectedPin) { currentUser = { type:'member', name:m.name, id:m.id }; NotificationManager.add(`Welcome back, ${m.name}!`,'success'); screenHistory = ['login','member']; showMemberDashboard(m.id); } else alert('Wrong PIN'); } }
         function logout() { currentUser = null; closeAllMenus(); screenHistory = ['login']; showLoginScreen(); }
         function showLoginScreen() {
             screenHistory=['login'];
             document.getElementById('app').innerHTML = `
-                <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e88e5 0%,#1565c0 50%,#0d47a1 100%);padding:20px;">
-                    <div style="background:white;border-radius:24px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation: fadeInUp 0.6s ease forwards;">
-                        <div style="text-align:center;margin-bottom:30px;">
-                            <div style="width:80px;height:80px;background:linear-gradient(135deg,#FFD700,#FFA000);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow: 0 8px 20px rgba(255,215,0,0.4);animation: pulse 2s infinite;">
-                                <i class="fas fa-piggy-bank" style="font-size:40px;color:white;"></i>
+                <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e88e5 0%,#1565c0 50%,#0d47a1 100%);padding:16px;">
+                    <div style="background:white;border-radius:20px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation: fadeInUp 0.6s ease forwards;">
+                        <div style="text-align:center;margin-bottom:20px;">
+                            <div style="width:70px;height:70px;background:linear-gradient(135deg,#FFD700,#FFA000);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow: 0 8px 20px rgba(255,215,0,0.4);animation: pulse 2s infinite;">
+                                <i class="fas fa-piggy-bank" style="font-size:32px;color:white;"></i>
                             </div>
-                            <h1 style="color:#1e88e5;font-size:28px;margin-bottom:8px;">SAVERS GROUP</h1>
-                            <p style="color:#666;font-size:14px;">Digital Savings System</p>
+                            <h1 style="color:#1e88e5;font-size:24px;margin-bottom:6px;">SAVERS GROUP</h1>
+                            <p style="color:#666;font-size:13px;">Digital Savings System</p>
                         </div>
-                        <div style="display:flex;gap:12px;margin-bottom:24px;">
-                            <button onclick="showAdminLogin()" style="flex:1;padding:16px;background:linear-gradient(135deg,#2e7d32,#43a047);color:white;border:none;border-radius:12px;font-weight:bold;font-size:15px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(46,125,50,0.3);">👑 Admin</button>
-                            <button onclick="showMemberLogin()" style="flex:1;padding:16px;background:linear-gradient(135deg,#1e88e5,#42a5f5);color:white;border:none;border-radius:12px;font-weight:bold;font-size:15px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(30,136,229,0.3);">👤 Member</button>
+                        <div style="display:flex;gap:10px;margin-bottom:20px;">
+                            <button onclick="showAdminLogin()" style="flex:1;padding:14px;background:linear-gradient(135deg,#2e7d32,#43a047);color:white;border:none;border-radius:10px;font-weight:bold;font-size:14px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(46,125,50,0.3);">👑 Admin</button>
+                            <button onclick="showMemberLogin()" style="flex:1;padding:14px;background:linear-gradient(135deg,#1e88e5,#42a5f5);color:white;border:none;border-radius:10px;font-weight:bold;font-size:14px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(30,136,229,0.3);">👤 Member</button>
                         </div>
                         <div id="loginForm"></div>
-                        <div style="margin-top:30px;text-align:center;font-size:12px;color:#888;">
+                        <div style="margin-top:24px;text-align:center;font-size:11px;color:#888;">
                             <i class="fas fa-shield-alt"></i> Created for Chibombo Savers Group
                         </div>
                     </div>
