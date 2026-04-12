@@ -1791,7 +1791,7 @@ async function confirmMemberImport() {
               document.getElementById('bulkSavingsPreview').innerHTML = '<p>' + bulkSavingsData.length + ' entries ready</p>';
           };
           reader.readAsText(file);
-      }
+      
       async function confirmBulkSavingsImport() {
           let success = 0;
           for(const d of bulkSavingsData) {
