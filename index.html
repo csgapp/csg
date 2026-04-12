@@ -1792,21 +1792,28 @@ async function confirmMemberImport() {
           };
           reader.readAsText(file);
       
-      async function confirmBulkSavingsImport() {
-          let success = 0;
-          for(const d of bulkSavingsData) {
-              const member = members.find(m => m.phone === d.phone);
-              if(member) {
-                  member.savings = (member.savings || 0) + d.amount;
-                  member.transactions = member.transactions || [];
-                  member.transactions.push({type: 'savings', amount: d.amount, date: new Date(d.date).toISOString(), note: d.note});
-                  success++;
-              }
-          }
-          await saveMembers();
-          NotificationManager.add('Added savings for ' + success + ' members', 'success');
-          goBack();
-      }
+      // Remove the lone } that was here
+async function confirmBulkSavingsImport() {
+    let success = 0;
+    for(const d of bulkSavingsData) {
+        const member = members.find(m => m.phone === d.phone);
+        if(member) {
+            member.savings = (member.savings || 0) + d.amount;
+            member.transactions = member.transactions || [];
+            member.transactions.push({
+                type: 'savings', 
+                amount: d.amount, 
+                date: new Date(d.date).toISOString(), 
+                note: d.note
+            });
+            success++;
+        }
+    }
+    await saveMembers();
+    NotificationManager.add('Added savings for ' + success + ' members', 'success');
+    goBack();
+}
+
       function downloadBulkSavingsTemplate() {
           const csv = "MemberPhone,Amount,Date,Note\n260971234567,200,2024-01-15,Monthly savings";
           const blob = new Blob([csv], {type: 'text/csv'});
@@ -1837,7 +1844,7 @@ async function confirmMemberImport() {
               document.getElementById('bulkLoansPreview').innerHTML = '<p>' + bulkLoansData.length + ' entries ready</p>';
           };
           reader.readAsText(file);
-      }
+      
       async function confirmBulkLoansImport() {
           let success = 0;
           for(const d of bulkLoansData) {
