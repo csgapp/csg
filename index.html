@@ -1695,75 +1695,73 @@
           a.download = 'members_template.csv';
           a.click();
           NotificationManager.add('Template downloaded!', 'success');
-      }
-      let memberImportData=[]; function handleMemberCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); memberImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]) { let joinDate = vals[2] || new Date().toISOString().split('T')[0]; // Handle various date formats if(joinDate.includes('/')) { const parts = joinDate.split('/'); if(parts.length===3) joinDate = `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`; } } memberImportData.push({name:vals[0],phone:vals[1],joinDate:joinDate,savings:parseFloat(vals[3])||200,membershipPaid:vals[4]?.toLowerCase()==='yes',socialPaid:vals[5]?.toLowerCase()==='yes'}); } document.getElementById('memberImportPreview').innerHTML=`<p>${memberImportData.length} members ready to import</p><pre>${JSON.stringify(memberImportData.slice(0,3),null,2)}</pre>`; }; reader.readAsText(file); }
-      async function confirmMemberImport() {
-          let newCount=0, updateCount=0;
-          for(const d of memberImportData) {
-              const joinDate = d.joinDate && d.joinDate.trim() ? new Date(d.joinDate) : new Date();
-              const dateStr = isNaN(joinDate.getTime()) ? new Date().toISOString() : joinDate.toISOString();
-              const existing = members.find(m=>m.phone===d.phone);
-              if(existing) {
-                  existing.name=d.name; existing.savings=d.savings; existing.membershipPaid=d.membershipPaid; existing.socialPaid=d.socialPaid;
-                  existing.createdDate=dateStr;
-                  updateCount++;
-              } else {
-                  members.push({ id:Date.now().toString()+Math.random().toString(36).substr(2,4), name:d.name, phone:d.phone, createdDate:dateStr, savings:d.savings, loanPrincipal:0, membershipPaid:d.membershipPaid, socialPaid:d.socialPaid, pin:d.phone.slice(-4), transactions:[{type:'savings',amount:d.savings,date:dateStr,note:'CSV import'}] });
-                  newCount++;
-              }
-          }
-          await saveMembers();
-          NotificationManager.add(`âœ… ${newCount} new, ${updateCount} updated`,'success');
-          goBack();
-      }
-      function showImportTransactionsCSV() { document.getElementById('contentArea').innerHTML = `
-              <div class="header">
-                  <div style="display:flex;align-items:center;gap:12px;">
-                      <div class="nav-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></div>
-                      <div class="header-title"><h1><i class="fas fa-piggy-bank" style="color:#FFD700;text-shadow: 0 0 12px rgba(255,215,0,0.6);"></i> Import Transactions</h1></div>
-                  </div>
-              </div>
-              <div class="card fancy-card" style="margin:16px;animation: fadeInUp 0.5s ease forwards;">
-                  <h3><i class="fas fa-exchange-alt"></i> Import Transactions</h3>
-                  <div style="background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.05));padding:16px;border-radius:12px;margin:16px 0;border:1px solid rgba(37,99,235,0.2);">
-                      <h4 style="margin-bottom:12px;">Required Columns:</h4>
-                      <code style="display:block;background:#1e293b;color:#e2e8f0;padding:12px;border-radius:8px;font-size:12px;overflow-x:auto;">MemberName, Type, Amount, Date, Note</code>
-                      <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><strong>Type options:</strong> savings, loan, repayment, fee</p>
-                  </div>
-                  <button class="btn" onclick="downloadTransactionTemplate()" style="background:#26a69a;margin-bottom:16px;"><i class="fas fa-download"></i> Download Sample Template</button>
-                  <input type="file" id="txCsvFile" accept=".csv" style="margin-bottom:12px;">
-                  <div id="txImportPreview"></div>
-                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                      <button class="btn" onclick="confirmTransactionImport()" style="background:linear-gradient(135deg,#43a047,#66bb6a);">Import Transactions</button>
-                      <button class="btn" onclick="goBack()" style="background:#666;">Cancel</button>
-                  </div>
-              </div>`; document.getElementById('txCsvFile').addEventListener('change', handleTransactionCSV); }
+     let memberImportData = [];
+function handleMemberCSV(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        const lines = ev.target.result.split('\n');
+        memberImportData = [];
+        for (let i = 1; i < lines.length; i++) {
+            const vals = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+            if (vals[0]) {
+                // FIX: Define joinDate outside the nested IF so it's accessible
+                let rawDate = vals[2] || new Date().toISOString().split('T')[0];
+                if (rawDate.includes('/')) {
+                    const parts = rawDate.split('/');
+                    if (parts.length === 3) {
+                        rawDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    }
+                }
+                memberImportData.push({
+                    name: vals[0],
+                    phone: vals[1],
+                    joinDate: rawDate, // Using the processed date
+                    savings: parseFloat(vals[3]) || 200,
+                    membershipPaid: vals[4]?.toLowerCase() === 'yes',
+                    socialPaid: vals[5]?.toLowerCase() === 'yes'
+                });
+            }
+        }
+        document.getElementById('memberImportPreview').innerHTML = `<p>${memberImportData.length} members ready to import</p>`;
+    };
+    reader.readAsText(file);
+}
 
-      function downloadTransactionTemplate() {
-          const csv = "MemberName,Type,Amount,Date,Note\nJohn Doe,savings,200,2024-01-15,Monthly contribution\nJohn Doe,loan,1000,2024-02-01,Business loan\nJane Smith,repayment,500,2024-03-10,Loan repayment\nMike Jones,fee,50,2024-01-20,Membership fee";
-          const blob = new Blob([csv], {type: 'text/csv'});
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = 'transactions_template.csv';
-          a.click();
-          NotificationManager.add('Template downloaded!', 'success');
-      }
-      let transactionImportData=[]; function handleTransactionCSV(e) { const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev) { const lines=ev.target.result.split('\n'); transactionImportData=[]; for(let i=1;i<lines.length;i++) { const vals=lines[i].split(',').map(v=>v.trim().replace(/"/g,'')); if(vals[0]&&vals[1]) transactionImportData.push({memberName:vals[0],type:vals[1].toLowerCase(),amount:parseFloat(vals[2])||0,date:vals[3]||new Date().toISOString().split('T')[0],note:vals[4]||''}); } document.getElementById('txImportPreview').innerHTML=`<p>${transactionImportData.length} transactions ready</p>`; }; reader.readAsText(file); }
-      async function confirmTransactionImport() {
-          let success=0;
-          for(const d of transactionImportData) {
-              const member = members.find(m=>m.name.toLowerCase()===d.memberName.toLowerCase());
-              if(!member) continue;
-              const txDate = d.date && d.date.trim() ? new Date(d.date) : new Date();
-              const dateStr = isNaN(txDate.getTime()) ? new Date().toISOString() : txDate.toISOString();
-              if(d.type==='savings') { member.savings=(member.savings||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'savings',amount:d.amount,date:dateStr,note:d.note||'CSV import'}); success++; }
-              else if(d.type==='loan') { member.loanPrincipal=(member.loanPrincipal||0)+d.amount; member.transactions=member.transactions||[]; member.transactions.push({type:'loan',amount:d.amount,date:dateStr,note:d.note||'CSV import'}); success++; }
-              else if(d.type==='repayment') { member.loanPrincipal=Math.max(0,(member.loanPrincipal||0)-d.amount); member.transactions=member.transactions||[]; member.transactions.push({type:'repayment',amount:d.amount,date:dateStr,note:d.note||'CSV import'}); success++; }
-          }
-          await saveMembers();
-          NotificationManager.add(`Imported ${success} transactions`,'success');
-          goBack();
-      }
+async function confirmMemberImport() {
+    let newCount = 0, updateCount = 0;
+    for (const d of memberImportData) {
+        const joinDate = d.joinDate ? new Date(d.joinDate) : new Date();
+        const dateStr = isNaN(joinDate.getTime()) ? new Date().toISOString() : joinDate.toISOString();
+        const existing = members.find(m => m.phone === d.phone);
+        if (existing) {
+            existing.name = d.name;
+            existing.savings = d.savings;
+            existing.membershipPaid = d.membershipPaid;
+            existing.socialPaid = d.socialPaid;
+            existing.createdDate = dateStr;
+            updateCount++;
+        } else {
+            members.push({
+                id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+                name: d.name,
+                phone: d.phone,
+                createdDate: dateStr,
+                savings: d.savings,
+                loanPrincipal: 0,
+                membershipPaid: d.membershipPaid,
+                socialPaid: d.socialPaid,
+                pin: d.phone ? d.phone.slice(-4) : "1234",
+                transactions: [{ type: 'savings', amount: d.savings, date: dateStr, note: 'CSV import' }]
+            });
+            newCount++;
+        }
+    }
+    await saveMembers();
+    NotificationManager.add(`✅ ${newCount} new, ${updateCount} updated`, 'success');
+    if (typeof goBack === "function") goBack();
+}
 
       // ===== MENU TOGGLES =====
       function toggleAdminMenu(e) { e.stopPropagation(); closeAllMenus(); const m=document.getElementById('adminMenu'); if(m) m.classList.toggle('active'); }
