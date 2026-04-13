@@ -958,42 +958,119 @@
             const m = members.find(m=>m.id===mid);
             if(!m) return;
             const printWindow = window.open('', '_blank');
-            const txs = (m.transactions||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            const txs = (m.transactions||[]).sort((a,b)=>new Date(a.date)-new Date(b.date));
             const calc = calculateNetPosition(m);
+            
+            // Calculate running balance
+            let runningBalance = m.savings || 0;
             let txRows = '';
-            txs.forEach(t=>{
-                txRows += `<tr><td style="padding:8px;border:1px solid #ddd;">${fmtDate(t.date)}</td><td style="padding:8px;border:1px solid #ddd;">${t.type.toUpperCase()}</td><td style="padding:8px;border:1px solid #ddd;">K${(t.amount||0).toLocaleString()}</td><td style="padding:8px;border:1px solid #ddd;">${t.note||''}</td></tr>`;
+            txs.forEach(t => {
+                const date = fmtDate(t.date);
+                const type = (t.type || '').toUpperCase();
+                const note = t.note || '';
+                if(t.type === 'savings') {
+                    runningBalance += t.amount || 0;
+                    txRows += `<tr><td>${date}</td><td>${type}</td><td style="color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td>-</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                } else if(t.type === 'loan') {
+                    runningBalance -= t.amount || 0;
+                    txRows += `<tr><td>${date}</td><td>${type}</td><td>-</td><td style="color:#c62828;">${(t.amount||0).toLocaleString()}</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                } else if(t.type === 'repayment') {
+                    runningBalance += t.amount || 0;
+                    txRows += `<tr><td>${date}</td><td>${type}</td><td style="color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td>-</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                } else {
+                    txRows += `<tr><td>${date}</td><td>${type}</td><td>-</td><td>-</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                }
             });
+            
             printWindow.document.write(`
                 <!DOCTYPE html>
                 <html>
                 <head>
                     <title>Statement - ${m.name}</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        h1 { color: #1e88e5; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                        th { background: #f5f5f5; }
-                        .summary { display: flex; gap: 20px; margin: 20px 0; }
-                        .summary-item { flex: 1; padding: 10px; background: #f5f5f5; border-radius: 8px; }
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                        .header { text-align: center; border-bottom: 2px solid #1e88e5; padding-bottom: 15px; margin-bottom: 20px; }
+                        .header h1 { color: #1e88e5; font-size: 24px; margin-bottom: 5px; }
+                        .header p { color: #666; font-size: 12px; }
+                        .member-info { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px; }
+                        .member-info div { font-size: 13px; }
+                        .member-info strong { display: block; font-size: 16px; margin-bottom: 5px; }
+                        .summary-boxes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+                        .summary-box { padding: 15px; border-radius: 8px; text-align: center; }
+                        .summary-box.savings { background: #e8f5e9; border: 1px solid #a5d6a7; }
+                        .summary-box.loan { background: #ffebee; border: 1px solid #ef9a9a; }
+                        .summary-box.membership { background: #e3f2fd; border: 1px solid #90caf9; }
+                        .summary-box.social { background: #fff8e1; border: 1px solid #ffe082; }
+                        .summary-box label { display: block; font-size: 11px; color: #666; margin-bottom: 5px; }
+                        .summary-box value { display: block; font-size: 18px; font-weight: bold; }
+                        ..transactions h3 { color: #1e88e5; margin-bottom: 10px; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; display: table; }
+                        th { background: #1e88e5; color: white; padding: 12px; text-align: left; font-size: 12px; display: table-row; }
+                        td { padding: 10px; border: 1px solid #ccc; font-size: 12px; display: table-cell; }
+                        tr { display: table-row; }
+                        .footer { text-align: center; padding-top: 20px; border-top: 1px solid #ddd; }
+                        .footer p { font-size: 12px; color: #666; }
+                        .net-position { font-size: 18px; font-weight: bold; color: #1e88e5; margin-top: 10px; }
+                        @media print { body { padding: 10px; } }
                     </style>
                 </head>
                 <body>
-                    <h1>💰 SAVERS GROUP - Member Statement</h1>
-                    <div style="display:flex;justify-content:space-between;">
-                        <div><h2>${m.name}</h2><p>Phone: ${m.phone}</p><p>Member ID: ${m.id.slice(-6)}</p></div>
-                        <div><p>Date: ${new Date().toLocaleDateString()}</p></div>
+                    <div class="header">
+                        <h1>💰 SAVERS GROUP</h1>
+                        <p>Chibombo Savings Group - Member Statement</p>
                     </div>
-                    <div class="summary">
-                        <div class="summary-item"><label>Total Savings</label><div><strong>K${(m.savings||0).toLocaleString()}</strong></div></div>
-                        <div class="summary-item"><label>Loan (with 10% interest)</label><div><strong>K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</strong></div></div>
-                        <div class="summary-item"><label>Membership Status</label><div><strong>${m.membershipPaid ? 'PAID' : 'DUE'}</strong></div></div>
-                        <div class="summary-item"><label>Social Status</label><div><strong>${m.socialPaid ? 'PAID' : 'DUE'}</strong></div></div>
+                    <div class="member-info">
+                        <div>
+                            <strong>${m.name}</strong>
+                            <div>Phone: ${m.phone}</div>
+                            <div>Member ID: ${m.id.slice(-6)}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div><strong>Statement Date:</strong></div>
+                            <div>${new Date().toLocaleDateString()}</div>
+                        </div>
                     </div>
-                    <h3>Transaction History</h3>
-                    <tr><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody>${txRows||'<tr><td colspan="4">No transactions</td<tr>'}</tbody></table>
-                    <div style="margin-top:20px;"><p>Generated by Savers Group App</p><p><strong>Net Position: K${calc.netPosition.toLocaleString()}</strong></p></div>
+                    <div class="summary-boxes">
+                        <div class="summary-box savings">
+                            <label>Total Savings</label>
+                            <value style="color:#2e7d32;">K${(m.savings||0).toLocaleString()}</value>
+                        </div>
+                        <div class="summary-box loan">
+                            <label>Loan (with Interest)</label>
+                            <value style="color:#c62828;">K${((m.loanPrincipal||0)*(1+RULES.INTEREST)).toLocaleString()}</value>
+                        </div>
+                        <div class="summary-box membership">
+                            <label>Membership</label>
+                            <value>${m.membershipPaid ? 'PAID' : 'DUE'}</value>
+                        </div>
+                        <div class="summary-box social">
+                            <label>Social Fund</label>
+                            <value>${m.socialPaid ? 'PAID' : 'DUE'}</value>
+                        </div>
+                    </div>
+                    <div class="transactions">
+                        <h3>Transaction History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th style="text-align:right;">Deposit</th>
+                                    <th style="text-align:right;">Withdrawal</th>
+                                    <th style="text-align:right;">Balance</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${txRows || '<tr><td colspan="6" style="text-align:center;padding:20px;">No transactions found</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="footer">
+                        <p>Generated by Savers Group Digital System</p>
+                        <div class="net-position">Net Position: K${calc.netPosition.toLocaleString()}</div>
+                    </div>
                 </body>
                 </html>
             `);
