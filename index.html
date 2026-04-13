@@ -970,15 +970,15 @@
                 const note = t.note || '';
                 if(t.type === 'savings') {
                     runningBalance += t.amount || 0;
-                    txRows += `<tr><td>${date}</td><td>${type}</td><td style="color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td>-</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
                 } else if(t.type === 'loan') {
                     runningBalance -= t.amount || 0;
-                    txRows += `<tr><td>${date}</td><td>${type}</td><td>-</td><td style="color:#c62828;">${(t.amount||0).toLocaleString()}</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;">-</td><td style="text-align:right;color:#c62828;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
                 } else if(t.type === 'repayment') {
                     runningBalance += t.amount || 0;
-                    txRows += `<tr><td>${date}</td><td>${type}</td><td style="color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td>-</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
                 } else {
-                    txRows += `<tr><td>${date}</td><td>${type}</td><td>-</td><td>-</td><td style="font-weight:bold;">${runningBalance.toLocaleString()}</td><td>${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;">-</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
                 }
             });
             
@@ -1005,10 +1005,10 @@
                         .summary-box label { display: block; font-size: 11px; color: #666; margin-bottom: 5px; }
                         .summary-box value { display: block; font-size: 18px; font-weight: bold; }
                         ..transactions h3 { color: #1e88e5; margin-bottom: 10px; }
-                        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; display: table; }
-                        th { background: #1e88e5; color: white; padding: 12px; text-align: left; font-size: 12px; display: table-row; }
-                        td { padding: 10px; border: 1px solid #ccc; font-size: 12px; display: table-cell; }
-                        tr { display: table-row; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                        th { background: #1e88e5; color: white; padding: 12px; font-size: 12px; }
+                        td { padding: 10px; border: 1px solid #ccc; font-size: 12px; }
+                        td:nth-child(3), td:nth-child(4), td:nth-child(5) { text-align: right; }
                         .footer { text-align: center; padding-top: 20px; border-top: 1px solid #ddd; }
                         .footer p { font-size: 12px; color: #666; }
                         .net-position { font-size: 18px; font-weight: bold; color: #1e88e5; margin-top: 10px; }
@@ -1054,12 +1054,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Type</th>
+                                    <th style="text-align:left;">Date</th>
+                                    <th style="text-align:left;">Type</th>
                                     <th style="text-align:right;">Deposit</th>
                                     <th style="text-align:right;">Withdrawal</th>
                                     <th style="text-align:right;">Balance</th>
-                                    <th>Note</th>
+                                    <th style="text-align:left;">Note</th>
                                 </tr>
                             </thead>
                             <tbody>
