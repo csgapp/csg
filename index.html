@@ -625,7 +625,7 @@
                     </tr>`;
                 });
             } else {
-                savingsLedgerHtml = '<tr><td colspan="5">No savings transactions yet</td></tr>';
+                savingsLedgerHtml = '<tr><td colspan="5">No savings transactions yet</td</tr>';
             }
         
             let loanLedgerHtml = '';
@@ -641,7 +641,7 @@
                     </tr>`;
                 });
             } else {
-                loanLedgerHtml = '<tr><td colspan="6">No loan transactions yet</td></tr>';
+                loanLedgerHtml = '<tr><td colspan="6">No loan transactions yet</td</tr>';
             }
         
             document.getElementById('contentArea').innerHTML = `
@@ -771,7 +771,7 @@
                                     <th style="padding:10px;text-align:left;">Total</th>
                                 </tr>
                             </thead>
-                            <tbody>${ledgerHtml || '<tr><td colspan="5">No savings yet</td></tr>'}</tbody>
+                            <tbody>${ledgerHtml || '<tr><td colspan="5">No savings yet</td</tr>'}</tbody>
                         </table>
                     </div>
                 </div>
@@ -830,7 +830,7 @@
                                     <th style="padding:10px;text-align:left;">Balance</th>
                                 </tr>
                             </thead>
-                            <tbody>${ledgerHtml || '<tr><td colspan="6">No loans yet</td></tr>'}</tbody>
+                            <tbody>${ledgerHtml || '<tr><td colspan="6">No loans yet</td<tr>'}</tbody>
                         </table>
                     </div>
                 </div>
@@ -870,7 +870,24 @@
         function addSavingsFor(mid) { showAddSavings(); setTimeout(()=>{ const s=document.getElementById('savingsMember'); if(s) s.value=mid; },100); }
         async function processSavings() { const mid = document.getElementById('savingsMember')?.value, amt = parseInt(document.getElementById('savingsAmount')?.value); const m = members.find(m=>m.id===mid); if(m && amt>=200 && amt%200===0) { m.savings = (m.savings||0)+amt; m.transactions = m.transactions||[]; m.transactions.push({type:'savings',amount:amt,date:new Date().toISOString(),note:'Savings deposit'}); await saveMembers(); NotificationManager.add(`K${amt} added for ${m.name}`,'success'); viewMember(m.id); } else alert('Must be K200+ in multiples of 200'); }
         
-        function showLoanManagement() { document.getElementById('contentArea').innerHTML = `<div style="padding:16px;"><h3>Loan Management</h3><select id="loanMember" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;">${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select><div style="display:flex;gap:12px;margin-bottom:12px;"><button onclick="showContractLoan()" style="flex:1;padding:12px;background:#2196f3;color:white;border:none;border-radius:8px;">➕ Contract Loan</button><button onclick="showRepayLoan()" style="flex:1;padding:12px;background:#ff9800;color:white;border:none;border-radius:8px;">💰 Repay Loan</button></div><div style="display:flex;gap:12px;margin-bottom:12px;"><button onclick="showBulkLoanRepayments()" style="flex:1;padding:12px;background:#4caf50;color:white;border:none;border-radius:8px;">📁 Bulk Repay</button><button onclick="showBulkHistoryRepayments()" style="flex:1;padding:12px;background:#9c27b0;color:white;border:none;border-radius:8px;">📋 From History</button></div><div onclick="goBack()" style="padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;text-align:center;cursor:pointer;">↩️ Back</div></div>`; }
+        // ===== LOAN MANAGEMENT (UPDATED - Only "From History CSV" button) =====
+        function showLoanManagement() { 
+            document.getElementById('contentArea').innerHTML = `
+                <div style="padding:16px;">
+                    <h3>Loan Management</h3>
+                    <select id="loanMember" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;">
+                        ${members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}
+                    </select>
+                    <div style="display:flex;gap:12px;margin-bottom:12px;">
+                        <button onclick="showContractLoan()" style="flex:1;padding:12px;background:#2196f3;color:white;border:none;border-radius:8px;">➕ Contract Loan</button>
+                        <button onclick="showRepayLoan()" style="flex:1;padding:12px;background:#ff9800;color:white;border:none;border-radius:8px;">💰 Repay Loan</button>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <button onclick="showBulkHistoryRepayments()" style="width:100%;padding:12px;background:#9c27b0;color:white;border:none;border-radius:8px;">📋 From History CSV</button>
+                    </div>
+                    <div onclick="goBack()" style="padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;text-align:center;cursor:pointer;">↩️ Back</div>
+                </div>`; 
+        }
         
         function showContractLoan() { const mid = document.getElementById('loanMember')?.value; if(!mid) return; selectedLoanMemberId=mid; const m = members.find(m=>m.id===mid); document.getElementById('contentArea').innerHTML = `<div style="padding:16px;"><h3>Contract Loan for ${m.name}</h3><input type="number" id="loanAmount" value="1000" step="100" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;"><div style="margin-bottom:12px;"><p>10% Interest: K<span id="loanInterest">100</span></p><p>Total: K<span id="loanTotal">1100</span></p></div><div style="display:flex;gap:8px;"><button onclick="contractLoan()" style="flex:1;padding:12px;background:#4caf50;color:white;border:none;border-radius:8px;">✅ Contract</button><button onclick="goBack()" style="flex:1;padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;">↩️ Back</button></div></div>`; document.getElementById('loanAmount').oninput = function() { const amt = parseFloat(this.value)||0; document.getElementById('loanInterest').textContent = (amt*RULES.INTEREST).toFixed(2); document.getElementById('loanTotal').textContent = (amt*(1+RULES.INTEREST)).toFixed(2); }; }
         
@@ -881,6 +898,96 @@
         async function repayLoan() { const mid = document.getElementById('repayMember')?.value, amt = parseFloat(document.getElementById('repayAmount')?.value); const m = members.find(m=>m.id===mid); if(m && amt>0) { m.loanPrincipal = Math.max(0,(m.loanPrincipal||0)-amt); m.transactions = m.transactions||[]; m.transactions.push({type:'repayment',amount:amt,date:new Date().toISOString(),note:'Loan repayment'}); await saveMembers(); NotificationManager.add(`K${amt} repayment from ${m.name}`,'success'); showLoanManagement(); } else alert('Enter amount > 0'); }
         
         function addLoanFor(mid) { showLoanManagement(); setTimeout(()=>{ const s=document.getElementById('loanMember'); if(s) s.value=mid; showContractLoan(); },100); }
+        
+        // ===== BULK HISTORY REPAYMENTS (CSV Format: MemberPhone, Amount, Date, Note) =====
+        let bulkHistoryRepaymentsData = [];
+        
+        function showBulkHistoryRepayments() {
+            document.getElementById('contentArea').innerHTML = `
+                <div style="padding:16px;">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                        <div onclick="goBack()" style="cursor:pointer;"><i class="fas fa-arrow-left"></i></div>
+                        <div><h1 style="font-size:20px;"><i class="fas fa-file-upload"></i> Bulk Loan Repayments</h1></div>
+                    </div>
+                </div>
+                <div style="padding:16px;">
+                    <h3><i class="fas fa-file-csv"></i> Import Loan Repayments from CSV</h3>
+                    <div style="background:#e3f2fd;padding:12px;border-radius:8px;margin:12px 0;">
+                        <h4>Required CSV Format:</h4>
+                        <code style="font-size:12px;">MemberPhone, Amount, Date, Note</code>
+                        <p style="font-size:12px;margin-top:8px;">Example: 260971234567,500,28/12/2025,Monthly loan repayment</p>
+                        <p style="font-size:12px;">Date formats accepted: DD/MM/YYYY, DD-MM-YYYY, or YYYY-MM-DD</p>
+                        <p style="font-size:12px;color:#4caf50;"><strong>Note:</strong> This will REDUCE the member's loan balance by the amount entered.</p>
+                    </div>
+                    <button onclick="downloadBulkHistoryRepaymentsTemplate()" style="width:100%;padding:12px;margin-bottom:12px;background:#2196f3;color:white;border:none;border-radius:8px;"><i class="fas fa-download"></i> Download Sample Template</button>
+                    <input type="file" id="bulkHistoryRepaymentsFile" accept=".csv" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;">
+                    <div id="bulkHistoryRepaymentsPreview" style="margin-bottom:12px;"></div>
+                    <div style="display:flex;gap:8px;">
+                        <button onclick="confirmBulkHistoryRepaymentsImport()" style="flex:1;padding:12px;background:#4caf50;color:white;border:none;border-radius:8px;">Import Repayments</button>
+                        <button onclick="goBack()" style="flex:1;padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;">Cancel</button>
+                    </div>
+                </div>`;
+            document.getElementById('bulkHistoryRepaymentsFile').addEventListener('change', handleBulkHistoryRepaymentsCSV);
+        }
+        
+        function handleBulkHistoryRepaymentsCSV(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const lines = ev.target.result.split('\n');
+                bulkHistoryRepaymentsData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const vals = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                    if (vals[0] && vals[1]) {
+                        const parsedDate = parseFlexibleDate(vals[2] || new Date().toISOString().split('T')[0]);
+                        bulkHistoryRepaymentsData.push({
+                            phone: vals[0],
+                            amount: parseFloat(vals[1]),
+                            date: parsedDate.toISOString(),
+                            note: vals[3] || 'Bulk loan repayment import'
+                        });
+                    }
+                }
+                document.getElementById('bulkHistoryRepaymentsPreview').innerHTML = `<p style="padding:12px;background:#e8f5e9;border-radius:8px;">✅ ${bulkHistoryRepaymentsData.length} repayment entries ready to import</p>`;
+            };
+            reader.readAsText(file);
+        }
+        
+        async function confirmBulkHistoryRepaymentsImport() {
+            let success = 0, failed = 0;
+            for (const d of bulkHistoryRepaymentsData) {
+                const member = members.find(m => m.phone === d.phone);
+                if (member) {
+                    const oldBalance = member.loanPrincipal || 0;
+                    member.loanPrincipal = Math.max(0, oldBalance - d.amount);
+                    member.transactions = member.transactions || [];
+                    member.transactions.push({
+                        type: 'repayment',
+                        amount: d.amount,
+                        payment: d.amount,
+                        date: d.date,
+                        note: d.note
+                    });
+                    success++;
+                } else {
+                    failed++;
+                }
+            }
+            await saveMembers();
+            NotificationManager.add(`✅ ${success} repayments processed (loan balance reduced), ${failed} failed (member not found)`, 'success');
+            goBack();
+        }
+        
+        function downloadBulkHistoryRepaymentsTemplate() {
+            const csv = "MemberPhone,Amount,Date,Note\n260971234567,500,28/12/2025,Monthly loan repayment\n260971234568,1000,15/01/2026,Partial payment\n260971234569,250,01/02/2026,Extra payment";
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'bulk_loan_repayments_template.csv';
+            a.click();
+            NotificationManager.add('Template downloaded!', 'success');
+        }
         
         function showCollectFees() { document.getElementById('contentArea').innerHTML = `<div style="padding:16px;"><h3>Collect Fees</h3><div style="display:flex;gap:12px;margin-bottom:12px;"><button onclick="showCollectMembership()" style="flex:1;padding:12px;background:#2196f3;color:white;border:none;border-radius:8px;">Membership (K50)</button><button onclick="showCollectSocial()" style="flex:1;padding:12px;background:#4caf50;color:white;border:none;border-radius:8px;">Social (K100)</button></div><div onclick="goBack()" style="padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;text-align:center;cursor:pointer;">↩️ Back</div></div>`; }
         
@@ -961,7 +1068,6 @@
             const txs = (m.transactions||[]).sort((a,b)=>new Date(a.date)-new Date(b.date));
             const calc = calculateNetPosition(m);
             
-            // Calculate running balance
             let runningBalance = m.savings || 0;
             let txRows = '';
             txs.forEach(t => {
@@ -970,15 +1076,15 @@
                 const note = t.note || '';
                 if(t.type === 'savings') {
                     runningBalance += t.amount || 0;
-                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td</tr>`;
                 } else if(t.type === 'loan') {
                     runningBalance -= t.amount || 0;
-                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;">-</td><td style="text-align:right;color:#c62828;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;">-</td><td style="text-align:right;color:#c62828;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td</tr>`;
                 } else if(t.type === 'repayment') {
                     runningBalance += t.amount || 0;
-                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;color:#2e7d32;">${(t.amount||0).toLocaleString()}</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td</tr>`;
                 } else {
-                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;">-</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td></tr>`;
+                    txRows += `<tr><td style="text-align:left;">${date}</td><td style="text-align:left;">${type}</td><td style="text-align:right;">-</td><td style="text-align:right;">-</td><td style="text-align:right;font-weight:bold;">${runningBalance.toLocaleString()}</td><td style="text-align:left;">${note}</td</tr>`;
                 }
             });
             
@@ -1004,7 +1110,7 @@
                         .summary-box.social { background: #fff8e1; border: 1px solid #ffe082; }
                         .summary-box label { display: block; font-size: 11px; color: #666; margin-bottom: 5px; }
                         .summary-box value { display: block; font-size: 18px; font-weight: bold; }
-                        ..transactions h3 { color: #1e88e5; margin-bottom: 10px; }
+                        .transactions h3 { color: #1e88e5; margin-bottom: 10px; }
                         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
                         th { background: #1e88e5; color: white; padding: 12px; font-size: 12px; }
                         td { padding: 10px; border: 1px solid #ccc; font-size: 12px; }
@@ -1063,7 +1169,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                ${txRows || '<tr><td colspan="6" style="text-align:center;padding:20px;">No transactions found</td></tr>'}
+                                ${txRows || '<tr><td colspan="6" style="text-align:center;padding:20px;">No transactions found</td</td>'}
                             </tbody>
                         </table>
                     </div>
@@ -1247,7 +1353,7 @@
         
         function exportHistoryPDF() { window.print(); }
         
-        // ===== BULK SAVINGS IMPORT (with flexible date parsing) =====
+        // ===== BULK SAVINGS IMPORT =====
         let bulkSavingsData = [];
         
         function showBulkSavingsImport() {
@@ -1334,7 +1440,7 @@
             NotificationManager.add('Template downloaded!', 'success');
         }
         
-        // ===== BULK LOANS IMPORT (with flexible date parsing) =====
+        // ===== BULK LOANS IMPORT =====
         let bulkLoansData = [];
         
         function showBulkLoansImport() {
@@ -1419,174 +1525,6 @@
             a.download = 'bulk_loans_template.csv';
             a.click();
             NotificationManager.add('Template downloaded!', 'success');
-        }
-        
-        // ===== BULK LOAN REPAYMENTS IMPORT =====
-        let bulkRepaymentsData = [];
-        
-        function showBulkLoanRepayments() {
-            document.getElementById('contentArea').innerHTML = `
-                <div style="padding:16px;">
-                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-                        <div onclick="goBack()" style="cursor:pointer;"><i class="fas fa-arrow-left"></i></div>
-                        <div><h1 style="font-size:20px;"><i class="fas fa-file-upload"></i> Bulk Loan Repayments</h1></div>
-                    </div>
-                </div>
-                <div style="padding:16px;">
-                    <h3><i class="fas fa-file-csv"></i> Bulk Repay Loans (CSV)</h3>
-                    <div style="background:#e3f2fd;padding:12px;border-radius:8px;margin:12px 0;">
-                        <h4>Required Columns:</h4>
-                        <code style="font-size:12px;">MemberPhone, Amount, Date, Note</code>
-                        <p style="font-size:12px;margin-top:8px;">Date formats accepted: DD/MM/YYYY, DD-MM-YYYY, or YYYY-MM-DD</p>
-                        <p style="font-size:12px;">Example: 260971234567,500,28/12/2025,Monthly repayment</p>
-                    </div>
-                    <button onclick="downloadBulkRepaymentsTemplate()" style="width:100%;padding:12px;margin-bottom:12px;background:#2196f3;color:white;border:none;border-radius:8px;"><i class="fas fa-download"></i> Download Sample Template</button>
-                    <input type="file" id="bulkRepaymentsFile" accept=".csv" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;">
-                    <div id="bulkRepaymentsPreview" style="margin-bottom:12px;"></div>
-                    <div style="display:flex;gap:8px;">
-                        <button onclick="confirmBulkRepaymentsImport()" style="flex:1;padding:12px;background:#4caf50;color:white;border:none;border-radius:8px;">Import Repayments</button>
-                        <button onclick="goBack()" style="flex:1;padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;">Cancel</button>
-                    </div>
-                </div>`;
-            document.getElementById('bulkRepaymentsFile').addEventListener('change', handleBulkRepaymentsCSV);
-        }
-        
-        function handleBulkRepaymentsCSV(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const lines = ev.target.result.split('\n');
-                bulkRepaymentsData = [];
-                for(let i = 1; i < lines.length; i++) {
-                    const vals = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
-                    if(vals[0] && vals[1]) {
-                        const parsedDate = parseFlexibleDate(vals[2] || new Date().toISOString().split('T')[0]);
-                        bulkRepaymentsData.push({
-                            phone: vals[0],
-                            amount: parseFloat(vals[1]),
-                            date: parsedDate.toISOString(),
-                            note: vals[3] || 'Bulk repayment import'
-                        });
-                    }
-                }
-                document.getElementById('bulkRepaymentsPreview').innerHTML = `<p style="padding:12px;background:#e8f5e9;border-radius:8px;">✅ ${bulkRepaymentsData.length} repayment entries ready to import</p>`;
-            };
-            reader.readAsText(file);
-        }
-        
-        async function confirmBulkRepaymentsImport() {
-            let success = 0, failed = 0;
-            for(const d of bulkRepaymentsData) {
-                const member = members.find(m => m.phone === d.phone);
-                if(member && member.loanPrincipal > 0) {
-                    member.loanPrincipal = Math.max(0, (member.loanPrincipal || 0) - d.amount);
-                    member.transactions = member.transactions || [];
-                    member.transactions.push({
-                        type: 'repayment', 
-                        amount: d.amount, 
-                        date: d.date, 
-                        note: d.note
-                    });
-                    success++;
-                } else {
-                    failed++;
-                }
-            }
-            await saveMembers();
-            NotificationManager.add(`✅ ${success} repayments processed, ${failed} failed`, 'success');
-            goBack();
-        }
-        
-        function downloadBulkRepaymentsTemplate() {
-            const csv = "MemberPhone,Amount,Date,Note\n260971234567,500,28/12/2025,Monthly repayment\n260971234568,300,15/01/2026,Partial payment\n260971234569,1000,01/02/2026,Full settlement";
-            const blob = new Blob([csv], {type: 'text/csv'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'bulk_loan_repayments_template.csv';
-            a.click();
-            NotificationManager.add('Template downloaded!', 'success');
-        }
-        
-        // ===== BULK LOAN REPAYMENTS FROM HISTORY EXPORT =====
-        let bulkHistoryRepaymentsData = [];
-        
-        function showBulkHistoryRepayments() {
-            document.getElementById('contentArea').innerHTML = `
-                <div style="padding:16px;">
-                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-                        <div onclick="goBack()" style="cursor:pointer;"><i class="fas fa-arrow-left"></i></div>
-                        <div><h1 style="font-size:20px;"><i class="fas fa-file-upload"></i> Import History Repayments</h1></div>
-                    </div>
-                </div>
-                <div style="padding:16px;">
-                    <h3><i class="fas fa-file-csv"></i> Import from History CSV</h3>
-                    <div style="background:#e3f2fd;padding:12px;border-radius:8px;margin:12px 0;">
-                        <h4>Expected Format:</h4>
-                        <code style="font-size:12px;">Date, Member, Type, Amount, Note</code>
-                        <p style="font-size:12px;margin-top:8px;">The Note column contains the date (DD/MM/YY format)</p>
-                        <p style="font-size:12px;">The Amount is extracted from the Date column</p>
-                    </div>
-                    <input type="file" id="bulkHistoryRepaymentsFile" accept=".csv" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #ddd;border-radius:8px;">
-                    <div id="bulkHistoryRepaymentsPreview" style="margin-bottom:12px;"></div>
-                    <div style="display:flex;gap:8px;">
-                        <button onclick="confirmBulkHistoryRepaymentsImport()" style="flex:1;padding:12px;background:#4caf50;color:white;border:none;border-radius:8px;">Import Repayments</button>
-                        <button onclick="goBack()" style="flex:1;padding:12px;background:#9e9e9e;color:white;border:none;border-radius:8px;">Cancel</button>
-                    </div>
-                </div>`;
-            document.getElementById('bulkHistoryRepaymentsFile').addEventListener('change', handleBulkHistoryRepaymentsCSV);
-        }
-        
-        function handleBulkHistoryRepaymentsCSV(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const lines = ev.target.result.split('\n');
-                bulkHistoryRepaymentsData = [];
-                for(let i = 1; i < lines.length; i++) {
-                    const vals = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
-                    if(vals.length >= 5) {
-                        const dateField = vals[0];
-                        const memberName = vals[1];
-                        const type = vals[2];
-                        const noteField = vals[4];
-                        const amount = parseFloat(dateField.split('/').pop()) || 0;
-                        const parsedDate = parseFlexibleDate(noteField);
-                        bulkHistoryRepaymentsData.push({
-                            memberName: memberName,
-                            amount: amount,
-                            date: parsedDate.toISOString(),
-                            note: type + ' - ' + noteField
-                        });
-                    }
-                }
-                document.getElementById('bulkHistoryRepaymentsPreview').innerHTML = `<p style="padding:12px;background:#e8f5e9;border-radius:8px;">✅ ${bulkHistoryRepaymentsData.length} repayment entries ready to import</p>`;
-            };
-            reader.readAsText(file);
-        }
-        
-        async function confirmBulkHistoryRepaymentsImport() {
-            let success = 0, failed = 0;
-            for(const d of bulkHistoryRepaymentsData) {
-                const member = members.find(m => m.name.toLowerCase() === d.memberName.toLowerCase());
-                if(member && member.loanPrincipal > 0) {
-                    member.loanPrincipal = Math.max(0, (member.loanPrincipal || 0) - d.amount);
-                    member.transactions = member.transactions || [];
-                    member.transactions.push({
-                        type: 'repayment', 
-                        amount: d.amount, 
-                        date: d.date, 
-                        note: d.note
-                    });
-                    success++;
-                } else {
-                    failed++;
-                }
-            }
-            await saveMembers();
-            NotificationManager.add(`✅ ${success} repayments processed, ${failed} failed`, 'success');
-            goBack();
         }
         
         // ===== MEMBER IMPORT =====
@@ -1791,7 +1729,7 @@
         document.addEventListener('click',()=>closeAllMenus());
         
         // Make all functions global
-        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV; window.showMemberSavingsTab = showMemberSavingsTab; window.showMemberLoansTab = showMemberLoansTab; window.showRepayLoanFromMember = showRepayLoanFromMember; window.processRepaymentFromMember = processRepaymentFromMember; window.showBulkSavingsImport = showBulkSavingsImport; window.showBulkLoansImport = showBulkLoansImport; window.showBulkLoanRepayments = showBulkLoanRepayments; window.confirmBulkSavingsImport = confirmBulkSavingsImport; window.confirmBulkLoansImport = confirmBulkLoansImport; window.confirmBulkRepaymentsImport = confirmBulkRepaymentsImport; window.downloadBulkSavingsTemplate = downloadBulkSavingsTemplate; window.downloadBulkLoansTemplate = downloadBulkLoansTemplate; window.downloadBulkRepaymentsTemplate = downloadBulkRepaymentsTemplate; window.showBulkHistoryRepayments = showBulkHistoryRepayments; window.confirmBulkHistoryRepaymentsImport = confirmBulkHistoryRepaymentsImport;
+        window.showHistoryPage = showHistoryPage; window.exportHistoryCSV = exportHistoryCSV; window.exportHistoryPDF = exportHistoryPDF; window.downloadExportTemplate = downloadExportTemplate; window.showImportMembersCSV = showImportMembersCSV; window.showImportTransactionsCSV = showImportTransactionsCSV; window.downloadMemberTemplate = downloadMemberTemplate; window.downloadTransactionTemplate = downloadTransactionTemplate; window.confirmMemberImport = confirmMemberImport; window.confirmTransactionImport = confirmTransactionImport; window.showEditMember = showEditMember; window.saveEditedMember = saveEditedMember; window.resetMemberPin = resetMemberPin; window.deleteMember = deleteMember; window.viewMember = viewMember; window.addSavingsFor = addSavingsFor; window.addLoanFor = addLoanFor; window.collectFee = collectFee; window.processSavings = processSavings; window.contractLoan = contractLoan; window.repayLoan = repayLoan; window.memberResetPin = memberResetPin; window.toggleAdminMenu = toggleAdminMenu; window.toggleMemberMenu = toggleMemberMenu; window.toggleNotifications = toggleNotifications; window.exportShareAccountCSV = exportShareAccountCSV; window.exportShareAccountPDF = exportShareAccountPDF; window.exportMemberStatement = exportMemberStatement; window.exportMemberCSV = exportMemberCSV; window.showMemberSavingsTab = showMemberSavingsTab; window.showMemberLoansTab = showMemberLoansTab; window.showRepayLoanFromMember = showRepayLoanFromMember; window.processRepaymentFromMember = processRepaymentFromMember; window.showBulkSavingsImport = showBulkSavingsImport; window.showBulkLoansImport = showBulkLoansImport; window.confirmBulkSavingsImport = confirmBulkSavingsImport; window.confirmBulkLoansImport = confirmBulkLoansImport; window.downloadBulkSavingsTemplate = downloadBulkSavingsTemplate; window.downloadBulkLoansTemplate = downloadBulkLoansTemplate; window.showBulkHistoryRepayments = showBulkHistoryRepayments; window.confirmBulkHistoryRepaymentsImport = confirmBulkHistoryRepaymentsImport; window.downloadBulkHistoryRepaymentsTemplate = downloadBulkHistoryRepaymentsTemplate;
         
         (async () => { NotificationManager.init(); ThemeManager.init(); await loadMembers(); showLoginScreen(); })();
     </script>
