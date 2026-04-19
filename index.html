@@ -212,68 +212,64 @@
         // ===== DETAILED LEDGER CALCULATIONS =====
         function calculateLedgerSavings(member) {
             const txs = member.transactions || [];
-            let cumulativeSavings = member.initialSavings || 0;
+            let cumulativeSavings = 0;
             let cumulativeInterest = 0;
             const ledger = [];
         
-            const sortedTxs = txs.filter(t => t.type === 'savings' || t.type === 'savings-interest').sort((a,b) => new Date(a.date) - new Date(b.date));
+            // Sort by date
+            const sortedTxs = txs.filter(t => t.type === 'savings').sort((a,b) => new Date(a.date) - new Date(b.date));
         
             sortedTxs.forEach(tx => {
-                if (tx.type === 'savings') {
-                    const interest = cumulativeSavings * RULES.INTEREST;
-                    cumulativeInterest += interest;
-                    cumulativeSavings += tx.amount + interest;
-                    ledger.push({
-                        date: tx.date,
-                        monthlySavings: tx.amount,
-                        cumulativeSavings: cumulativeSavings,
-                        interest: interest,
-                        totalWithInterest: cumulativeSavings + cumulativeInterest
-                    });
-                }
+                // Formula: (Previous Total + New Savings) * 1.10
+                const previousTotal = cumulativeSavings; // This includes previous months' interest
+                const monthlySavings = tx.amount || 0;
+                const totalBeforeInterest = previousTotal + monthlySavings;
+                const monthlyInterest = totalBeforeInterest * RULES.INTEREST;
+
+                cumulativeInterest += monthlyInterest;
+                cumulativeSavings = totalBeforeInterest + monthlyInterest;
+
+                ledger.push({
+                    date: tx.date,
+                    monthlySavings: monthlySavings,
+                    cumulativeSavings: previousTotal,
+                    interest: monthlyInterest,
+                    totalWithInterest: cumulativeSavings
+                });
             });
         
-            return { cumulativeSavings, cumulativeInterest, totalValue: cumulativeSavings + cumulativeInterest, ledger };
+            return { cumulativeSavings, cumulativeInterest, totalValue: cumulativeSavings, ledger };
         }
         
         function calculateLedgerLoans(member) {
             const txs = member.transactions || [];
-            let principle = member.loanPrincipal || 0;
-            let balance = principle;
+            let principle = 0;
             const ledger = [];
         
+            // Sort transactions by date
             const sortedTxs = txs.filter(t => t.type === 'loan' || t.type === 'repayment').sort((a,b) => new Date(a.date) - new Date(b.date));
         
             sortedTxs.forEach(tx => {
-                const interest = principle * RULES.INTEREST;
                 if (tx.type === 'loan') {
-                    principle = tx.amount;
-                    balance = principle;
-                    ledger.push({
-                        date: tx.date,
-                        principle: tx.amount,
-                        interest: interest,
-                        totalLoan: principle + interest,
-                        payment: 0,
-                        loanBalance: balance,
-                        topUp: tx.amount
-                    });
+                    principle += tx.amount;
                 } else if (tx.type === 'repayment') {
-                    balance = Math.max(0, balance - (tx.payment || tx.amount));
-                    ledger.push({
-                        date: tx.date,
-                        principle: principle,
-                        interest: interest,
-                        totalLoan: principle + interest,
-                        payment: tx.amount,
-                        loanBalance: balance,
-                        topUp: 0
-                    });
+                    principle = Math.max(0, principle - (tx.payment || tx.amount));
                 }
+
+                const interest = principle * RULES.INTEREST;
+                ledger.push({
+                    date: tx.date,
+                    principle: principle,
+                    interest: interest,
+                    totalLoan: principle + interest,
+                    payment: tx.type === 'repayment' ? (tx.payment || tx.amount) : 0,
+                    loanBalance: principle,
+                    topUp: tx.type === 'loan' ? tx.amount : 0
+                });
             });
         
             const totalInterest = principle * RULES.INTEREST;
-            return { principle, totalWithInterest: principle + totalInterest, interest: totalInterest, balance, ledger };
+            return { principle, totalWithInterest: principle + totalInterest, interest: totalInterest, balance: principle, ledger };
         }
         
         function calculateNetPosition(member) {
@@ -393,8 +389,13 @@
         
         // ===== ADMIN DASHBOARD =====
         function showAdminDashboard() {
-            const totalSavings = members.reduce((s,m)=>s+(m.savings||0),0);
-            const totalLoans = members.reduce((s,m)=>s+((m.loanPrincipal||0)*(1+RULES.INTEREST)),0);
+            let totalSavings = 0;
+            let totalLoans = 0;
+            members.forEach(m => {
+                const calc = calculateNetPosition(m);
+                totalSavings += calc.savings.totalValue;
+                totalLoans += calc.loans.totalWithInterest;
+            });
             const active = members.filter(m=>m.membershipPaid && m.socialPaid).length;
             const pendingFees = members.filter(m=>!m.membershipPaid || !m.socialPaid).length;
         
